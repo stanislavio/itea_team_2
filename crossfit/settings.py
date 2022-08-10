@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'db'
+    'db',
+    'frontend',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,7 @@ USE_TZ = True
 
 STATIC_URL = '/frontend/static/'
 STATICFILES_DIRS = [
-    os.path.join( BASE_DIR, 'static/')
+    os.path.join( BASE_DIR, 'frontend/static/')
 ]
 
 # Default primary key field type
