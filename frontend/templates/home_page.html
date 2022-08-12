@@ -1,1 +1,137 @@
-<h1>Hello bob</h1>
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="container text-center">
+    <img class="rounded" style="margin:15px; padding-top:42px" src="{% static 'img/banner_2.png' %}" width="1090px" />
+</div>
+
+<div class="container d-flex justify-content-center">
+
+    <div class="row ">
+
+        <div class="col-2">
+            <div class="card" style="width:160px;">
+                <img src="{% static 'img/user_pic_big.png' %}" class="card-img-top" alt="..." height="138">
+                <h6 class="card-title">Our esteemed user</h6>
+                <div class="card-body">
+                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-2">
+            <div class="card" style="width:160px;">
+                <img src="{% static 'img/user3.png' %}" class="card-img-top" alt="..." height="138">
+                <h6 class="card-title">Our esteemed user</h6>
+                <div class="card-body">
+                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-2">
+            <div class="card" style="width:160px;">
+                <img src="{% static 'img/2nd_user_pic.png' %}" class="card-img-top" alt="..." height="138">
+                <h6 class="card-title">Our esteemed user</h6>
+                <div class="card-body">
+                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="card" style="width:160px;">
+                <img src="{% static 'img/user4.png' %}" class="card-img-top" alt="..." height="138">
+                <h6 class="card-title">Our esteemed user</h6>
+                <div class="card-body">
+                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <i class="bi-alarm"></i>
+            <div class="card" style="width:160px;">
+                <img src="{% static 'img/user3.png' %}" class="card-img-top" alt="..." height="138">
+                <h6 class="card-title">Our esteemed user</h6>
+                <div class="card-body">
+                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <i class="bi-alarm"></i>
+            <div class="card" style="width:160px;">
+                <img src="{% static 'img/user3.png' %}" class="card-img-top" alt="..." height="138">
+                <h6 class="card-title">Our esteemed user</h6>
+                <div class="card-body">
+                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container text-center">
+    <div class="row text-center " style="margin:15px">
+        <div class="col-1"></div>
+        <div class="col-1 border-bottom text-center">
+            <img src="{% static 'img/user3.png' %}" class="rounded-circle" alt="..." width="80px" heigth="60px">
+            <p><a href="#" class="link-secondary">runner1</a> <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
+        </div>
+        <div class="col-9 border-bottom">
+            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
+            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
+        </div>
+    </div>
+
+    <div class="row text-center " style="margin:15px">
+        <div class="col-1"></div>
+        <div class="col-1 border-bottom">
+            <img src="{% static 'img/user4.png' %}" class="rounded-circle" alt="..." width="60">
+            <p>smiley1969 <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
+        </div>
+        <div class="col-9 border-bottom">
+            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
+            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
+        </div>
+    </div>
+
+    <div class="row text-center" style="margin:15px">
+        <div class="col-1"></div>
+        <div class="col-1 border-bottom">
+            <img src="{% static 'img/user_pic_big.png' %}" class="rounded-circle" alt="..." width="80px" heigth="60px">
+            <p>handy2020 <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
+        </div>
+        <div class="col-9 border-bottom">
+            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
+            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
+        </div>
+    </div>
+
+    <div class="row text-center" style="margin:15px">
+        <div class="col-1"></div>
+        <div class="col-1 border-bottom" style="padding-top:15px;">
+            <img src="{% static 'img/user4.png' %}" class="rounded-circle" alt="..." width="60">
+            <p>smiley1969 <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
+        </div>
+        <div class="col-9 border-bottom">
+            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
+            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="container text-center">
+    <div class="row text-center " style="margin:5px">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="muted border rounded" style="margin=6px; padding-left:10px;padding-right:10px;">
+                <small style="font-size:10px;">(C) 2022 ITEA Django course Aug 2022. | v.12-Aug-2022 </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
