@@ -14,7 +14,7 @@
 
     <nav class="navbar navbar-expand rounded fixed-top" style="background-color: #e3f2fd;">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'img/crossfit_home.png' %}" class="rounded" height="32px" />
                 <strong>Crossfit</strong>
             </a>
@@ -28,11 +28,11 @@
             </div>
             <div class="navbar-nav text-right">
 
-                <a class="btn btn-warning" href="#">Join</a>
-                <a class="nav-link active" href="#">Login</a>
+                <a class="btn btn-warning" href="{% url 'register_user' %}">Join</a>
+                <a class="nav-link active" href="{% url 'login_user' %}">Login</a>
 
-                <a class="btn btn-dark" href="#">New post</a>
-                <a class="nav-link active" aria-current="page" href="#">Friends</a>
+                <a class="btn btn-dark" href="{% url 'create_post' %}">New post</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'friends_posts' %}">Friends</a>
             </div>
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,15 +40,17 @@
                     User
                 </a>
                 <ul class=" dropdown-menu">
-                    <li><a class="dropdown-item" href="#">User profile</a></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile_user' %}">User profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'index' %}">Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     {% block content %}
-    <h2>No content block</h2>
+    <div class="container" style="margin:15px; padding-top:42px">
+        <h2>No content block</h2>
+    </div>
     {% endblock %}
 
     <script src=" {% static 'js/bootstrap_5.2.0.bundle.min.js' %}"></script>
