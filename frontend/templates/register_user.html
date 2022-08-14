@@ -6,5 +6,13 @@
 
 <div class="container" style="margin:15px; padding-top:42px">
     Register user template stub
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <input type="submit" name="Submit">
+    </form>
+
 </div>
 {% endblock %}
