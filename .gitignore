@@ -1,6 +1,4 @@
-/Pipfile.lock
-crossfit/crossfit/.env
-/crossfit/db/migrations/0*.py
+Pipfile.lock
+/crossfit/.env
+/db/migrations/0*.py
 
-/crossfit/myapp_models2.dot
-/crossfit/myapp_models2.png
