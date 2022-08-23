@@ -2,3 +2,5 @@ Pipfile.lock
 /crossfit/.env
 /db/migrations/0*.py
 
+
+/frontend/templates/tst1.txt
