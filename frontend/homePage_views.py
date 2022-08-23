@@ -8,8 +8,8 @@ from .forms import CreateUserForm
 from django.contrib.auth import authenticate, login, logout
 
 def index(request):
-
-    return render(request, 'home_page.html')
+    context ={}
+    return render(request, 'home_page.html', context)
 
 def register_user(request):
     form = CreateUserForm()
@@ -19,8 +19,16 @@ def register_user(request):
         if form.is_valid():
             form.save()
             return redirect("login_user")
-    context = {'form' : form}
+    context = {
+        'form' : form,
+        'no_register_link' : True,
+    }
     return render(request, 'register_user.html', context)
+
+def logout_user(request):
+    print("Logging out user")
+    logout(request)
+    return redirect("login_user")
 
 def login_user(request):
     if request.method == "POST":
@@ -37,4 +45,5 @@ def login_user(request):
             print("Not authenticated")
             messages.info(request, "Username or password is not correct.")
     context ={}
+    context["no_login_link"] = True
     return render(request, 'login_user.html', context)

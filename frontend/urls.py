@@ -17,6 +17,7 @@ urlpatterns = [
     path('', homePage_views.index, name='index'),
     path('register_user/', homePage_views.register_user, name="register_user"),
     path('login_user/', homePage_views.login_user, name="login_user"),
+    path('logout_user/', homePage_views.logout_user, name="logout_user"),
     #User urls
     path('user/', include(user_url_patterns)),
     #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
