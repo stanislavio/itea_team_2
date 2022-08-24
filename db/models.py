@@ -18,6 +18,9 @@ class Post(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.post_title[:50]
     
 
 class SocialPost(Post):
