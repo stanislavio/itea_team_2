@@ -7,7 +7,7 @@
 <div class="container justify-content-center" style="padding-top:92px">
     <div class="row justify-content-center text-center ">
         <div class="col-3">
-            <h3>LifeRec(tm)</h3>
+            <h3>TrainRec(tm)</h3>
         </div>
     </div>
 
@@ -25,9 +25,21 @@
                     {% if field.name == 'post_is_private' %}
                     <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}<i class="fas fa-user"></i><i class="bi-alarm"></i></span>
                     {% endif %}
+                    {% if field.name == 'datetime_started'%}
+                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">Start time</span>
+                    <input class='form-control' id="datetimepicker" name='datetime_started' type="text">
+
+                    {% else %}
                     {{ field }}
+                    {% endif %}
                 </div>
                 {% endfor %}
+
+
+                <script>
+                    $('#datetimepicker').datetimepicker();
+                </script>
+
                 <div style="padding-top:20px;">
                     <input class="btn btn-primary" type="submit" name="Submit">
                 </div>

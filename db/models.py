@@ -30,6 +30,9 @@ class TrainingPost(Post):
     datetime_started = models.DateTimeField()
     datetime_finished = models.DateTimeField(blank=True, null=True)
 
+    def clean(self):
+        print("model clean", self.datetime_started)
+
 
 class Comment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from db.models import User, SocialPost
+from db.models import User, SocialPost, TrainingPost
 
 from django import forms
 
@@ -34,14 +34,14 @@ class CreateUserForm(UserCreationForm):
         }
 
 
-class CreatePostForm(forms.ModelForm):
+class CreateSocialPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
             super(forms.ModelForm, self).__init__(*args, **kwargs)
             self.fields['post_title'].widget.attrs['class'] = 'form-control'
             self.fields['post_title'].widget.attrs['placeholder'] = 'Title'
             
-            self.fields['post_photo'].widget.attrs['class'] = 'form-control  btn'
-            self.fields['post_photo'].widget.attrs['placeholder'] = 'qwe1'
+        #     self.fields['post_photo'].widget.attrs['class'] = 'form-control  btn'
+        #     self.fields['post_photo'].widget.attrs['placeholder'] = 'qwe1'
             
             self.fields['post_text'].widget.attrs['class'] = 'form-control'
             self.fields['post_text'].widget.attrs['placeholder'] = 'Post text'
@@ -52,20 +52,27 @@ class CreatePostForm(forms.ModelForm):
 
     class Meta:
         model = SocialPost
-        fields = ('post_title', 'post_photo', 'post_text', 'post_is_private')
-        # widgets = {
-        #     'username': TextInput(attrs=
-        #             {'class':'form-control',
-        #               'aria-label' : 'Username',
-        #               'aria-describedby' : 'basic-addon1'
-        #     }),
-        #     'email': TextInput(attrs=
-        #             {'class':'form-control',
-        #               'aria-label' : 'Username',
-        #               'aria-describedby' : 'basic-addon1'
-        #     }),
+        fields = ('post_title', 'post_text', 'post_is_private')
         
-        # }
 
         
+class CreateTrainingPostForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+            super(forms.ModelForm, self).__init__(*args, **kwargs)
+            self.fields['post_title'].widget.attrs['class'] = 'form-control'
+            self.fields['post_title'].widget.attrs['placeholder'] = 'Title'
             
+        #     self.fields['post_photo'].widget.attrs['class'] = 'form-control  btn'
+        #     self.fields['post_photo'].widget.attrs['placeholder'] = 'qwe1'
+            
+            self.fields['post_text'].widget.attrs['class'] = 'form-control'
+            self.fields['post_text'].widget.attrs['placeholder'] = 'Post text'
+
+            self.fields['post_is_private'].widget.attrs['placeholder'] = 'Confirm password'
+            
+
+
+    class Meta:
+        model = TrainingPost
+        fields = ('post_title', 'post_text', 'datetime_started', 'post_is_private')
+        
