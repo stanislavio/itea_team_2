@@ -21,5 +21,9 @@ urlpatterns = [
     #User urls
     path('user/', include(user_url_patterns)),
     #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
-    path('post/createpost/', post_views.create_post, name="create_post"),
+    path('post/createsocialpost/', post_views.create_social_post, name="create_social_post"),
+    path('post/createtrainingpost/', post_views.create_training_post, name="create_training_post"),
+    path('post/viewsocialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
+    path('post/viewtrainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
+
 ]
