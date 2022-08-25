@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'db',
+
     'frontend',
+    'db',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -134,7 +136,16 @@ STATICFILES_DIRS = [
     os.path.join( BASE_DIR, 'frontend/static/')
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# create root dir for all images
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from PIL import Image
 
 # USER PAGE models !
 class User(AbstractUser):
     short_bio = models.TextField(blank=True)
-    photo = models.ImageField(blank=True, null=True)
+    photo = models.ImageField(blank=True, null=True, default='default.jpg', upload_to='media')
+    birthday = models.DateField(null=True, blank=True,)
+    phone = models.CharField(max_length=13, null=True, blank=True, unique=True)
 
 
 class Post(models.Model):

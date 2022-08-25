@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+
+{% block content %}
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-7">
+                <div class="card">
+                    <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE; height:205px;">
+                        <div class="ms-4 mt-5 d-flex flex-column" style="width: 160px;">
+                            {% if user.photo %}
+                            <img class="rounded-circle account-img" src="{{ user.photo.url }}" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
+                            {% endif %}
+
+                        </div>
+                        <div class="ms-4" style="margin-top: 115px;">
+                            <h1 class="account-heading">{{user.username}}</h1>
+                            <p>Birth date: {{user.birthday}}</p>
+                        </div>
+                        <div class="ms-4" style="margin-top: 140px;">
+                            <h5 class="account-heading" style="margin-left: 50px;">Phone number</h5>
+                            <p style="margin-left: 50px;">+38 {{user.phone}} </p>
+                        </div>
+                    </div>
+                    <div class="p-3 text-black" style="background-color: #f8f9fa;">
+                        <div class="d-flex justify-content-end text-center py-1">
+                            <p class="button">
+                                <a class="btn btn-outline-dark" data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
+                            </p>
+                            <div style="margin-right: 115px; margin-left: 170px;">
+                                <p class="mb-1 h5">email</p>
+                                <p class="text-muted mb-0">bob@gmail.com</p>
+                            </div>
+                            <div>
+                                <p class="mb-1 h5">3</p>
+                                <p class="small text-muted mb-0">Posts</p>
+                            </div>
+                            <div class="px-3">
+                                <p class="mb-1 h5">25</p>
+                                <p class="small text-muted mb-0">Friends</p>
+                            </div>
+                            <div>
+                                <p class="mb-1 h5">55</p>
+                                <p class="small text-muted mb-0">Followers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 text-black">
+                        <div class="mb-5">
+                            <p class="lead fw-normal mb-1">About</p>
+                            <div class="p-4" style="background-color: #f8f9fa;">
+                                <p class="text-secondary">{{ user.short_bio }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <p class="lead fw-normal mb-0">Recent posts (stub)</p>
+                            <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                        </div>
+                        <div class="p-3 text-black" style="background-color: #f8f9fa;">
+                            <img src="https://d2z0k43lzfi12d.cloudfront.net/blog/vcdn350/wp-content/uploads/2020/06/blog_thumbnail_run-for-the-oceans_beginner-running_1200x800.jpg.webp" alt="image 1" class="w-100 rounded-3">
+                            <p>This was amazing run, thank you all guys!</p>
+                            <p>Getting back to the start line of a race, or to the field of play, should not be a race at all. Easier said than done.</p>
+                            <p class="small text-muted"> 12.05.2022</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
