@@ -5,3 +5,7 @@ Pipfile.lock
 
 /frontend/templates/tst1.txt
 /frontend/__pycache__/*.pyc
+/crossfit/__pycache__/*.pyc
+/db/__pycache__/*.pyc
+/crossfit/__pycache__/*.pyc
+/frontend/__pycache__/*.pyc

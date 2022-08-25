@@ -13,7 +13,7 @@
 
     <div class="row justify-content-center" style="padding-top:52px">
         <div class="col-10 text-center border justify-content-center" style="padding:30">
-            <form action="" method="POST">
+            <form id="training_post_form" action="" method="POST">
                 {% csrf_token %}
                 {% for field in form %}
                 {% for error in field.errors %}
@@ -29,22 +29,30 @@
                     <!-- Date time picker control: https://xdsoft.net/jqplugins/datetimepicker/#google_vignette -->
                     <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">Start time</span>
                     <input class='form-control' id="datetimepicker" name='datetime_started' type="text">
-
                     {% else %}
                     {{ field }}
                     {% endif %}
                 </div>
                 {% endfor %}
-
-
-                <script>
-                    $('#datetimepicker').datetimepicker();
-                </script>
-
                 <div style="padding-top:20px;">
-                    <input class="btn btn-primary" type="submit" name="Submit">
+                    <input id="submit_button" class="btn btn-primary" type="submit" name="Submit">
                 </div>
+
             </form>
+
+            <script>
+                $("#submit_button").click(
+                    function() {
+                        var d = new Date($('#datetimepicker').val());
+                        $('#datetimepicker').val(d.toISOString())
+                    }
+                ); //$("#submit_button").click(
+                $('#datetimepicker').datetimepicker({
+                    onChangeDateTime: function(dp, $input) {
+                        console.log($input.val())
+                    }
+                });
+            </script>
         </div>
     </div>
 
