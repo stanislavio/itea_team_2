@@ -1,14 +1,14 @@
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import userPage_views
 from . import post_views
 from . import homePage_views
 
 user_url_patterns = [
-    path('', userPage_views.profile),
-    
-    path('friends_sposts/', userPage_views.friends_posts, name="friends_posts"),
-    path('profile_user/', userPage_views.profile_user, name="profile_user"),
+    path('', userPage_views.user_profile, name='user_profile'),
+    path('edit/', userPage_views.edit, name="edit"),
 ]
 
 
@@ -23,3 +23,5 @@ urlpatterns = [
     #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
     path('post/createpost/', post_views.create_post, name="create_post"),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
