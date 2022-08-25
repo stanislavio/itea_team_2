@@ -4,3 +4,4 @@ Pipfile.lock
 
 
 /frontend/templates/tst1.txt
+/frontend/__pycache__/*.pyc

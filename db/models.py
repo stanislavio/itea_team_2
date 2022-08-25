@@ -21,6 +21,9 @@ class Post(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.post_title[:50]
     
 
 class SocialPost(Post):
@@ -29,6 +32,9 @@ class SocialPost(Post):
 class TrainingPost(Post):
     datetime_started = models.DateTimeField()
     datetime_finished = models.DateTimeField(blank=True, null=True)
+
+    def clean(self):
+        print("model clean", self.datetime_started)
 
 
 class Comment(models.Model):
