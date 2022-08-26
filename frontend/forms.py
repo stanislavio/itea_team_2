@@ -56,9 +56,8 @@ class CreateSocialPostForm(forms.ModelForm):
             super(forms.ModelForm, self).__init__(*args, **kwargs)
             self.fields['post_title'].widget.attrs['class'] = 'form-control'
             self.fields['post_title'].widget.attrs['placeholder'] = 'Title'
-            #TODO: add photo functionality
-        #     self.fields['post_photo'].widget.attrs['class'] = 'form-control  btn'
-        #     self.fields['post_photo'].widget.attrs['placeholder'] = 'qwe1'
+            self.fields['post_photo'].widget.attrs['class'] = 'form-control  btn'
+            self.fields['post_photo'].widget.attrs['placeholder'] = 'qwe1'
             self.fields['post_text'].widget.attrs['class'] = 'form-control'
             self.fields['post_text'].widget.attrs['placeholder'] = 'Post text'
 
@@ -66,7 +65,11 @@ class CreateSocialPostForm(forms.ModelForm):
 
     class Meta:
         model = SocialPost
-        fields = ('post_title', 'post_text', 'post_is_private')
+        fields = (
+            'post_title', 
+            'post_photo',
+            'post_text', 
+            'post_is_private')
 #END class CreateSocialPostForm(forms.ModelForm):
 
 class CreateTrainingPostForm(forms.ModelForm):
@@ -87,8 +90,6 @@ class CreateTrainingPostForm(forms.ModelForm):
 
     def clean_datetime_finished(self):
         return parseISOFormatOrNone(self.data['datetime_finished'])
-        
-
 
     class Meta:
         model = TrainingPost

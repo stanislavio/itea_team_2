@@ -13,25 +13,47 @@
 
     <div class="row justify-content-center" style="padding-top:52px">
         <div class="col-10 text-center border justify-content-center" style="padding:30">
-            <form action="" method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                 {% for error in field.errors %}
-                <div class="alert alert-danger">
+                <div class=" alert alert-danger">
                     <strong>{{ error|escape }}</strong>
                 </div>
                 {% endfor %}
                 <div class="input-group mb-3">
                     {% if field.name == 'post_is_private' %}
-                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}<i class="fas fa-user"></i><i class="bi-alarm"></i></span>
+                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}</span>
+                    {% endif %}
+                    {% if field.name == 'post_photo' %}
+                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{field.label}}</span>
                     {% endif %}
                     {{ field }}
                 </div>
+                {% if field.name == 'post_photo' %}
+                <div class="input-group mb-3">
+                    <img id="image_preview" src="{% static 'img/1px_transparent.png' %}" alt="your image" />
+                </div>
+                {% endif %}
                 {% endfor %}
                 <div style="padding-top:20px;">
                     <input class="btn btn-primary" type="submit" name="Submit">
                 </div>
             </form>
+
+            <script>
+                console.log("Hello1")
+                $('#id_post_photo').change(
+                    function() {
+                        console.log("Image changed");
+                        const [file] = $('#id_post_photo').prop("files")
+                        console.log(file)
+                        if (file) {
+                            $("#image_preview").attr("src", URL.createObjectURL(file));
+                        }
+                    }
+                ); //$('#image_preview').change(
+            </script>
         </div>
     </div>
 

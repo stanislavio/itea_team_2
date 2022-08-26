@@ -11,6 +11,14 @@ user_url_patterns = [
     path('edit/', userPage_views.edit, name="edit"),
 ]
 
+post_url_patterns = [
+    #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
+    path('createsocialpost/', post_views.create_social_post, name="create_social_post"),
+    path('createtrainingpost/', post_views.create_training_post, name="create_training_post"),
+    path('viewsocialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
+    path('viewtrainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
+]
+
 
 urlpatterns = [
     #Home page URL
@@ -20,11 +28,8 @@ urlpatterns = [
     path('logout_user/', homePage_views.logout_user, name="logout_user"),
     #User urls
     path('user/', include(user_url_patterns)),
-    #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
-    path('post/createsocialpost/', post_views.create_social_post, name="create_social_post"),
-    path('post/createtrainingpost/', post_views.create_training_post, name="create_training_post"),
-    path('post/viewsocialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
-    path('post/viewtrainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
+    #Post urls
+    path('post/', include(post_url_patterns)),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

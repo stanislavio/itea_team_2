@@ -12,7 +12,8 @@ def create_social_post(request):
     form = CreateSocialPostForm(initial={"post_is_private": True})
     
     if request.method == "POST":
-        form = CreateSocialPostForm(request.POST)
+        form = CreateSocialPostForm(request.POST, request.FILES)
+        #TODO: - change name of the image so it will not be rewritten by new ones
         if form.is_valid():
             new_post = form.save(commit=False)
             new_post.author = request.user
@@ -36,6 +37,7 @@ def create_training_post(request):
     context = {
         'form' : form,
     }
+    #TODO: add icons instead of labels for form
     return render(request, 'create_training_post.html', context)
 
 def view_social_post(request, post_id):
