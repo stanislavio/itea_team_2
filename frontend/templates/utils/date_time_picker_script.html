@@ -1,0 +1,23 @@
+<script>
+    function change_date_time_fields_to_ISO() {
+        $(".date-time-picker-needed").each(
+            function() {
+                var d = new Date($(this).val());
+                $(this).val(d.toISOString())
+            }
+        ); //$(".date-time-picker-needed").each(
+    }
+
+    $("#submit_button").click(
+        change_date_time_fields_to_ISO
+    ); //$("#submit_button").click(
+
+
+    $(".date-time-picker-needed").each(
+        function() {
+            console.log("have picker needed:")
+            console.log($(this))
+            $(this).datetimepicker()
+        }
+    )
+</script>

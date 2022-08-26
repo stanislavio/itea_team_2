@@ -25,13 +25,8 @@
                     {% if field.name == 'post_is_private' %}
                     <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}<i class="fas fa-user"></i><i class="bi-alarm"></i></span>
                     {% endif %}
-                    {% if field.name == 'datetime_started'%}
-                    <!-- Date time picker control: https://xdsoft.net/jqplugins/datetimepicker/#google_vignette -->
-                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">Start time</span>
-                    <input class='form-control' id="datetimepicker" name='datetime_started' type="text">
-                    {% else %}
                     {{ field }}
-                    {% endif %}
+
                 </div>
                 {% endfor %}
                 <div style="padding-top:20px;">
@@ -40,19 +35,7 @@
 
             </form>
 
-            <script>
-                $("#submit_button").click(
-                    function() {
-                        var d = new Date($('#datetimepicker').val());
-                        $('#datetimepicker').val(d.toISOString())
-                    }
-                ); //$("#submit_button").click(
-                $('#datetimepicker').datetimepicker({
-                    onChangeDateTime: function(dp, $input) {
-                        console.log($input.val())
-                    }
-                });
-            </script>
+            {% include 'utils/date_time_picker_script.html' %}
         </div>
     </div>
 
