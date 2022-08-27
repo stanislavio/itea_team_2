@@ -6,7 +6,6 @@ from .forms import CreateSocialPostForm, CreateTrainingPostForm
 from db.models import SocialPost, TrainingPost
 
 import datetime
-# import dateutil
 
 def create_social_post(request):
     form = CreateSocialPostForm(initial={"post_is_private": True})
@@ -25,6 +24,7 @@ def create_social_post(request):
     return render(request, 'create_post_page.html', context)
 
 def create_training_post(request):
+    #TODO: add check that datetime_finished is later than datetime_started
     form = CreateTrainingPostForm(initial={"post_is_private": True})
     if request.method == "POST":
         form = CreateTrainingPostForm(request.POST)
@@ -37,15 +37,28 @@ def create_training_post(request):
     context = {
         'form' : form,
     }
-    #TODO: add icons instead of labels for form
+    #TODO: add icons instead of labels for form fields
     return render(request, 'create_training_post.html', context)
 
 def view_social_post(request, post_id):
     post_to_show = SocialPost.objects.get(id=post_id)
+    editable = False
+    if request.user.id == post_to_show.author.id:
+        editable = True
     context = {
         'post' : post_to_show,
+        'editable' : editable,
     }
     return render(request, 'view_social_post.html', context)
 
 def view_training_post(request, post_id):
-    return render(request, 'view_training_post.html')
+    post_to_show = TrainingPost.objects.get(id=post_id)
+    
+    editable = False
+    if request.user.id == post_to_show.author.id:
+        editable = True
+    context = {
+        'post' : post_to_show,
+        'editable' : editable,
+    }
+    return render(request, 'view_training_post.html', context)

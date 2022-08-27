@@ -10,7 +10,6 @@
             <h3>LifeRec(tm)</h3>
         </div>
     </div>
-
     <div class="row justify-content-center" style="padding-top:52px">
         <div class="col-10 text-center border justify-content-center" style="padding:30">
             <form action="" method="POST" enctype="multipart/form-data">
@@ -23,16 +22,19 @@
                 {% endfor %}
                 <div class="input-group mb-3">
                     {% if field.name == 'post_is_private' %}
-                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}</span>
+                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{
+                        field.label}}</span>
                     {% endif %}
                     {% if field.name == 'post_photo' %}
-                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{field.label}}</span>
+                    <span class="input-group-text" style="width:200px; text-align: right"
+                        id="basic-addon1">{{field.label}}</span>
                     {% endif %}
                     {{ field }}
                 </div>
                 {% if field.name == 'post_photo' %}
                 <div class="input-group mb-3">
-                    <img id="image_preview" src="{% static 'img/1px_transparent.png' %}" style="height : 200px" alt="your image" />
+                    <img id="image_preview" src="{% static 'img/1px_transparent.png' %}" style="max-height : 200px"
+                        alt="your image" />
                 </div>
                 {% endif %}
                 {% endfor %}
@@ -42,12 +44,9 @@
             </form>
 
             <script>
-                console.log("Hello1")
                 $('#id_post_photo').change(
-                    function() {
-                        console.log("Image changed");
+                    function () {
                         const [file] = $('#id_post_photo').prop("files")
-                        console.log(file)
                         if (file) {
                             $("#image_preview").attr("src", URL.createObjectURL(file));
                         }

@@ -27,7 +27,7 @@ urlpatterns = [
     path('login_user/', homePage_views.login_user, name="login_user"),
     path('logout_user/', homePage_views.logout_user, name="logout_user"),
     #User urls
-    path('user/', include(user_url_patterns)),
+    path('user/', include(user_url_patterns), name='user_profile'),
     #Post urls
     path('post/', include(post_url_patterns)),
 ]
