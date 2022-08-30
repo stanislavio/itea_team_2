@@ -59,6 +59,29 @@
     </div>
 
     <script>
+        function addCommentHTML(parent_id, comment_text, add_before = false) {
+
+            old_html = $("#"+parent_id).html()
+            console.log(old_html)
+                    
+            new_html = '<div class="col-1" style="text-align: justify;"> <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px"> </div>'
+            new_html = new_html + '<div class="col-11" style="text-align: justify;">'
+            new_html = new_html +  comment_text
+            new_html = new_html + '</div>'
+
+            if (!add_before) {
+                new_html = old_html+new_html
+            }
+            else {
+                new_html = new_html+old_html
+            }
+
+            
+            $("#"+parent_id).html(
+               new_html
+            )
+            
+        };//function addCommentHTML(parent_id, comment_text, add_before = false) {
 
         $.ajax({
             type: "GET",
@@ -69,19 +92,14 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}',
             },
             success : function(data) {
-                console.log("Have all comments");
+                console.log("Have all comments 2");
                 $("#old-comments-row").html("")
                 for(comment in data["comments"]) {
                     console.log(data["comments"][comment])
-                    old_html = $("#old-comments-row").html()
-                    
-                    old_html =old_html + '<div class="col-1" style="text-align: justify;"> <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px"> </div>'
-                    old_html = old_html + '<div class="col-11" style="text-align: justify;">'
-                    old_html = old_html +  data["comments"][comment].comment_text
-                    old_html = old_html + '</div>'
 
-                    $("#old-comments-row").html(
-                        old_html
+                    addCommentHTML(
+                        parent_id = "old-comments-row", 
+                        comment_text = data["comments"][comment].comment_text
                     )
                     // $("#old-comments-row")
                 }
@@ -106,6 +124,11 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                     },
                     success : function(data) {
+                        addCommentHTML(
+                            parent_id = "old-comments-row", 
+                            comment_text = $("#post_comment_text").val(),
+                            add_before = false
+                        )
                         $("#post_comment_text").val(""),
                         console.log("test POST")
                         console.log(data)

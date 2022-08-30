@@ -47,5 +47,25 @@
             {{post.post_text | linebreaks}}
         </div>
     </div>
+    <div class="row ">
+        <div class="col-1" style="text-align: justify;">
+            <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+        </div>
+        <div class="col-10" style="text-align: justify;">
+            <textarea id="post_comment_text" name="post_text" cols="40" rows="5" class="form-control" placeholder="Comment" id="id_post_text">I am a simple comment (training) &lt- this is to be removed</textarea>
+        </div>
+        <div class="col-1 align-self-end" style="text-align: justify;">
+            <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
+        </div>
+    </div>
+    <div id="old-comments-row" class="row ">
+        <!-- Old comments -->
+        <div class="col-1" style="text-align: justify;">
+            <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+        </div>
+        <div class="col-11" style="text-align: justify;">
+            I am an old comment
+        </div>
+    </div>
 </div>
 {% endblock %}
