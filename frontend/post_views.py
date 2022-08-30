@@ -45,6 +45,7 @@ def view_social_post(request, post_id):
     editable = False
     if request.user.id == post_to_show.author.id:
         editable = True
+    
     context = {
         'post' : post_to_show,
         'editable' : editable,

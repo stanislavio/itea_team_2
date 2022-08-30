@@ -7,7 +7,7 @@
 <div class="container justify-content-center" style="padding-top:92px">
     <div class="row">
         <div class="col-1 text-center">
-            <img src="{% static 'img/user3.png' %}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+            <img src="{{ post.author.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
             <p>
                 <a href="{% url 'user_profile' %}" class="link-secondary">
                     {{ post.author.username}}
@@ -34,5 +34,85 @@
             {{post.post_text | linebreaks}}
         </div>
     </div>
+    <div class="row ">
+        Comments
+    </div>
+    <div class="row ">
+        <div class="col-1" style="text-align: justify;">
+            <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+        </div>
+        <div class="col-10" style="text-align: justify;">
+            <textarea id="post_comment_text" name="post_text" cols="40" rows="5" class="form-control" placeholder="Comment" id="id_post_text">I am a simple comment &lt- this is to be removed</textarea>
+        </div>
+        <div class="col-1 align-self-end" style="text-align: justify;">
+            <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
+        </div>
+    </div>
+    <div id="old-comments-row" class="row ">
+        <!-- Old comments -->
+        <div class="col-1" style="text-align: justify;">
+            <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+        </div>
+        <div class="col-11" style="text-align: justify;">
+            I am an old comment
+        </div>
+    </div>
+
+    <script>
+
+        $.ajax({
+            type: "GET",
+            url: "{% url 'comment_endpoint' %}",
+            data : {
+                post_id : {{ post.id }},
+                post_type : 'social', 
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success : function(data) {
+                console.log("Have all comments");
+                $("#old-comments-row").html("")
+                for(comment in data["comments"]) {
+                    console.log(data["comments"][comment])
+                    old_html = $("#old-comments-row").html()
+                    
+                    old_html =old_html + '<div class="col-1" style="text-align: justify;"> <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px"> </div>'
+                    old_html = old_html + '<div class="col-11" style="text-align: justify;">'
+                    old_html = old_html +  data["comments"][comment].comment_text
+                    old_html = old_html + '</div>'
+
+                    $("#old-comments-row").html(
+                        old_html
+                    )
+                    // $("#old-comments-row")
+                }
+                    
+            }
+        });//$.ajax({
+        // 
+
+
+
+        $("#post_comment").click(
+            function() {
+                console.log("Post comment clicked");
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'comment_endpoint' %}",
+                    data : {
+                        comment_text : $("#post_comment_text").val(),
+                        post_id : {{ post.id }},
+                        post_type : 'social', 
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success : function(data) {
+                        $("#post_comment_text").val(""),
+                        console.log("test POST")
+                        console.log(data)
+                    }
+                });//$.ajax({
+            }
+        );
+    </script>
 </div>
 {% endblock %}

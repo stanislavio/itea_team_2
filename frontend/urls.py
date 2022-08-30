@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from . import userPage_views
 from . import post_views
 from . import homePage_views
+from . import comments_views
 
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
@@ -27,9 +28,12 @@ urlpatterns = [
     path('login_user/', homePage_views.login_user, name="login_user"),
     path('logout_user/', homePage_views.logout_user, name="logout_user"),
     #User urls
-    path('user/', include(user_url_patterns), name='user_profile'),
+    path('user/', include(user_url_patterns)),
     #Post urls
     path('post/', include(post_url_patterns)),
+
+    #Comments endpoint
+    path('comments/', comments_views.comment_endpoint, name='comment_endpoint')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

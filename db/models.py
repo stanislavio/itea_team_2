@@ -10,6 +10,16 @@ class User(AbstractUser):
     phone = models.CharField(max_length=13, null=True, blank=True, unique=True)
 
 
+class Comment(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    comment_text = models.TextField(blank=True)
+    # social_post = models.ForeignKey(SocialPost, on_delete=models.SET_NULL, null=True)
+    # training_post = models.ForeignKey(TrainingPost, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.comment_text[:70]
+
 class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -18,7 +28,8 @@ class Post(models.Model):
     post_lead = models.CharField(max_length=200, blank=True)
     post_text = models.TextField(blank=True)
     post_is_private = models.BooleanField(blank=True, null=True)
-
+    comments = models.ManyToManyField(Comment)
+    
     class Meta:
         abstract = True
 
@@ -37,10 +48,7 @@ class TrainingPost(Post):
         
 
 
-class Comment(models.Model):
-    date_created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    comment_text = models.TextField(blank=True)
+
 
 
 #Below are classes for future expansion of the functionality

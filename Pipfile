@@ -12,6 +12,7 @@ python-dotenv = "*"
 django-extensions = "*"
 django-crispy-forms = "==1.14.0"
 pillow = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.8"
