@@ -1,6 +1,6 @@
 Pipfile.lock
 /crossfit/.env
 /db/migrations/0*.py
-
+.idea
 
 /frontend/templates/tst1.txt

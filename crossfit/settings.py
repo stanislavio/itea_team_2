@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'crispy_forms',
     'frontend',
+    'api',
     'db',
 ]
 
@@ -136,6 +138,8 @@ STATICFILES_DIRS = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # create root dir for all images
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -43,7 +43,7 @@ def login_user(request):
             return redirect("index")
         else:
             print("Not authenticated")
-            messages.info(request, "Username or password is not correct.")
+            messages.success(request, "Username or password is not correct.")
     context ={}
     context["no_login_link"] = True
     return render(request, 'login_user.html', context)
