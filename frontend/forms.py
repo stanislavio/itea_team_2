@@ -3,9 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from db.models import User
 from django import forms
 from django.forms.widgets import TextInput, PasswordInput
+from django.conf import settings
 
 
-#registration forms
+# registration forms
 class CreateUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
             print("hello from __init")
@@ -33,10 +34,8 @@ class CreateUserForm(UserCreationForm):
         }
 
         
-#profile_edit_forms
+# profile_edit_forms
 class ProfileEditForm(forms.ModelForm):
-    email = forms.EmailField()
-
     class Meta:
         model = User
-        fields = ['photo', 'username', 'email', 'birthday', 'phone', 'short_bio' ]
+        fields = ['photo', 'username', 'birthday', 'email', 'phone', 'short_bio']

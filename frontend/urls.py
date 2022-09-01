@@ -9,6 +9,7 @@ from . import homePage_views
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
     path('edit/', userPage_views.edit, name="edit"),
+    path('friends_list/', userPage_views.friends_list, name="friends_list"),
 ]
 
 

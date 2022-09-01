@@ -2,12 +2,16 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
 
+
 # USER PAGE models !
 class User(AbstractUser):
     short_bio = models.TextField(blank=True)
     photo = models.ImageField(blank=True, null=True, default='default.jpg', upload_to='media')
     birthday = models.DateField(null=True, blank=True,)
     phone = models.CharField(max_length=13, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return self.username
 
 
 class Post(models.Model):
@@ -26,6 +30,7 @@ class Post(models.Model):
 class SocialPost(Post):
     pass
 
+
 class TrainingPost(Post):
     datetime_started = models.DateTimeField()
     datetime_finished = models.DateTimeField(blank=True, null=True)
@@ -37,13 +42,15 @@ class Comment(models.Model):
     comment_text = models.TextField(blank=True)
 
 
-#Below are classes for future expansion of the functionality
+# Below are classes for future expansion of the functionality
 class Tag(models.Model):
     tag_name = models.CharField(max_length=100)
     tag_descr = models.CharField(max_length=500)
 
+
 class Payment(models.Model):
     pass
+
 
 class Reaction(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
