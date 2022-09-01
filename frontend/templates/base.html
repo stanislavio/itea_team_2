@@ -1,4 +1,6 @@
 {% load static %}
+
+
 <html>
 
 <head>
@@ -42,7 +44,9 @@
 
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
                     <img src="{{ user.photo.url }}" class="rounded-circle" style="margin-left:5px; width: 40px;" />
+
                     {{ request.user.username}}
                 </a>
                 <ul class=" dropdown-menu">

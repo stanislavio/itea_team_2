@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'frontend',
     'api',
     'db',
+
 ]
 
 MIDDLEWARE = [
@@ -139,7 +140,6 @@ STATICFILES_DIRS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 # create root dir for all images
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
