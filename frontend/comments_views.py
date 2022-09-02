@@ -1,12 +1,15 @@
 from django.http import JsonResponse
 
-from db.models import Comment, SocialPost
+from db.models import Comment, SocialPost, TrainingPost
 from .serializers import CommentSerializer
 
 from rest_framework.decorators import api_view
+from rest_framework import serializers, generics, status, mixins
+
+from rest_framework.generics import GenericAPIView
 
 from rest_framework.response import Response
-from rest_framework import status
+
 
 @api_view(['GET', 'POST'])
 def comment_endpoint(request):
@@ -48,11 +51,28 @@ def comment_endpoint(request):
 
         return Response('hello', status=status.HTTP_201_CREATED)
         
-        # JsonResponse(
-        #     {
-        #         'test_responce': [],
-        #     }
-        # )
-        # comment_ser = CommentSerializer(data = request.data)
-        # if comment_ser.is_valid():
-        #     comment_ser.save()
+
+
+class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        post_id = int(self.kwargs['post_id'])
+        training_post = TrainingPost.objects.filter(id = post_id)[0]
+        return training_post.comments.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        new_comment = Comment(
+            comment_text = request.POST["comment_text"],
+            author = request.user
+        )
+        new_comment.save()
+
+        curr_post = TrainingPost.objects.filter(id=self.kwargs["post_id"])[0]
+        print(curr_post.post_text)
+        curr_post.comments.add(new_comment)
+        curr_post.save()
+        return Response('hello', status=status.HTTP_201_CREATED)

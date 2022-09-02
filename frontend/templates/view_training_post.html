@@ -67,5 +67,85 @@
             I am an old comment
         </div>
     </div>
+    <script>
+        function addCommentHTML(parent_id, comment_text, add_before = false) {
+            old_html = $("#"+parent_id).html()
+            console.log(old_html)
+            new_html = '<div class="col-1" style="text-align: justify;"> <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px"> </div>'
+            new_html = new_html + '<div class="col-11" style="text-align: justify;">'
+            new_html = new_html +  comment_text
+            new_html = new_html + '</div>'
+
+            if (!add_before) {
+                new_html = old_html+new_html
+            }
+            else {
+                new_html = new_html+old_html
+            }
+
+
+            $("#"+parent_id).html(
+            new_html
+            )
+
+        };//function addCommentHTML(parent_id, comment_text, add_before = false) {
+
+        $.ajax({
+        type: "GET",
+        url: "{% url 'training_post_comments' post.id %}",
+        data : {
+            // post_id : {{ post.id }},
+            post_type : 'training', 
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        success : function(data) {
+            console.log("Have all comments ");
+            $("#old-comments-row").html("")
+            for(comment in data) {
+                console.log(data[comment])
+                addCommentHTML(
+                    parent_id = "old-comments-row", 
+                    comment_text = data[comment].comment_text
+                )
+                // $("#old-comments-row")
+            }
+                
+        }
+        });//$.ajax({
+
+
+
+
+
+
+
+        $("#post_comment").click(
+            function() {
+                console.log("Post comment clicked");
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'training_post_comments' post.id %}",
+                    data : {
+                        comment_text : $("#post_comment_text").val(),
+                        post_id : {{ post.id }},
+                        post_type : 'social', 
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success : function(data) {
+                        addCommentHTML(
+                            parent_id = "old-comments-row", 
+                            comment_text = $("#post_comment_text").val(),
+                            add_before = false
+                        )
+                        $("#post_comment_text").val(""),
+                        console.log("test POST")
+                        console.log(data)
+                    }
+                });//$.ajax({
+            }
+        );
+
+    </script>
 </div>
 {% endblock %}

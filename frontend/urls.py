@@ -34,7 +34,8 @@ urlpatterns = [
     path('post/', include(post_url_patterns)),
 
     #Comments endpoint
-    path('comments/', comments_views.comment_endpoint, name='comment_endpoint')
+    path('comments/', comments_views.comment_endpoint, name='comment_endpoint'),
+    path('training_comments/<int:post_id>/', comments_views.CreateListTrainingPostCommentsView.as_view(), name = 'training_post_comments'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
