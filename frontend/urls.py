@@ -5,11 +5,20 @@ from django.conf.urls.static import static
 from . import userPage_views
 from . import post_views
 from . import homePage_views
+from . import comments_views
 
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
+]
+
+post_url_patterns = [
+    #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
+    path('createsocialpost/', post_views.create_social_post, name="create_social_post"),
+    path('createtrainingpost/', post_views.create_training_post, name="create_training_post"),
+    path('viewsocialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
+    path('viewtrainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
 ]
 
 
@@ -21,8 +30,12 @@ urlpatterns = [
     path('logout_user/', homePage_views.logout_user, name="logout_user"),
     #User urls
     path('user/', include(user_url_patterns)),
-    #TODO: consider if URLS below belong to separate post_urls.py or move all URLs to one file
-    path('post/createpost/', post_views.create_post, name="create_post"),
+    #Post urls
+    path('post/', include(post_url_patterns)),
+
+    #Comments endpoint
+    path('comments/', comments_views.comment_endpoint, name='comment_endpoint')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
