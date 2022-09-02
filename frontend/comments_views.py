@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 
-from db.models import Comment, SocialPost, TrainingPost
-from .serializers import CommentSerializer
+from db.models import Comment, SocialPost, TrainingPost, User
+from .serializers import CommentSerializer, UserSerializer
 
 from rest_framework.decorators import api_view
 from rest_framework import serializers, generics, status, mixins
@@ -59,7 +59,10 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
     def get_queryset(self):
         post_id = int(self.kwargs['post_id'])
         training_post = TrainingPost.objects.filter(id = post_id)[0]
-        return training_post.comments.all()
+        post_comments = training_post.comments.all().prefetch_related('author')
+        for comment in post_comments:
+            print("Have author:", comment.author.username)
+        return post_comments
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
