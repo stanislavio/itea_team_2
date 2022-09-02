@@ -45,7 +45,8 @@ def comment_endpoint(request):
         new_comment.save()
 
         curr_post = SocialPost.objects.filter(id=request.POST["post_id"])[0]
-        print(curr_post.post_text)
+        # print(curr_post.post_text)
+        print("Wrong endpoint")
         curr_post.comments.add(new_comment)
         curr_post.save()
 
@@ -57,25 +58,42 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
     serializer_class = CommentSerializer
 
     def get_queryset(self):
+        print(self.request.GET['post_type'])
         post_id = int(self.kwargs['post_id'])
-        training_post = TrainingPost.objects.filter(id = post_id)[0]
-        post_comments = training_post.comments.all().prefetch_related('author')
-        for comment in post_comments:
-            print("Have author:", comment.author.username)
+        post = None
+        if self.request.GET['post_type'] == 'social':
+            post = SocialPost.objects.filter(id = post_id)[0]
+        else:
+            post = TrainingPost.objects.filter(id = post_id)[0]
+        
+        post_comments = post.comments.all().prefetch_related('author')
         return post_comments
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        print(request.POST['post_type'])
         new_comment = Comment(
             comment_text = request.POST["comment_text"],
             author = request.user
         )
         new_comment.save()
 
-        curr_post = TrainingPost.objects.filter(id=self.kwargs["post_id"])[0]
-        print(curr_post.post_text)
+        post_id = self.kwargs["post_id"]
+        curr_post = None
+
+        if request.POST['post_type'] == 'social':
+            curr_post = SocialPost.objects.filter(id=post_id)[0]
+        else:
+            curr_post = TrainingPost.objects.filter(id=post_id)[0]
+    
         curr_post.comments.add(new_comment)
         curr_post.save()
-        return Response('hello', status=status.HTTP_201_CREATED)
+
+        comment_ser = CommentSerializer(new_comment)
+        return JsonResponse(
+            {
+                'comment': comment_ser.data
+            }
+        )

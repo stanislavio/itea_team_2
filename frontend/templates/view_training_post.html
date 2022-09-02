@@ -53,7 +53,7 @@
             <img src="{{ request.user.photo.url }}" class="float-end rounded-circle" alt="..." width="50px" heigth="40px">
         </div>
         <div class="col-10" style="text-align: justify;">
-            <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text">I am a simple comment (training) &lt- this is to be removed</textarea>
+            <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text"></textarea>
         </div>
         <div class="col-1 align-self-end" style="text-align: justify;">
             <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
@@ -67,18 +67,19 @@
     <!-- Old comments end -->
 
     <script>
-
         function initComments() {
             console.log("H1")
-            getComments("{% url 'training_post_comments' post.id %}");
+            getComments(
+                "{% url 'training_post_comments' post.id %}",
+                post_type = 'training'
+            );
             registerPostCommentHandler(
                 requestURL = "{% url 'training_post_comments' post.id %}",
-                usr_photo_url = "{{ request.user.photo.url }}"
+                usr_photo_url = "{{ request.user.photo.url }}",
+                post_type = 'training'
             )
         };//function initComments() {
-
         executeOnLoad(initComments);
-        
     </script>
 </div>
 {% endblock %}

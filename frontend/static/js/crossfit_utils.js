@@ -52,16 +52,16 @@ function addCommentHTML(parent_id, comment_text,
     );
 };//function addCommentHTML(parent_id, comment_text, add_before = false) {
 
-function registerPostCommentHandler(requestURL, usr_photo_url) {
+function registerPostCommentHandler(requestURL, 
+            usr_photo_url, post_type) {
     $("#post_comment").click(
         function() {
-            console.log("Post comment clicked");
             $.ajax({
                 type: "POST",
                 url: requestURL,
                 data : {
                     comment_text : $("#post_comment_text").val(),
-                    post_type : 'social', 
+                    post_type : post_type, 
                     csrfmiddlewaretoken: readCookie('csrftoken'),
                 },
                 success : function(data) {
@@ -74,13 +74,13 @@ function registerPostCommentHandler(requestURL, usr_photo_url) {
                             {   weekday:"long", 
                                 year:"numeric", 
                                 month:"short", 
-                                day:"numeric"}
+                                day:"numeric"
+                            }
                         ) //comment_date = 
-                    )
-                    $("#post_comment_text").val(""),
-                    console.log("test POST")
+                    );
+                    $("#post_comment_text").val("")
                     console.log(data)
-                },//success : function(data) {
+                }//success : function(data) {
             });//$.ajax({
         }//function() {
     )//$("#post_comment").click(
@@ -88,14 +88,13 @@ function registerPostCommentHandler(requestURL, usr_photo_url) {
 
 }//function registerPostCommentHandler(requestURL) {
 
-function getComments(requestURL) {
+function getComments(requestURL, post_type) {
     console.log("Hello 34")
     $.ajax({
         type: "GET",
         url: requestURL,
         data : {
-            post_type : 'training', 
-            // csrfmiddlewaretoken: '{{ csrf_token }}',
+            post_type : post_type, 
             csrfmiddlewaretoken : readCookie('csrftoken'),
         },
         success : function(data) {

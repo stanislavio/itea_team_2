@@ -30,112 +30,44 @@
     </div>
     <div class="row ">
         <div class="col-12" style="text-align: justify;">
-            <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px">
+            <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px; ">
             {{post.post_text | linebreaks}}
         </div>
     </div>
     <div class="row ">
         Comments
     </div>
-    <div class="row ">
+    <div class="row " style="margin-bottom: 50px">
         <div class="col-1" style="text-align: justify;">
             <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
         </div>
         <div class="col-10" style="text-align: justify;">
-            <textarea id="post_comment_text" name="post_text" cols="40" rows="5" class="form-control" placeholder="Comment" id="id_post_text">I am a simple comment &lt- this is to be removed</textarea>
+            <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text"></textarea>
         </div>
         <div class="col-1 align-self-end" style="text-align: justify;">
             <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
         </div>
     </div>
+
+    <!-- Old comments -->
     <div id="old-comments-row" class="row ">
-        <!-- Old comments -->
-        <div class="col-1" style="text-align: justify;">
-            <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
-        </div>
-        <div class="col-11" style="text-align: justify;">
-            I am an old comment
-        </div>
+        
     </div>
+    <!-- Old comments end. -->
 
     <script>
-        function addCommentHTML(parent_id, comment_text, add_before = false) {
-
-            old_html = $("#"+parent_id).html()
-            console.log(old_html)
-                    
-            new_html = '<div class="col-1" style="text-align: justify;"> <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px"> </div>'
-            new_html = new_html + '<div class="col-11" style="text-align: justify;">'
-            new_html = new_html +  comment_text
-            new_html = new_html + '</div>'
-
-            if (!add_before) {
-                new_html = old_html+new_html
-            }
-            else {
-                new_html = new_html+old_html
-            }
-
-            
-            $("#"+parent_id).html(
-               new_html
+        function initComments() {
+            getComments(
+                requestURL = "{% url 'training_post_comments' post.id %}",
+                post_type = 'social'
+            );
+            registerPostCommentHandler(
+                requestURL = "{% url 'training_post_comments' post.id %}",
+                usr_photo_url = "{{ request.user.photo.url }}",
+                post_type = 'social'
             )
-            
-        };//function addCommentHTML(parent_id, comment_text, add_before = false) {
-
-        $.ajax({
-            type: "GET",
-            url: "{% url 'comment_endpoint' %}",
-            data : {
-                post_id : {{ post.id }},
-                post_type : 'social', 
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-            },
-            success : function(data) {
-                console.log("Have all comments 2");
-                $("#old-comments-row").html("")
-                for(comment in data["comments"]) {
-                    console.log(data["comments"][comment])
-
-                    addCommentHTML(
-                        parent_id = "old-comments-row", 
-                        comment_text = data["comments"][comment].comment_text
-                    )
-                    // $("#old-comments-row")
-                }
-                    
-            }
-        });//$.ajax({
-        // 
-
-
-
-        $("#post_comment").click(
-            function() {
-                console.log("Post comment clicked");
-                
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'comment_endpoint' %}",
-                    data : {
-                        comment_text : $("#post_comment_text").val(),
-                        post_id : {{ post.id }},
-                        post_type : 'social', 
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    success : function(data) {
-                        addCommentHTML(
-                            parent_id = "old-comments-row", 
-                            comment_text = $("#post_comment_text").val(),
-                            add_before = false
-                        )
-                        $("#post_comment_text").val(""),
-                        console.log("test POST")
-                        console.log(data)
-                    }
-                });//$.ajax({
-            }
-        );
+        };//function initComments() {
+        executeOnLoad(initComments);
     </script>
 </div>
 {% endblock %}
