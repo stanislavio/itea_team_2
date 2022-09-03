@@ -35,6 +35,10 @@ urlpatterns = [
 
     #Comments endpoint
     path('training_comments/<int:post_id>/', comments_views.CreateListTrainingPostCommentsView.as_view(), name = 'training_post_comments'),
+
+    #Home page REST endpoints
+    path('home_page_users', homePage_views.ListRandomUsersView.as_view(), name = 'home_page_rnd_users'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

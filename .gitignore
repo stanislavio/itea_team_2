@@ -9,3 +9,5 @@ Pipfile.lock
 /crossfit/__pycache__/*.pyc
 /frontend/__pycache__/*.pyc
 
+
+/media/gen*.png

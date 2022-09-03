@@ -5,6 +5,7 @@ from PIL import Image
 
 # USER PAGE models !
 class User(AbstractUser):
+    #Default model names: https://www.csestack.org/django-default-user-model-fields/
     short_bio = models.TextField(blank=True)
     photo = models.ImageField(blank=True, null=True, default='default.jpg', upload_to='media')
     birthday = models.DateField(null=True, blank=True,)
