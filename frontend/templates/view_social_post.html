@@ -30,7 +30,9 @@
     </div>
     <div class="row ">
         <div class="col-12" style="text-align: justify;">
+            {% if post.post_photo %}
             <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px; ">
+            {% endif %}
             {{post.post_text | linebreaks}}
         </div>
     </div>

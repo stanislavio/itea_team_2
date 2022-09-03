@@ -5,7 +5,17 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'username', 'first_name', 'last_name', 'email',  'last_login', 'short_bio', 'photo', 'birthday', 'phone']
+            'id',
+            'username', 
+            'first_name', 
+            'last_name', 
+            'email', 
+            'last_login', 
+            'short_bio', 
+            'photo', 
+            'birthday', 
+            'phone'
+        ]
 
 
 
@@ -23,11 +33,12 @@ class SocialPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialPost
         fields = [
+            'id',
             'date_created', 
             'author', 
             'post_title',
             'post_photo',
             'post_text'
-            ]
+        ]
 
 

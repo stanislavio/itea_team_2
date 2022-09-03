@@ -25,7 +25,7 @@
 
 
 <script>
-    function addUserHTML(user) {
+    function addUserHTML(user, ) {
         // console.log(user);
         old_html = $('#users_row').html();
 
@@ -38,8 +38,11 @@
         if(bio_text ==null || bio_text.length == 0) 
             bio_text = "No bio provided"
 
+        view_user_profile_URL = "user/"
+
         usr_div_html = '<div class="col-2">'+
-                            '<div class="card" style="width:160px;"><a href="#" class="link-dark">'+
+                            '<div class="card" style="width:160px;">'+
+                                '<a href="#" class="link-dark">'+
                                 '<img src="'+img+'" class="card-img-top" alt="..." height="138">'+
                                 '<small class="card-title" style="padding:3px">'+user.username.slice(0, 14)+'</small>'+
                                 '<div class="card-body">'+
@@ -73,7 +76,7 @@
         });//$.ajax({
     }//function loadAndShowUsers() {
 
-    function addPostHTML(post) {
+    function addPostHTML(post, post_view_base_URL) {
         console.log(post);
         old_html = $('#post_container').html();
 
@@ -81,6 +84,10 @@
         if(post.author.photo == null) {
             img = '{% static 'img/generic_user_pic.png' %}';
         }
+
+        post_view_URL = post_view_base_URL+post.id
+        console.log("have URL for post:")
+        console.log(post_view_URL)
         
         new_html = '<div class="row text-center " style="margin:15px">'+
                         '<div class="col-1"></div>'+
@@ -94,7 +101,8 @@
                                     '</small>'+
                             '</p>'+
                         '</div>'+
-                        '<div class="col-9 border-bottom text-start" > <a href="#" class="link-dark">'+
+                        '<div class="col-9 border-bottom text-start" >'+
+                            '<a href="'+post_view_URL+'" class="link-dark">'+
                             '<p class="lead">'+
                                 post.post_title.slice(0, 50)+
                             '</p></a>'+
@@ -121,7 +129,10 @@
                 console.log("Have posts:")
                 console.log(data)
                 for(post_idx in data) {
-                    addPostHTML(data[post_idx])
+                    addPostHTML(
+                        data[post_idx],
+                        "post/viewsocialpost/"
+                    )
                     // break;
                 }
             }//success : function(data) {

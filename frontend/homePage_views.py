@@ -108,6 +108,7 @@ class ListRandomUsersView(mixins.ListModelMixin, GenericAPIView):
 
 
 class ListRandomPostsView(mixins.ListModelMixin, GenericAPIView):
+    #TODO add training posts to home page
     serializer_class = SocialPostSerializer
     NO_OF_POSTS_TO_RETURN = 6
 
