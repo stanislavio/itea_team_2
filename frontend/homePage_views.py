@@ -4,11 +4,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from .forms import CreateUserForm
-from db.models import User
+from db.models import User, SocialPost
 
 from django.contrib.auth import authenticate, login, logout
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, SocialPostSerializer
 from rest_framework import serializers, generics, status, mixins
 from rest_framework.generics import GenericAPIView
 
@@ -101,6 +101,19 @@ class ListRandomUsersView(mixins.ListModelMixin, GenericAPIView):
     def get_queryset(self):
         user_list_union = getRandomObjects(User.objects, self.NO_OF_USERS_TO_RETURN)
         return user_list_union
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+
+class ListRandomPostsView(mixins.ListModelMixin, GenericAPIView):
+    serializer_class = SocialPostSerializer
+    NO_OF_POSTS_TO_RETURN = 6
+
+    def get_queryset(self):
+        post_list = getRandomObjects(SocialPost.objects, self.NO_OF_POSTS_TO_RETURN)
+        return post_list
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

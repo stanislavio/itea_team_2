@@ -18,60 +18,15 @@
 </div>
 <!-- Users list end -->
 
-<div class="container text-center">
-    <div class="row text-center " style="margin:15px">
-        <div class="col-1"></div>
-        <div class="col-1 border-bottom text-center">
-            <img src="{% static 'img/user3.png' %}" class="rounded-circle" alt="..." width="80px" heigth="60px">
-            <p><a href="#" class="link-secondary">runner1</a> <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
-        </div>
-        <div class="col-9 border-bottom">
-            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
-            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
-        </div>
-    </div>
-
-    <div class="row text-center " style="margin:15px">
-        <div class="col-1"></div>
-        <div class="col-1 border-bottom">
-            <img src="{% static 'img/user4.png' %}" class="rounded-circle" alt="..." width="60">
-            <p>smiley1969 <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
-        </div>
-        <div class="col-9 border-bottom">
-            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
-            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
-        </div>
-    </div>
-
-    <div class="row text-center" style="margin:15px">
-        <div class="col-1"></div>
-        <div class="col-1 border-bottom">
-            <img src="{% static 'img/user_pic_big.png' %}" class="rounded-circle" alt="..." width="80px" heigth="60px">
-            <p>handy2020 <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
-        </div>
-        <div class="col-9 border-bottom">
-            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
-            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
-        </div>
-    </div>
-
-    <div class="row text-center" style="margin:15px">
-        <div class="col-1"></div>
-        <div class="col-1 border-bottom" style="padding-top:15px;">
-            <img src="{% static 'img/user4.png' %}" class="rounded-circle" alt="..." width="60">
-            <p>smiley1969 <br><small class="muted" style="font-size:9px;">19-Aug-2021 18-00</small></p>
-        </div>
-        <div class="col-9 border-bottom">
-            <p class="lead">The phrase "Lorem ipsum dolor sit amet consectetuer" appears in Microsoft Word online Help. This phrase has the appearance of an intelligent Latin idiom. Actually, it is nonsense.</p>
-            <p style="text-align:left">Although the phrase is nonsense, it does have a long history. The phrase has been used for several centuries by typographers to show the most distinctive features of their fonts. It is used because the letters involved and the letter spacing in those combinations reveal, at their best, the weight, design, and other important features of the typeface.</p>
-        </div>
-    </div>
+<!-- Posts -->
+<div id="post_container" class="container text-center">
 </div>
+<!-- Posts end -->
 
 
 <script>
     function addUserHTML(user) {
-        console.log(user);
+        // console.log(user);
         old_html = $('#users_row').html();
 
         img = user.photo;
@@ -84,14 +39,14 @@
             bio_text = "No bio provided"
 
         usr_div_html = '<div class="col-2">'+
-                            '<div class="card" style="width:160px;">'+
+                            '<div class="card" style="width:160px;"><a href="#" class="link-dark">'+
                                 '<img src="'+img+'" class="card-img-top" alt="..." height="138">'+
-                                '<h6 class="card-title">'+user.username.slice(0, 14)+'</h6>'+
+                                '<small class="card-title" style="padding:3px">'+user.username.slice(0, 14)+'</small>'+
                                 '<div class="card-body">'+
-                                    '<p class="card-text"><small>'+
+                                    '<p class="card-text"><small  style="font-size:12px">'+
                                         bio_text.slice(0, 50)+'</small></p>'+
                                 '</div>'+
-                            '</div>'+
+                            '</a></div>'+
                         '</div>';
 
         $('#users_row').html(old_html+usr_div_html);
@@ -108,33 +63,74 @@
                 csrfmiddlewaretoken : readCookie('csrftoken'),
             },
             success : function(data) {
-                console.log("Have users:")
-                console.log(data)
+                // console.log("Have users:")
+                // console.log(data)
                 for(user in data) {
                     addUserHTML(data[user]);
                     // break;
                 }
-                // $("#old-comments-row").html("")
-                // for(comment in data) {
-                //     console.log(data[comment])
-                //     addCommentHTML(
-                //         parent_id = "old-comments-row", 
-                //         comment_text = data[comment].comment_text,
-                //         usr_photo_url = data[comment].author.photo,
-                //         comment_date = (new Date(data[comment].date_created)).toLocaleDateString(
-                //                             'en-us', 
-                //                             {   weekday:"long", 
-                //                                 year:"numeric", 
-                //                                 month:"short", 
-                //                                 day:"numeric"}
-                //                         ) //comment_date = 
-                //     )
-                // }
             }//success : function(data) {
         });//$.ajax({
     }//function loadAndShowUsers() {
 
+    function addPostHTML(post) {
+        console.log(post);
+        old_html = $('#post_container').html();
+
+        img = post.author.photo;
+        if(post.author.photo == null) {
+            img = '{% static 'img/generic_user_pic.png' %}';
+        }
+        
+        new_html = '<div class="row text-center " style="margin:15px">'+
+                        '<div class="col-1"></div>'+
+                        '<div class="col-1 border-bottom text-center">'+
+                            '<img src="'+
+                                        img+'" class="rounded-circle" alt="..." width="80px" heigth="60px">'+
+                            '<p><a href="#" class="link-secondary">'+
+                                post.author.username+
+                                '</a> <br><small class="muted" style="font-size:9px;">'+
+                                    post.date_created+
+                                    '</small>'+
+                            '</p>'+
+                        '</div>'+
+                        '<div class="col-9 border-bottom text-start" > <a href="#" class="link-dark">'+
+                            '<p class="lead">'+
+                                post.post_title.slice(0, 50)+
+                            '</p></a>'+
+                            '<p class="text-start">'+
+                                post.post_text.slice(0, 300)+
+                            '</p>'+
+                        '</div>'+
+                    '</div>';
+
+        $('#post_container').html(old_html+new_html);
+    };//function addPostHTML(post) {
+
+
+    function loadAndShowPosts() {
+        requestURL = "{% url 'home_page_rnd_posts' %}"
+        console.log("HomePage Post Generation")
+        $.ajax({
+            type: "GET",
+            url: requestURL,
+            data : {
+                csrfmiddlewaretoken : readCookie('csrftoken'),
+            },
+            success : function(data) {
+                console.log("Have posts:")
+                console.log(data)
+                for(post_idx in data) {
+                    addPostHTML(data[post_idx])
+                    // break;
+                }
+            }//success : function(data) {
+        });//$.ajax({
+
+    }//function loadAndShowPosts() {
+    
     executeOnLoad(loadAndShowUsers)
+    executeOnLoad(loadAndShowPosts)
 
 
 </script>

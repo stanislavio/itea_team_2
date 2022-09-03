@@ -38,6 +38,7 @@ urlpatterns = [
 
     #Home page REST endpoints
     path('home_page_users', homePage_views.ListRandomUsersView.as_view(), name = 'home_page_rnd_users'),
+    path('home_page_posts', homePage_views.ListRandomPostsView.as_view(), name = 'home_page_rnd_posts'),
 
 ]
 
