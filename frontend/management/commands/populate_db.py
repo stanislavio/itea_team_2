@@ -9,8 +9,23 @@ import os
 
 GEN_USERS_MEDIA_FOLDER = r'C:\Users\Vasilyev\AGVDocs\Dev\2. Python\23. Django\4. ActualITEADjangoProject\media'
 
+#https://github.com/azaghal/pydenticon/blob/master/docs/usage.rst
 def generateDenticon(str2Hash, path2Save=""):
-    generator = pydenticon.Generator(10, 10)
+    foreground = [ "rgb(45,79,255)",
+               "rgb(254,180,44)",
+               "rgb(226,121,234)",
+               "rgb(30,179,253)",
+               "rgb(232,77,65)",
+               "rgb(49,203,115)",
+               "rgb(141,69,170)" ]
+
+    
+    background = "rgb(227,242,253)"#e3f2fd
+
+    generator = pydenticon.Generator(
+                    10, 10,
+                    foreground=foreground, background=background
+                )
     denticon = generator.generate(
                     str2Hash, 100, 100,
                     inverted=True, output_format="png"
@@ -24,20 +39,9 @@ def generateDenticon(str2Hash, path2Save=""):
     f.close()
     return img_name
 
-
-
-
-
 class Command(BaseCommand):
     args = '<foo bar ...>'
     help = 'our help string comes here'
-
-    # def _create_tags(self):
-    #     tlisp = Tag(name='Lisp')
-    #     tlisp.save()
-
-    #     tjava = Tag(name='Java')
-    #     tjava.save()
 
     
 
@@ -59,7 +63,17 @@ class Command(BaseCommand):
         maximes_list = f.readlines()
         f.close()
 
-        # print(name_list)
+
+        for usr in User.objects.all():
+            print("have user:", usr.username)
+            print('Bio:', usr.short_bio)
+            if(len(usr.short_bio) == 0):
+                usr.short_bio = random.choice(maximes_list).strip()
+                print('Will add new bio:', usr.short_bio)
+                usr.save()
+
+
+
 
         # for i in range(NEEDED_USERS-number_of_users):
         for i in range(1):
@@ -68,7 +82,7 @@ class Command(BaseCommand):
             fName, lName = rnd_name.split(' ')
             lName = lName.rstrip()
             #TODO add UUID part to generated user names
-            usr_name = f"gen_{fName}_{lName}_{random.randint(1, 999)}"
+            usr_name = f"{fName}_{lName}_{random.randint(1, 999)}_g"
 
             img_name = generateDenticon(usr_name, usr_name)
 
@@ -78,7 +92,7 @@ class Command(BaseCommand):
                 last_name = lName,
                 email = f"{fName}{lName}@server.com",
                 photo = img_name,
-                short_bio = random.choice(maximes_list)
+                short_bio = random.choice(maximes_list).strip()
             )
             new_user.save()
 

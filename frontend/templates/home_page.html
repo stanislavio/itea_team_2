@@ -7,72 +7,16 @@
     <img class="rounded" style="margin:15px; padding-top:42px" src="{% static 'img/banner_2.png' %}" width="1090px" />
 </div>
 
+<!-- Users list -->
 <div class="container d-flex justify-content-center">
 
-    <div class="row ">
-
-        <div class="col-2">
-            <div class="card" style="width:160px;">
-                <img src="{% static 'img/user_pic_big.png' %}" class="card-img-top" alt="..." height="138">
-                <h6 class="card-title">Our esteemed user</h6>
-                <div class="card-body">
-                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-2">
-            <div class="card" style="width:160px;">
-                <img src="{% static 'img/user3.png' %}" class="card-img-top" alt="..." height="138">
-                <h6 class="card-title">Our esteemed user</h6>
-                <div class="card-body">
-                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-2">
-            <div class="card" style="width:160px;">
-                <img src="{% static 'img/2nd_user_pic.png' %}" class="card-img-top" alt="..." height="138">
-                <h6 class="card-title">Our esteemed user</h6>
-                <div class="card-body">
-                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="card" style="width:160px;">
-                <img src="{% static 'img/user4.png' %}" class="card-img-top" alt="..." height="138">
-                <h6 class="card-title">Our esteemed user</h6>
-                <div class="card-body">
-                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-2">
-            <i class="bi-alarm"></i>
-            <div class="card" style="width:160px;">
-                <img src="{% static 'img/user3.png' %}" class="card-img-top" alt="..." height="138">
-                <h6 class="card-title">Our esteemed user</h6>
-                <div class="card-body">
-                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-2">
-            <i class="bi-alarm"></i>
-            <div class="card" style="width:160px;">
-                <img src="{% static 'img/user3.png' %}" class="card-img-top" alt="..." height="138">
-                <h6 class="card-title">Our esteemed user</h6>
-                <div class="card-body">
-                    <p class="card-text"><small>Some quick example text to build on the card title and make up the bulk of the card's content.</small></p>
-                </div>
-            </div>
-        </div>
+    
+    <div id="users_row" class="row ">
+       
     </div>
+    
 </div>
-
+<!-- Users list end -->
 
 <div class="container text-center">
     <div class="row text-center " style="margin:15px">
@@ -123,5 +67,76 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function addUserHTML(user) {
+        console.log(user);
+        old_html = $('#users_row').html();
+
+        img = user.photo;
+        if(user.photo == null) {
+            img = '{% static 'img/generic_user_pic.png' %}';
+        }
+
+        bio_text = user.short_bio
+        if(bio_text ==null || bio_text.length == 0) 
+            bio_text = "No bio provided"
+
+        usr_div_html = '<div class="col-2">'+
+                            '<div class="card" style="width:160px;">'+
+                                '<img src="'+img+'" class="card-img-top" alt="..." height="138">'+
+                                '<h6 class="card-title">'+user.username.slice(0, 14)+'</h6>'+
+                                '<div class="card-body">'+
+                                    '<p class="card-text"><small>'+
+                                        bio_text.slice(0, 50)+'</small></p>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>';
+
+        $('#users_row').html(old_html+usr_div_html);
+    }//function addUserHTML(user) {
+
+
+    function loadAndShowUsers() {
+        requestURL = "{% url 'home_page_rnd_users' %}"
+        console.log("HomePageUserGeneration")
+        $.ajax({
+            type: "GET",
+            url: requestURL,
+            data : {
+                csrfmiddlewaretoken : readCookie('csrftoken'),
+            },
+            success : function(data) {
+                console.log("Have users:")
+                console.log(data)
+                for(user in data) {
+                    addUserHTML(data[user]);
+                    // break;
+                }
+                // $("#old-comments-row").html("")
+                // for(comment in data) {
+                //     console.log(data[comment])
+                //     addCommentHTML(
+                //         parent_id = "old-comments-row", 
+                //         comment_text = data[comment].comment_text,
+                //         usr_photo_url = data[comment].author.photo,
+                //         comment_date = (new Date(data[comment].date_created)).toLocaleDateString(
+                //                             'en-us', 
+                //                             {   weekday:"long", 
+                //                                 year:"numeric", 
+                //                                 month:"short", 
+                //                                 day:"numeric"}
+                //                         ) //comment_date = 
+                //     )
+                // }
+            }//success : function(data) {
+        });//$.ajax({
+    }//function loadAndShowUsers() {
+
+    executeOnLoad(loadAndShowUsers)
+
+
+</script>
 
 {% endblock %}

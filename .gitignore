@@ -11,3 +11,5 @@ Pipfile.lock
 
 
 /media/gen*.png
+/media/gen_users/*_g.png
+/media/gen_users/gen_*.png
