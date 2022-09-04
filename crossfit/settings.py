@@ -141,7 +141,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # create root dir for all images
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-print ("MEDIA ROOT:", MEDIA_ROOT)
 MEDIA_URL = '/media/'
 
 
