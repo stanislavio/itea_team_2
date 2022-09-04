@@ -39,9 +39,14 @@
     <div class="row ">
         Comments
     </div>
+    {% if request.user.photo %}
+    <!-- Comments enter form -->
     <div class="row " style="margin-bottom: 50px">
         <div class="col-1" style="text-align: justify;">
             <img src="{{ request.user.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+            
+            <!-- <img src="{% static 'img\generic_user_pic.png' %}" class="rounded-circle" alt="..." width="50px" heigth="40px"> -->
+
         </div>
         <div class="col-10" style="text-align: justify;">
             <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text"></textarea>
@@ -50,6 +55,8 @@
             <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
         </div>
     </div>
+    <!-- Comments enter form END-->
+    {% endif%}
 
     <!-- Old comments -->
     <div id="old-comments-row" class="row ">
@@ -60,11 +67,11 @@
     <script>
         function initComments() {
             getComments(
-                requestURL = "{% url 'training_post_comments' post.id %}",
+                requestURL = "{% url 'post_comments' post.id %}",
                 post_type = 'social'
             );
             registerPostCommentHandler(
-                requestURL = "{% url 'training_post_comments' post.id %}",
+                requestURL = "{% url 'post_comments' post.id %}",
                 usr_photo_url = "{{ request.user.photo.url }}",
                 post_type = 'social'
             )

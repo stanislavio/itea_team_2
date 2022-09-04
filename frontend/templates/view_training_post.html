@@ -48,6 +48,8 @@
             {{post.post_text | linebreaks}}
         </div>
     </div>
+    {% if request.user.photo %}
+    <!-- Comments enter form -->
     <div class="row">
         <div class="col-1" style="text-align: justify;">
             <img src="{{ request.user.photo.url }}" class="float-end rounded-circle" alt="..." width="50px" heigth="40px">
@@ -59,6 +61,8 @@
             <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
         </div>
     </div>
+    <!-- Comments enter form END-->
+    {% endif%}
     
     <!-- Old comments -->
     <div id="old-comments-row" class="row ">
@@ -70,11 +74,11 @@
         function initComments() {
             console.log("H1")
             getComments(
-                "{% url 'training_post_comments' post.id %}",
+                "{% url 'post_comments' post.id %}",
                 post_type = 'training'
             );
             registerPostCommentHandler(
-                requestURL = "{% url 'training_post_comments' post.id %}",
+                requestURL = "{% url 'post_comments' post.id %}",
                 usr_photo_url = "{{ request.user.photo.url }}",
                 post_type = 'training'
             )

@@ -33,9 +33,7 @@ urlpatterns = [
     #Post urls
     path('post/', include(post_url_patterns)),
 
-    #Comments endpoint
-    path('training_comments/<int:post_id>/', comments_views.CreateListTrainingPostCommentsView.as_view(), name = 'training_post_comments'),
-
+    
     
 
 ]

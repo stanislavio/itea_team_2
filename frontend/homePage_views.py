@@ -9,7 +9,6 @@ from db.models import User, SocialPost
 from django.contrib.auth import authenticate, login, logout
 
 
-import random
 
 def index(request):
     context ={}
