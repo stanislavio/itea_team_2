@@ -17,7 +17,6 @@ def index(request):
 def register_user(request):
     form = CreateUserForm()
     if request.method == "POST":
-        print(request.POST)
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
@@ -29,7 +28,6 @@ def register_user(request):
     return render(request, 'register_user.html', context)
 
 def logout_user(request):
-    print("Logging out user")
     logout(request)
     return redirect("login_user")
 
@@ -42,10 +40,8 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
-            print("Success")
             return redirect("index")
         else:
-            print("Not authenticated")
             messages.success(request, "Username or password is not correct.")
     context ={}
     context["no_login_link"] = True
