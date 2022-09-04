@@ -103,10 +103,16 @@ function getComments(requestURL, post_type) {
             $("#old-comments-row").html("")
             for(comment in data) {
                 console.log(data[comment])
+
+                img = "No photo"
+                if( data[comment].author) {
+                    img = data[comment].author.photo
+                }
+
                 addCommentHTML(
                     parent_id = "old-comments-row", 
                     comment_text = data[comment].comment_text,
-                    usr_photo_url = data[comment].author.photo,
+                    usr_photo_url = img,
                     comment_date = (new Date(data[comment].date_created)).toLocaleDateString(
                                         'en-us', 
                                         {   weekday:"long", 

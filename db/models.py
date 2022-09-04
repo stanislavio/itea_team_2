@@ -19,9 +19,6 @@ class Comment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     comment_text = models.TextField(blank=True)
-    # social_post = models.ForeignKey(SocialPost, on_delete=models.SET_NULL, null=True)
-    # training_post = models.ForeignKey(TrainingPost, on_delete=models.SET_NULL, null=True)
-
     def __str__(self):
         return self.comment_text[:70]
 

@@ -17,13 +17,37 @@ class UserSerializer(serializers.ModelSerializer):
             'short_bio'
         ]
 
+
 class CommentSerializer(serializers.ModelSerializer):
-    #https://stackoverflow.com/questions/20633313/django-rest-framework-get-related-model-field-in-serializer
     author = UserSerializer()
+
     class Meta:
         model = Comment
-        fields = ['date_created', 'author', 'comment_text']
+        # fields = '__all__'
+        fields = [
+            'id',
+            'date_created', 
+            'author', 
+            'comment_text'
+        ]
 
+
+class ValidatingCommentSerializer(serializers.ModelSerializer):
+    #https://stackoverflow.com/questions/20633313/django-rest-framework-get-related-model-field-in-serializer
+    author = serializers.PrimaryKeyRelatedField(
+                    allow_null = True,
+                    queryset=User.objects.all(),
+    )
+
+    class Meta:
+        model = Comment
+        # fields = '__all__'
+        fields = [
+            'id',
+            'date_created', 
+            'author', 
+            'comment_text'
+        ]
 
 class SocialPostSerializer(serializers.ModelSerializer):
     author = UserSerializer()
