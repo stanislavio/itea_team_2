@@ -164,7 +164,7 @@ class Command(BaseCommand):
             if old_post.author is None:
                 author_user = User.objects.filter(
                     username = 'vaal12'
-                )[0]
+                ).first()
                 old_post.author = author_user
 
             old_post.save()
@@ -174,7 +174,7 @@ class Command(BaseCommand):
             print("Generating post")
             author_user = User.objects.filter(
                 username = 'vaal12'
-            )[0]
+            ).first()
             curr_post = SocialPost(
                 author = author_user,
                 post_title = getBigText(big_text_lines, 120),

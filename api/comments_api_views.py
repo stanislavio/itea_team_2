@@ -19,9 +19,9 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
         post_id = int(self.kwargs['post_id'])
         post = None
         if self.request.GET['post_type'] == 'social':
-            post = SocialPost.objects.filter(id = post_id)[0]
+            post = SocialPost.objects.filter(id = post_id).first()
         else:
-            post = TrainingPost.objects.filter(id = post_id)[0]
+            post = TrainingPost.objects.filter(id = post_id).first()
         post_comments = post.comments.all().prefetch_related('author')
         return post_comments
     #END def get_queryset(self):
@@ -39,9 +39,9 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
         post_id = self.kwargs["post_id"]
         curr_post = None
         if request.POST['post_type'] == 'social':
-            curr_post = SocialPost.objects.filter(id=post_id)[0]
+            curr_post = SocialPost.objects.filter(id=post_id).first()
         else:
-            curr_post = TrainingPost.objects.filter(id=post_id)[0]
+            curr_post = TrainingPost.objects.filter(id=post_id).first()
         curr_post.comments.add(new_comment)
         curr_post.save()
         comment_ser = CommentSerializer(new_comment)
