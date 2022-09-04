@@ -36,9 +36,7 @@ urlpatterns = [
     #Comments endpoint
     path('training_comments/<int:post_id>/', comments_views.CreateListTrainingPostCommentsView.as_view(), name = 'training_post_comments'),
 
-    #Home page REST endpoints
-    path('home_page_users', homePage_views.ListRandomUsersView.as_view(), name = 'home_page_rnd_users'),
-    path('home_page_posts', homePage_views.ListRandomPostsView.as_view(), name = 'home_page_rnd_posts'),
+    
 
 ]
 
