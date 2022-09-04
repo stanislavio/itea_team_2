@@ -19,6 +19,7 @@ post_url_patterns = [
     path('createtrainingpost/', post_views.create_training_post, name="create_training_post"),
     path('viewsocialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
     path('viewtrainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
+    path('userpostslist/', post_views.ListUserPostsView.as_view(), name="userposts")
 ]
 
 

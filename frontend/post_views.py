@@ -7,6 +7,13 @@ from db.models import SocialPost, TrainingPost
 
 import datetime
 
+from .serializers import UserSerializer, SocialPostSerializer
+from rest_framework import serializers, generics, status, mixins
+from rest_framework.generics import GenericAPIView
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 def create_social_post(request):
     form = CreateSocialPostForm(initial={"post_is_private": True})
     
@@ -41,6 +48,8 @@ def create_training_post(request):
     return render(request, 'create_training_post.html', context)
 
 def view_social_post(request, post_id):
+    print("session")
+    print(request.session)
     post_to_show = SocialPost.objects.get(id=post_id)
     editable = False
     if request.user.id == post_to_show.author.id:
@@ -63,3 +72,28 @@ def view_training_post(request, post_id):
         'editable' : editable,
     }
     return render(request, 'view_training_post.html', context)
+
+
+class ListUserPostsView(mixins.ListModelMixin, GenericAPIView):
+    serializer_class = SocialPostSerializer
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        print("This session will expire in:", self.request.session.get_expiry_age())
+        # print("CSRF:", self.request.session['csrftoken'])
+        print(self.request.COOKIES['csrftoken'])
+        print("Session content:")
+        for key in self.request.session.keys():
+            print("Key:", key)
+            print ("\t content:=>" + self.request.session[key])
+            
+        return SocialPost.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+

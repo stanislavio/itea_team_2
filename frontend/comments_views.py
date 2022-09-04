@@ -10,6 +10,9 @@ from rest_framework.generics import GenericAPIView
 
 from rest_framework.response import Response
 
+from django.contrib.auth.models import AnonymousUser
+from rest_framework.exceptions import PermissionDenied
+
 
 class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
     serializer_class = CommentSerializer
@@ -31,6 +34,10 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
 
     def post(self, request, *args, **kwargs):
         print(request.POST['post_type'])
+
+        if type(request.user) == AnonymousUser:
+            raise PermissionDenied({"message":"You don't have permission to access"})
+
         new_comment = Comment(
             comment_text = request.POST["comment_text"],
             author = request.user

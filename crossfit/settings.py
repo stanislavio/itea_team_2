@@ -141,7 +141,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # create root dir for all images
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-print ("MEDIA ROOT:", MEDIA_ROOT)
 MEDIA_URL = '/media/'
 
 
@@ -150,3 +149,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SESSION_COOKIE_AGE = 30 #in seconds
+SESSION_SAVE_EVERY_REQUEST = True
+
+CSRF_USE_SESSIONS = True

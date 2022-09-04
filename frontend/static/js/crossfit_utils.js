@@ -62,7 +62,7 @@ function registerPostCommentHandler(requestURL,
                 data : {
                     comment_text : $("#post_comment_text").val(),
                     post_type : post_type, 
-                    csrfmiddlewaretoken: readCookie('csrftoken'),
+                    // csrfmiddlewaretoken: readCookie('csrftoken'),
                 },
                 success : function(data) {
                     addCommentHTML(
