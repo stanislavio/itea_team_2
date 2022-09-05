@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from . import userPage_views
 from . import post_views
 from . import homePage_views
-from . import comments_views
+# from . import comments_views
 
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
@@ -19,6 +19,7 @@ post_url_patterns = [
     path('trainingpost/', post_views.create_training_post, name="create_training_post"),
     path('socialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
     path('trainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
+    
 ]
 
 
