@@ -38,6 +38,17 @@ function readCookie(name) {
 
 function addCommentHTML(parent_id, comment_text, 
         usr_photo_url, comment_date) {
+
+    template = "Hello {{ name }}";
+    console.log(Mustache.render(
+                    template, 
+                    {
+                        name: "Alex"
+                    }
+                ));
+
+
+
     old_html = $("#"+parent_id).html();
     // console.log(old_html)
     new_html = '<div class="col-1 align-self-end" style="text-align: center;">'+
@@ -71,7 +82,7 @@ function registerPostCommentHandler(requestURL,
                     comment_text : $("#post_comment_text").val(),
                     post_type : post_type, 
                     csrfmiddlewaretoken: csrf_tok,
-                    // csrftoken: readCookie('csrftoken'),
+
                 },
                 datatype: 'json',
                 success : function(data) {
@@ -90,7 +101,12 @@ function registerPostCommentHandler(requestURL,
                     );
                     $("#post_comment_text").val("")
                     console.log(data)
-                }//success : function(data) {
+                },//success : function(data) {
+                error : function(xhr,status,error) {
+                    console.log("AJAX error occurred");
+                    let notifier = new AWN() 
+                    notifier.alert('Comment post failed.<br>Please login to post comments.');
+                }
             });//$.ajax({
         }//function() {
     )//$("#post_comment").click(
