@@ -77,7 +77,6 @@ function registerPostCommentHandler(requestURL,
             $.ajax({
                 type: "POST",
                 url: requestURL,
-                // headers:{"X-CSRFTOKEN": readCookie('csrftoken')},
                 data : {
                     comment_text : $("#post_comment_text").val(),
                     post_type : post_type, 

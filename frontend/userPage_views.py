@@ -28,7 +28,8 @@ def edit(request):
         u_form = ProfileEditForm(instance=request.user)
 
     context = {
-        'u_form': u_form
+        'u_form': u_form,
+        'csrf_token' : csrf.get_token(request),
     }
     return render(request, 'edit.html', context)
 
