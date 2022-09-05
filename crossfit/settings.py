@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'frontend',
     'api',
     'db',
-
 ]
 
 MIDDLEWARE = [
@@ -78,7 +77,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'crossfit.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

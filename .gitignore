@@ -3,4 +3,15 @@ Pipfile.lock
 /db/migrations/0*.py
 .idea
 
-/frontend/templates/tst1.txt
+/frontend/__pycache__/*.pyc
+/crossfit/__pycache__/*.pyc
+/db/__pycache__/*.pyc
+/crossfit/__pycache__/*.pyc
+/frontend/__pycache__/*.pyc
+
+
+/media/gen*.png
+/media/gen_users/*_g.png
+/media/gen_users/gen_*.png
+/media/gen_posts/*.*
+/media/*.*

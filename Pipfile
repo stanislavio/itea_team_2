@@ -9,14 +9,13 @@ verify_ssl = true
 django = "==4.0.6"
 psycopg2 = "*"
 python-dotenv = "*"
-
 django-crispy-forms = "*"
-djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 django-extensions = "*"
 pillow = "*"
-
+djangorestframework = "*"
+pydenticon = "*"
 
 [requires]
 python_version = "3.8"

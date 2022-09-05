@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container " style="padding-top:92px">
+    <!-- justify-content-center -->
+    <div class="row ">
+        <div class="col-1 text-center">
+            <img src="{{ post.author.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
+            <p>
+                <a href="{% url 'user_profile' %}" class="link-secondary">
+                    {{ post.author.username}}
+                </a>
+                <br>
+                <small class="muted" style="font-size:9px;">
+                    {{post.date_created}}
+                </small>
+            </p>
+        </div>
+        <div class="col-10 text-left align-self-end">
+            <h1 class="align-text-bottom">{{post.post_title}}</h1>
+        </div>
+        {% if editable %}
+        <div class="col-1  align-self-end text-end">
+            <small><a href=# class='link-light'>edit post</a></small>
+            <!-- TODO: make edit link work for post -->
+        </div>
+        {% endif %}
+    </div>
+    <div class="row border" style="margin:20px; height:40px">
+        <div class="col-3 text-center">
+            Training started: {{ post.datetime_started }}
+        </div>
+        <div class="col-6 text-center align-self-end">
+            Duration: {{ post.datetime_started|timesince:post.datetime_finished}}
+        </div>
+        <div class="col-3 text-center">
+            Training finished: {{ post.datetime_finished }}
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-12" style="text-align: justify;">
+            {% if post.post_photo %}
+            <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px">
+            {%endif%}
+            {{post.post_text | linebreaks}}
+        </div>
+    </div>
+    {% if request.user.photo %}
+    <!-- Comments enter form -->
+    <div class="row">
+        <div class="col-1" style="text-align: justify;">
+            <img src="{{ request.user.photo.url }}" class="float-end rounded-circle" alt="..." width="50px" heigth="40px">
+        </div>
+        <div class="col-10" style="text-align: justify;">
+            <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text"></textarea>
+        </div>
+        <div class="col-1 align-self-end" style="text-align: justify;">
+            <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
+        </div>
+    </div>
+    <!-- Comments enter form END-->
+    {% endif%}
+    
+    <!-- Old comments -->
+    <div id="old-comments-row" class="row ">
+        
+    </div>
+    <!-- Old comments end -->
+
+    <script>
+        function initComments() {
+            console.log("H1")
+            getComments(
+                "{% url 'post_comments' post.id %}",
+                post_type = 'training'
+            );
+            registerPostCommentHandler(
+                requestURL = "{% url 'post_comments' post.id %}",
+                usr_photo_url = "{{ request.user.photo.url }}",
+                post_type = 'training'
+            )
+        };//function initComments() {
+        executeOnLoad(initComments);
+    </script>
+</div>
+{% endblock %}

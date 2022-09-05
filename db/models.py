@@ -5,6 +5,7 @@ from PIL import Image
 
 # USER PAGE models !
 class User(AbstractUser):
+    #Default model names: https://www.csestack.org/django-default-user-model-fields/
     short_bio = models.TextField(blank=True)
     photo = models.ImageField(blank=True, null=True, default='default.jpg', upload_to='media')
     birthday = models.DateField(null=True, blank=True,)
@@ -14,6 +15,13 @@ class User(AbstractUser):
         return self.username
 
 
+class Comment(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    comment_text = models.TextField(blank=True)
+    def __str__(self):
+        return self.comment_text[:70]
+
 class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -22,9 +30,13 @@ class Post(models.Model):
     post_lead = models.CharField(max_length=200, blank=True)
     post_text = models.TextField(blank=True)
     post_is_private = models.BooleanField(blank=True, null=True)
-
+    comments = models.ManyToManyField(Comment)
+    
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.post_title[:50]
     
 
 class SocialPost(Post):
@@ -35,11 +47,11 @@ class TrainingPost(Post):
     datetime_started = models.DateTimeField()
     datetime_finished = models.DateTimeField(blank=True, null=True)
 
+    
+        
 
-class Comment(models.Model):
-    date_created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    comment_text = models.TextField(blank=True)
+
+
 
 
 # Below are classes for future expansion of the functionality
