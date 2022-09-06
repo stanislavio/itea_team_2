@@ -28,23 +28,11 @@
                <h1 class="account-heading">{{user.username}}</h1>
               <p>Birth date: {{user.birthday}}</p>
             </div>
-            <div class="checkbox-row" style="margin-top: 20px;">
-                <input id="id_hide_email" type="checkbox" name="hide_email" checked="''">
-                <label class="vCheckboxLabel" for="id_hide_email">Hide email</label>
-            </div>
-                <div class="checkbox-row" style="margin-top: 20px; margin-left: 40px">
-                <input id="id_hide_phone" type="checkbox" name="hide_phone" checked="''">
-                <label class="vCheckboxLabel" for="id_hide_phone">Hide phone</label>
-            </div>
-                <div class="checkbox-row" style="margin-top: 20px; margin-left: 40px">
-                <input id="id_hide_birthday" type="checkbox" name="hide_birthday" checked="''">
-                <label class="vCheckboxLabel" for="id_hide_birthday">Hide birthday</label>
-            </div>
           </div>
           <div class="p-3 text-black" style="background-color: #f8f9fa;">
             <div class="d-flex justify-content-end text-center py-1">
               <p class="button" >
-                   <a class="btn btn-outline-dark" style="margin-left: 20px; margin-top: 22px;" data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
+                   <a class=" btn btn-outline-dark" style="margin-bottom: 28px" href="{% url 'edit' user.id %}">Edit Profile</a>
               </p>
               <div style="margin-right: 20px; margin-left: 45px;">
                 <p class="mb-1 h5" >email</p>
@@ -81,7 +69,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <p class="lead fw-normal mb-0">Recent posts (stub)</p>
+              <p class="lead fw-normal mb-0">Recent posts</p>
               <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
             </div>
             <div class="p-3 text-black" style="background-color: #f8f9fa;">

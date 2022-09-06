@@ -26,9 +26,6 @@
           </div>
           <div class="p-3 text-black" style="background-color: #f8f9fa;">
             <div class="d-flex justify-content-end text-center py-1">
-              <p class="button" >
-                   <a class="btn btn-outline-dark" data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
-              </p>
               <div style="margin-right: 135px; margin-left: 170px;">
                 <p class="mb-1 h5" >email</p>
                 <p class="text-muted mb-0">bob@gmail.com</p>
@@ -60,8 +57,21 @@
                 <legend class="border-bottom mb-4"> Profile info</legend>
                 {{ u_form|crispy }}
             </fieldset>
-            <div class="form-group" style="margin-top: 20px;">
-                <button class="btn btn-outline-info" type="submit">Update</button>
+
+            <div class="checkbox-row" style="margin-top: 20px;">
+                <input id="id_hide_email" type="checkbox" name="hide_email" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_email">Hide email</label>
+            </div>
+                <div class="checkbox-row" style="margin-top: 20px;">
+                <input id="id_hide_phone" type="checkbox" name="hide_phone" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_phone">Hide phone</label>
+            </div>
+                <div class="checkbox-row" style="margin-top: 20px;">
+                <input id="id_hide_birthday" type="checkbox" name="hide_birthday" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_birthday">Hide birthday</label>
+             <div class="form-group">
+             <button class="btn btn-outline-info" style="margin-top: 20px" type="submit">Update</button>
+             </div>
             </div>
         </form>
     </div>

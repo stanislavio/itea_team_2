@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from db.models import User
 
 
@@ -28,7 +28,8 @@ def user_profile(request, **kwargs):
 
 
 @login_required
-def edit(request):
+def edit(request, *args, **kwargs):
+    user_id = kwargs.get("user_id")
     initial_data = {
         'username': 'Enter your account nickname'
     }
@@ -37,8 +38,7 @@ def edit(request):
         if u_form.is_valid():
             u_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('user_profile')
-
+            return HttpResponseRedirect('http://127.0.0.1:8000/user/'+ user_id + '/')
     else:
         u_form = ProfileEditForm(instance=request.user)
 
