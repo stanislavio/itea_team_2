@@ -2,14 +2,29 @@ from django.shortcuts import render, redirect
 from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import HttpResponse
+from db.models import User
 
 
-def user_profile(request):
-    return render(request, 'user_profile.html')
+def user_profile(request, **kwargs):
+    context = {}
+    user_id = kwargs.get("user_id")
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return HttpResponse ("That user doesn`t exist.")
+    if user:
+        context['id'] = user.id
+        context['username'] = user.username
+        context['email'] = user.email
 
+        is_self = True
+        if user.is_authenticated:
+            is_self = True
 
-def friends_list(request):
-    return render(request, 'friends_list.html')
+        context['is_self'] = is_self
+
+    return render(request, 'user_profile.html', context)
 
 
 @login_required
@@ -32,4 +47,6 @@ def edit(request):
     }
     return render(request, 'edit.html', context)
 
-    
+
+def friends_list(request):
+    return render(request, 'friends_list.html')

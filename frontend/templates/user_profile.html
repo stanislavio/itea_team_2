@@ -20,13 +20,25 @@
         <div class="card">
           <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE; height:203px;">
             <div class="ms-4 mt-5 d-flex flex-column" style="width: 145px;">
-              <img class="rounded-circle account-img" src="{{ user.photo.url }}"
+              <img class="border border-5 account-img" src="{{ user.photo.url }}"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                 style="width: 150px; z-index: 1">
             </div>
             <div class="ms-4" style="margin-top: 115px;">
                <h1 class="account-heading">{{user.username}}</h1>
               <p>Birth date: {{user.birthday}}</p>
+            </div>
+            <div class="checkbox-row" style="margin-top: 20px;">
+                <input id="id_hide_email" type="checkbox" name="hide_email" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_email">Hide email</label>
+            </div>
+                <div class="checkbox-row" style="margin-top: 20px; margin-left: 40px">
+                <input id="id_hide_phone" type="checkbox" name="hide_phone" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_phone">Hide phone</label>
+            </div>
+                <div class="checkbox-row" style="margin-top: 20px; margin-left: 40px">
+                <input id="id_hide_birthday" type="checkbox" name="hide_birthday" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_birthday">Hide birthday</label>
             </div>
           </div>
           <div class="p-3 text-black" style="background-color: #f8f9fa;">
@@ -36,7 +48,16 @@
               </p>
               <div style="margin-right: 20px; margin-left: 45px;">
                 <p class="mb-1 h5" >email</p>
-                <p class="text-muted mb-0">bob@gmail.com</p>
+                  {% if is_self %}
+                    <p class="text-muted mb-0">{{ user.email }}</p>
+                  {% else %}
+                    {% if hide_email %}
+                        <h5>***********</h5>
+                    {% else %}
+                    {% endif %}
+                      <p class="text-muted mb-0">{{ user.email }}</p>
+                  {% endif %}
+
               </div>
               <div class="ms-4" style="margin-right: 50px;">
                   <p class="mb-1 h5" >phone number</p>
@@ -79,3 +100,4 @@
     </div>
 </section>
 {% endblock %}
+
