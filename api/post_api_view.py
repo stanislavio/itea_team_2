@@ -1,30 +1,41 @@
-from .serializers import UserSerializer, SocialPostSerializer
+from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer
 from rest_framework import serializers, generics, status, mixins
 from rest_framework.generics import GenericAPIView
 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from db.models import SocialPost
+from db.models import SocialPost, TrainingPost
 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-class ListUserPostsView(mixins.ListModelMixin, GenericAPIView):
-    serializer_class = SocialPostSerializer
+class ListUserPostsView(APIView):
 
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
 
+        social_posts = SocialPost.objects.filter(author=self.request.user.id)
+        social_posts_list = list(social_posts)
+        
+        training_posts = TrainingPost.objects.filter(author=self.request.user.id)
+        training_posts_list = list(training_posts)
 
-    def get_queryset(self):
-        print("This session will expire in:", self.request.session.get_expiry_age())
-        # print("CSRF:", self.request.session['csrftoken'])
-        print("Session content:")
-        for key in self.request.session.keys():
-            print("Key:", key)
-            print ("\t content:=>" + self.request.session[key])
-            
-        return SocialPost.objects.filter(author= self.request.user).order_by('-date_created')
+        combined_list = training_posts_list+social_posts_list
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        combined_list.sort(
+                    key=lambda elem: elem.date_created,
+                    reverse=True
+        )
+
+        combinedJSON = []
+
+        for post in combined_list:
+            if type(post) == SocialPost:
+                combinedJSON.append(SocialPostSerializer(post).data)
+            else:
+                combinedJSON.append(TrainingPostSerializer(post).data)
+
+        training_posts_list_ser = TrainingPostSerializer(training_posts_list, many=True)
+        return Response(combinedJSON)
+

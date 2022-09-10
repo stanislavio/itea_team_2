@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from db.models import User
 
-from db.models import Comment, User, SocialPost
+from db.models import Comment, User, SocialPost, TrainingPost
 
 # profile_edit_forms
 class UserSerializer(serializers.ModelSerializer):
@@ -36,6 +36,21 @@ class SocialPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SocialPost
+        fields = [
+            'id',
+            'date_created', 
+            'author', 
+            'post_title',
+            'post_photo',
+            'post_text'
+        ]
+
+
+class TrainingPostSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+
+    class Meta:
+        model = TrainingPost
         fields = [
             'id',
             'date_created', 
