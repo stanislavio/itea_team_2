@@ -6,11 +6,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap_5.2.0.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.datetimepicker.min.css' %}" />
     <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <script src="{% static 'js/jquery.datetimepicker.full.min.js' %}"></script>
     <script src="{% static 'js/crossfit_utils.js' %}"></script>
+
+    <!-- Awesome notifications -->
+    <link rel="stylesheet" href="{% static 'css/awesome_notifications_style.css' %}">
+    <script src=" {% static 'js/awesome_notifications_index.var.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap_5.2.0.min.css' %}">
+    <script src=" {% static 'js/bootstrap_5.2.0.bundle.min.js' %}"></script>
+
+    <!-- Moustashe.js templates -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
 </head>
 
 <body>
@@ -73,8 +83,16 @@
         <h2>No content block</h2>
     </div>
     {% endblock %}
+    <div class="container text-center">
+        <div class="row text-center " style="margin:5px">
+            <div class="col-12 d-flex justify-content-center">
+                <div class="muted border rounded" style="margin=6px; padding-left:10px;padding-right:10px;">
+                    <small style="font-size:10px;">(C) 2022 ITEA Django course Aug 2022. | v.2-Sep-2022 </small>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src=" {% static 'js/bootstrap_5.2.0.bundle.min.js' %}"></script>
 </body>
 
 </html>

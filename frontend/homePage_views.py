@@ -4,17 +4,20 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 from .forms import CreateUserForm
+from db.models import User, SocialPost
 
 from django.contrib.auth import authenticate, login, logout
 
+
+
 def index(request):
     context ={}
+    # print(request.user.short_bio)
     return render(request, 'home_page.html', context)
 
 def register_user(request):
     form = CreateUserForm()
     if request.method == "POST":
-        print(request.POST)
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
@@ -26,7 +29,6 @@ def register_user(request):
     return render(request, 'register_user.html', context)
 
 def logout_user(request):
-    print("Logging out user")
     logout(request)
     return redirect("login_user")
 
@@ -39,11 +41,12 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
-            print("Success")
             return redirect("index")
         else:
-            print("Not authenticated")
             messages.success(request, "Username or password is not correct.")
     context ={}
     context["no_login_link"] = True
     return render(request, 'login_user.html', context)
+
+
+

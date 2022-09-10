@@ -3,7 +3,10 @@ from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from django.middleware import csrf
 
+
+@login_required
 def user_profile(request):
     return render(request, 'user_profile.html')
 
@@ -28,7 +31,8 @@ def edit(request):
         u_form = ProfileEditForm(instance=request.user)
 
     context = {
-        'u_form': u_form
+        'u_form': u_form,
+        'csrf_token' : csrf.get_token(request),
     }
     return render(request, 'edit.html', context)
 

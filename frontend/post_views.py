@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 
+from django.middleware import csrf
+
 
 from .forms import CreateSocialPostForm, CreateTrainingPostForm
 
 from db.models import SocialPost, TrainingPost
 
 import datetime
+
 
 def create_social_post(request):
     form = CreateSocialPostForm(initial={"post_is_private": True})
@@ -41,6 +44,8 @@ def create_training_post(request):
     return render(request, 'create_training_post.html', context)
 
 def view_social_post(request, post_id):
+    print("session")
+    print(request.session)
     post_to_show = SocialPost.objects.get(id=post_id)
     editable = False
     if request.user.id == post_to_show.author.id:
@@ -49,6 +54,7 @@ def view_social_post(request, post_id):
     context = {
         'post' : post_to_show,
         'editable' : editable,
+        'csrf_token' : csrf.get_token(request),
     }
     return render(request, 'view_social_post.html', context)
 
@@ -61,5 +67,12 @@ def view_training_post(request, post_id):
     context = {
         'post' : post_to_show,
         'editable' : editable,
+        'csrf_token' : csrf.get_token(request),
     }
     return render(request, 'view_training_post.html', context)
+
+
+
+
+
+

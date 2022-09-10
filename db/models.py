@@ -5,6 +5,7 @@ from PIL import Image
 
 # USER PAGE models !
 class User(AbstractUser):
+    #Default model names: https://www.csestack.org/django-default-user-model-fields/
     short_bio = models.TextField(blank=True)
     photo = models.ImageField(blank=True, null=True, default='default.jpg', upload_to='media')
     birthday = models.DateField(null=True, blank=True,)
@@ -18,9 +19,6 @@ class Comment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     comment_text = models.TextField(blank=True)
-    # social_post = models.ForeignKey(SocialPost, on_delete=models.SET_NULL, null=True)
-    # training_post = models.ForeignKey(TrainingPost, on_delete=models.SET_NULL, null=True)
-
     def __str__(self):
         return self.comment_text[:70]
 
