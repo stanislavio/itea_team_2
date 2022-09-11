@@ -107,8 +107,6 @@
       post_title : post.post_title,
       post_text : post.post_text
     }
-    // var Mustache = require('mustache');
-
     
     new_html = Mustache.render(short_post_html_template, params);
     old_html = $('#posts_container').html();

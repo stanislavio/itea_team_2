@@ -23,6 +23,7 @@
 </div>
 <!-- Posts end -->
 
+<script src=" {% static 'js/post_short_moustashe_template.js' %}"></script>
 
 <script>
     function addUserHTML(user, ) {
@@ -51,6 +52,8 @@
                                 '</div>'+
                             '</a></div>'+
                         '</div>';
+
+        
 
         $('#users_row').html(old_html+usr_div_html);
     }//function addUserHTML(user) {
@@ -86,31 +89,53 @@
         }
 
         post_view_URL = post_view_base_URL+post.id
-        console.log("have URL for post:")
-        console.log(post_view_URL)
+        // console.log("have URL for post:")
+        // console.log(post_view_URL)
         
-        new_html = '<div class="row text-center " style="margin:15px">'+
-                        '<div class="col-1"></div>'+
-                        '<div class="col-1 border-bottom text-center">'+
-                            '<img src="'+
-                                        img+'" class="rounded-circle" alt="..." width="80px" heigth="60px">'+
-                            '<p><a href="#" class="link-secondary">'+
-                                post.author.username+
-                                '</a> <br><small class="muted" style="font-size:9px;">'+
-                                    post.date_created+
-                                    '</small>'+
-                            '</p>'+
-                        '</div>'+
-                        '<div class="col-9 border-bottom text-start" >'+
-                            '<a href="'+post_view_URL+'/" class="link-dark">'+
-                            '<p class="lead">'+
-                                post.post_title.slice(0, 50)+
-                            '</p></a>'+
-                            '<p class="text-start">'+
-                                post.post_text.slice(0, 300)+
-                            '</p>'+
-                        '</div>'+
-                    '</div>';
+        // new_html = '<div class="row text-center " style="margin:15px">'+
+        //                 '<div class="col-1"></div>'+
+        //                 '<div class="col-1 border-bottom text-center">'+
+        //                     '<img src="'+
+        //                                 img+'" class="rounded-circle" alt="..." width="80px" heigth="60px">'+
+        //                     '<p><a href="#" class="link-secondary">'+
+        //                         post.author.username+
+        //                         '</a> <br><small class="muted" style="font-size:9px;">'+
+        //                             post.date_created+
+        //                             '</small>'+
+        //                     '</p>'+
+        //                 '</div>'+
+        //                 '<div class="col-9 border-bottom text-start" >'+
+        //                     '<a href="'+post_view_URL+'/" class="link-dark">'+
+        //                     '<p class="lead">'+
+        //                         post.post_title.slice(0, 50)+
+        //                     '</p></a>'+
+        //                     '<p class="text-start">'+
+        //                         post.post_text.slice(0, 300)+
+        //                     '</p>'+
+        //                 '</div>'+
+        //             '</div>';
+
+        date_created = dayjs(post.date_created);
+        console.log("Have date:")
+        console.log(date_created.format('DD-MMM-YYYY'))
+        diff_date = dayjs().subtract(date_created)
+        console.log(diff_date.format('DD-MMM-YYYY'))
+        console.log(date_created.fromNow(true))
+
+        // TODO: Move to joda.js for difference in datas
+                    // https://js-joda.github.io/js-joda/manual/formatting.html
+
+
+        params = {
+            imageURL : img,
+            date_created : date_created.format('DD-MMM-YYYY'),
+            userName : post.author.username,
+            post_title : post.post_title.slice(0, 70),
+            post_text : post.post_text.slice(0, 300)
+        };
+
+        new_html = Mustache.render(short_post_html_template, params);
+
         $('#post_container').html(old_html+new_html);
     };//function addPostHTML(post) {
 
