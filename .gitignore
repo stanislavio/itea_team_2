@@ -2,7 +2,7 @@ Pipfile.lock
 /crossfit/.env
 /db/migrations/0*.py
 .idea
-
+.env
 /frontend/__pycache__/*.pyc
 /crossfit/__pycache__/*.pyc
 /db/__pycache__/*.pyc
@@ -15,3 +15,4 @@ Pipfile.lock
 /media/gen_users/gen_*.png
 /media/gen_posts/*.*
 /media/*.*
+/media/media/*.jpg

@@ -6,11 +6,16 @@ from . import userPage_views
 from . import post_views
 from . import homePage_views
 # from . import comments_views
+# from . import comments_views
 
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
+    path('<pk>', userPage_views.user_profile, name='user_profile_with_pk'),
+    path('change_friend_status/<operation>/<pk>', userPage_views.change_friend_status, name='change_friend_status'),
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
+    # path('send_friend_request/<int:user_id>/', userPage_views.send_friend_request, name='send_friend_request'),
+    # path('accept_friend_request/<int:request_id>/', userPage_views.accept_friend_request, name='accept_friend_request'),
 ]
 
 post_url_patterns = [
@@ -19,7 +24,6 @@ post_url_patterns = [
     path('trainingpost/', post_views.create_training_post, name="create_training_post"),
     path('socialpost/<post_id>/', post_views.view_social_post, name="view_social_post"),
     path('trainingpost/<post_id>/', post_views.view_training_post, name="view_training_post"),
-    
 ]
 
 
@@ -33,10 +37,6 @@ urlpatterns = [
     path('user/', include(user_url_patterns)),
     #Post urls
     path('post/', include(post_url_patterns)),
-
-    
-    
-
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
