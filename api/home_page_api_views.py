@@ -68,9 +68,15 @@ class ListRandomPostsView(APIView):
 
     def get(self, request, format=None):
 
-        soc_post_queryset = getRandomObjects(SocialPost.objects, self.NO_OF_POSTS_TO_RETURN)
+        soc_post_queryset = getRandomObjects(
+                                SocialPost.objects.filter(post_is_private = False), 
+                                self.NO_OF_POSTS_TO_RETURN
+        )
 
-        train_post_queryset = getRandomObjects(TrainingPost.objects, self.NO_OF_POSTS_TO_RETURN)
+        train_post_queryset = getRandomObjects(
+                                TrainingPost.objects.filter(post_is_private = False), 
+                                self.NO_OF_POSTS_TO_RETURN
+        )
 
 
         
@@ -85,33 +91,13 @@ class ListRandomPostsView(APIView):
                     reverse=True
         )
 
-        combinedJSON = [
-            #List comprehension with ternary operator 
+        combinedJSON = [#List comprehension with ternary operator 
             SocialPostSerializer(post).data 
                     if type(post) == SocialPost 
                     else TrainingPostSerializer(post).data
             for post in combined_list
         ]
 
-        # for post in combined_list:
-        #     if type(post) == SocialPost:
-        #         combinedJSON.append(SocialPostSerializer(post).data)
-        #     else:
-        #         combinedJSON.append(TrainingPostSerializer(post).data)
-
-        # training_posts_list_ser = TrainingPostSerializer(training_posts_list, many=True)
         return Response(combinedJSON)
 
 
-
-# class ListRandomPostsView(mixins.ListModelMixin, GenericAPIView):
-#     #TODO add training posts to home page
-#     serializer_class = SocialPostSerializer
-#     NO_OF_POSTS_TO_RETURN = 6
-
-#     def get_queryset(self):
-#         post_list = getRandomObjects(SocialPost.objects, self.NO_OF_POSTS_TO_RETURN)
-#         return post_list
-
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
