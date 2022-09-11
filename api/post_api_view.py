@@ -36,6 +36,5 @@ class ListUserPostsView(APIView):
             else:
                 combinedJSON.append(TrainingPostSerializer(post).data)
 
-        training_posts_list_ser = TrainingPostSerializer(training_posts_list, many=True)
         return Response(combinedJSON)
 
