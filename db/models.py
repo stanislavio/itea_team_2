@@ -10,11 +10,8 @@ class User(AbstractUser):
     photo = models.ImageField(blank=True, null=True, default='default.jpg', upload_to='media')
     birthday = models.DateField(null=True, blank=True,)
     phone = models.CharField(max_length=13, null=True, blank=True, unique=True)
-    friends = models.ManyToManyField("User", blank=True)
     hide_email = models.BooleanField(default=True)
     hide_phone = models.BooleanField(default=True)
-    hide_birthday = models.BooleanField(default=True)
-
 
     def save(self, *args, **kwargs):
         super().save()
@@ -26,10 +23,29 @@ class User(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.photo.path)
 
+
 # FRIEND MODELS
+class Friend(models.Model):
+    users = models.ManyToManyField(User)
+    current_user = models.ForeignKey(User, related_name='owner', null=True, on_delete=models.CASCADE)
+
+    @classmethod
+    def add_friend(cls, current_user, new_friend):
+        friend, created = cls.objects.get_or_create(
+            current_user=current_user
+        )
+        friend.users.add(new_friend)
+
+    @classmethod
+    def remove_friend(cls, current_user, new_friend):
+        friend, created = cls.objects.get_or_create(
+            current_user=current_user
+        )
+        friend.users.remove(new_friend)
 
 
-class Friend_Request(models.Model):
+
+class FriendRequest(models.Model):
     from_user = models.ForeignKey(User, related_name='from_user', on_delete=models.CASCADE)
     to_user = models.ForeignKey(User, related_name='to_user', on_delete=models.CASCADE)
 

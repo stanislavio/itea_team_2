@@ -6,33 +6,32 @@
 </head>
 
 {% block content %}
-{% if messages %}
-{% for message in messages %}
-<div class="alert-success" role="alert">
-{{ message }}
-</div>
-{% endfor %}
-{% endif %}
 <section class="h-100 gradient-custom-2">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-lg-9 col-xl-7">
         <div class="card">
-          <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE; height:203px;">
-            <div class="ms-4 mt-5 d-flex flex-column" style="width: 145px;">
-              <img class="border border-5 account-img" src="{{ user.photo.url }}"
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img class="border border-4 account-img" style="height: 100%; width: 100%; margin-bottom: 10px" src="{{ user.photo.url }}"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                style="width: 150px; z-index: 1">
+                style="width: 150px; height: 150px; z-index: 1" >
             </div>
-            <div class="ms-4" style="margin-top: 115px;">
+            <div class="ms-4" style="margin-top: 150px;">
                <h1 class="account-heading">{{user.username}}</h1>
-              <p>Birth date: {{user.birthday}}</p>
             </div>
+            {% if messages %}
+               {% for message in messages %}
+                  <div class="alert-success" role="alert" style="margin-top: 20px; color: #ffcd39;">
+                  <h3>{{ message }}</h3>
+                  </div>
+               {% endfor %}
+            {% endif %}
           </div>
-          <div class="p-3 text-black" style="background-color: #f8f9fa;">
+          <div class="p-2 text-black" style="background-color: #f8f9fa;">
             <div class="d-flex justify-content-end text-center py-1">
               <p class="button" >
-                   <a class=" btn btn-outline-dark" style="margin-bottom: 28px" href="{% url 'edit' user.id %}">Edit Profile</a>
+                   <a class=" btn btn-outline-dark" style="margin-bottom: 28px" href="{% url 'edit' %}">Edit Profile</a>
               </p>
               <div style="margin-right: 20px; margin-left: 45px;">
                 <p class="mb-1 h5" >email</p>
@@ -45,7 +44,6 @@
                     {% endif %}
                       <p class="text-muted mb-0">{{ user.email }}</p>
                   {% endif %}
-
               </div>
               <div class="ms-4" style="margin-right: 50px;">
                   <p class="mb-1 h5" >phone number</p>
@@ -53,7 +51,7 @@
               </div>
               <div>
                 <p class="mb-1 h5">20</p>
-                <a class="btn btn-outline-dark" href="{% url 'friends_list' %}">Friends</a>
+                <a class="btn btn-outline-dark" href="{% url 'friends_list'%}">Friends</a>
               </div>
               <div class="px-3" style="margin-left: 10px;">
                 <p class="mb-1 h5">3</p>
@@ -65,7 +63,7 @@
             <div class="mb-5">
               <p class="lead fw-normal mb-1">About</p>
               <div class="p-4" style="background-color: #f8f9fa;">
-                <p class="text-secondary">{{ user.short_bio| linebreaks }}</p>
+                <p class="text-secondary ">{{ user.short_bio| linebreaks }}</p>
               </div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-4">

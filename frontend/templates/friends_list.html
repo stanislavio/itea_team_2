@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% load static %}
+
 <head>
-    <meta charset="UTF-8">
-    <title></title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
-<body>
-<H1>Friends list stub</H1>
-</body>
-</html>
+
+{% block content %}
+
+<div class="container py-5 h-100" style="margin-top: 30px">
+    <div class="row d-flex justify-content-center h-100">
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE;">>
+                <div class="row1">
+                <h1 style="margin-top: 20px; margin-bottom: 40px">Friends</h1>
+                {% for friend in friends %}
+                    <a href='{% url 'user_profile_with_pk' pk=user.pk %}'>
+                        <h3>{{ friend.username }}</h3>
+                        <img class="border border-4 account-img" width=100" src="{{ friend.photo.url }}"
+                    </a>
+                    <a href='{% url 'change_friend_status' operation='remove' pk=friend.pk %}'>
+                    <button type="button" class="btn btn-warning">Remove friend</button>
+                    </a>
+                {% endfor %}
+                 <h2 style="margin-top: 20px; margin-bottom: 40px">Other people</h2>
+                {% for user in users %}
+                    {% if not user in friends %}
+                    <a href='{% url 'user_profile_with_pk' pk=user.pk %}'>
+                        <h3>{{ user.username }}</h3>
+                        <img class="border border-4 account-img" width=100" src="{{ user.photo.url }}"
+                    </a>
+                    <a href='{% url 'change_friend_status' operation='add' pk=user.pk %}'>
+                    <button type="button" class="btn btn-success">Add friend</button>
+                    </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+       </div>
+        </div>
+      </div>
+    <div>
+  </div>
+{% endblock %}

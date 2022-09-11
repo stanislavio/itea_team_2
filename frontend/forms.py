@@ -1,7 +1,5 @@
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
-
-from db.models import User
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from db.models import User, SocialPost, TrainingPost
 
 
@@ -107,6 +105,15 @@ class CreateTrainingPostForm(forms.ModelForm):
 
 
 class ProfileEditForm(forms.ModelForm):
+    username = forms.CharField( widget=forms.TextInput(attrs={"placeholder":"Enter your username"}))
+    email = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Bob@gmail.com"}))
+    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={"placeholder": "077-777-77-77"}))
+
     class Meta:
         model = User
-        fields = ['photo', 'username', 'birthday', 'email', 'phone', 'short_bio']
+        fields = ['photo',
+                  'username',
+                  'email',
+                  'phone',
+                  'short_bio'
+                  ]
