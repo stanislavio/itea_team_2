@@ -32,6 +32,15 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,12 +50,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #For allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'rest_framework',
     'crispy_forms',
     'frontend',
     'api',
     'db',
 ]
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +81,7 @@ ROOT_URLCONF = 'crossfit.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["c:\\Users\\vasilyev\\AGVDocs\\Dev\\2. Python\\23. Django\\4. ActualITEADjangoProject\\templates" ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +89,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                 # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -153,3 +173,10 @@ SESSION_COOKIE_AGE = 60*10 #in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 
 CSRF_USE_SESSIONS = True
+
+
+#EMAIL settings
+
+ACCOUNT_FORMS = {
+    'signup' : 'frontend.forms.CreateUserForm',
+}

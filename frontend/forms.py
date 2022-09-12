@@ -22,14 +22,15 @@ def parseISOFormatOrNone(ISOFormattedString):
         return None
 
 
+from allauth.account.forms import SignupForm
 # registration forms
-class CreateUserForm(UserCreationForm):
+class CreateUserForm(SignupForm):
     def __init__(self, *args, **kwargs):
-            super(UserCreationForm, self).__init__(*args, **kwargs)
-            self.fields['password1'].widget.attrs['class'] = 'form-control'
-            self.fields['password1'].widget.attrs['placeholder'] = 'Password'
-            self.fields['password2'].widget.attrs['class'] = 'form-control'
-            self.fields['password2'].widget.attrs['placeholder'] = 'Confirm password'
+            super(SignupForm, self).__init__(*args, **kwargs)
+            # self.fields['password1'].widget.attrs['class'] = 'form-control'
+            # self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+            # self.fields['password2'].widget.attrs['class'] = 'form-control'
+            # self.fields['password2'].widget.attrs['placeholder'] = 'Confirm password'
 
     class Meta:
         model = User
@@ -46,6 +47,12 @@ class CreateUserForm(UserCreationForm):
                       'aria-describedby' : 'basic-addon1'
             }),
         }
+
+    # def signup(self, request, user):
+    #     # user.first_name = self.cleaned_data['first_name']
+    #     # user.last_name = self.cleaned_data['last_name']
+    #     user.save()
+    #     return user
 #END class CreateUserForm(UserCreationForm):
 
 
