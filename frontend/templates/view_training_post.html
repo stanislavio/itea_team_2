@@ -80,7 +80,8 @@
             registerPostCommentHandler(
                 requestURL = "{% url 'post_comments' post.id %}",
                 usr_photo_url = "{{ request.user.photo.url }}",
-                post_type = 'training'
+                post_type = 'training',
+                csrf_token = "{{ csrf_token }}"
             )
         };//function initComments() {
         executeOnLoad(initComments);

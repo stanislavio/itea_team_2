@@ -10,9 +10,18 @@ from rest_framework.generics import GenericAPIView
 
 from rest_framework.response import Response
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+from django.views.decorators.csrf import csrf_exempt
+
+from django.utils.decorators import method_decorator
 
 class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
     serializer_class = CommentSerializer
+
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         print(self.request.GET['post_type'])
@@ -32,7 +41,7 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
 
     def post(self, request, *args, **kwargs):
 
-        # author = UserSerializer(required=False) had resolved the problem with optional author and validation
+        print ("Hello")
         new_comment_ser = CommentSerializer(
             data = {
                 'comment_text' : request.POST["comment_text"],
