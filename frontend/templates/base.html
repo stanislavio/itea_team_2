@@ -54,12 +54,12 @@
 
                 {% else %}
                 {% if not no_register_link %}
-                <a class="btn btn-warning" href="{% url 'register_user' %}">Join</a>
-                <a class="btn btn-warning" href="{% url 'account_signup' %}">Join2</a>
+                <!-- <a class="btn btn-warning" href="{% url 'register_user' %}">Join</a> -->
+                <a class="btn btn-warning" href="{% url 'account_signup' %}">Join</a>
                 {%endif%}
                 {% if not no_login_link %}
-                <a class="nav-link active" href="{% url 'login_user' %}">Login</a>
-                <a class="nav-link active" href="{% url 'account_login' %}">Login2</a>
+                <!-- <a class="nav-link active" href="{% url 'login_user' %}">Login</a> -->
+                <a class="nav-link active" href="{% url 'account_login' %}">Login</a>
                 
                 {%endif%}
                 {%endif%}
