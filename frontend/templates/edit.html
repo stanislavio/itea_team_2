@@ -3,47 +3,53 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="content-section">
 <section class="h-100 gradient-custom-2">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-lg-9 col-xl-7">
         <div class="card">
-          <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE; height:205px;">
-            <div class="ms-4 mt-5 d-flex flex-column" style="width: 160px;">
-              <img class="rounded-circle account-img" src="{{ user.photo.url }}"
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img class="border border-4 account-img" style="height: 100%; width: 100%; margin-bottom: 10px" src="{{ user.photo.url }}"
                 alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                style="width: 150px; z-index: 1">
+                style="width: 150px; height: 150px; z-index: 1" >
             </div>
-            <div class="ms-4" style="margin-top: 115px;">
+            <div class="ms-4" style="margin-top: 150px;">
                <h1 class="account-heading">{{user.username}}</h1>
-              <p>Birth date: {{user.birthday}}</p>
             </div>
-            <div class="ms-4" style="margin-top: 140px;">
-               <h5 class="account-heading" style="margin-left: 50px;">Phone number</h5>
-              <p style="margin-left: 50px;">+38 {{user.phone}} </p>
-            </div>
+            {% if messages %}
+               {% for message in messages %}
+                  <div class="alert-success" role="alert" style="margin-top: 20px; color: #ffcd39;">
+                  <h3>{{ message }}</h3>
+                  </div>
+               {% endfor %}
+            {% endif %}
           </div>
-          <div class="p-3 text-black" style="background-color: #f8f9fa;">
+          <div class="p-2 text-black" style="background-color: #f8f9fa;">
             <div class="d-flex justify-content-end text-center py-1">
-              <p class="button" >
-                   <a class="btn btn-outline-dark" data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
-              </p>
-              <div style="margin-right: 135px; margin-left: 170px;">
+              <div style="margin-right: 20px; margin-left: 45px;">
                 <p class="mb-1 h5" >email</p>
-                <p class="text-muted mb-0">bob@gmail.com</p>
+                  {% if is_self %}
+                    <p class="text-muted mb-0">{{ user.email }}</p>
+                  {% else %}
+                    {% if hide_email %}
+                        <h5>***********</h5>
+                    {% else %}
+                    {% endif %}
+                      <p class="text-muted mb-0">{{ user.email }}</p>
+                  {% endif %}
+              </div>
+              <div class="ms-4" style="margin-right: 50px;">
+                  <p class="mb-1 h5" >phone number</p>
+              <p class="text-muted mb-0">+38 {{user.phone}} </p>
               </div>
               <div>
+                <p class="mb-1 h5">20</p>
+                <a class="btn btn-outline-dark" href="#">Friends</a>
+              </div>
+              <div class="px-3" style="margin-left: 10px;">
                 <p class="mb-1 h5">3</p>
-                <p class="small text-muted mb-0">Posts</p>
-              </div>
-              <div class="px-3">
-                <p class="mb-1 h5">25</p>
-                <p class="small text-muted mb-0">Friends</p>
-              </div>
-              <div>
-                <p class="mb-1 h5">55</p>
-                <p class="small text-muted mb-0">Followers</p>
+                <a class="btn btn-outline-dark" href="#">Posts</a>
               </div>
             </div>
           </div>
@@ -51,19 +57,30 @@
             <div class="mb-5">
               <p class="lead fw-normal mb-1">About</p>
               <div class="p-4" style="background-color: #f8f9fa;">
-                <p class="text-secondary">{{ user.short_bio }}</p>
+                <p class="text-secondary ">{{ user.short_bio| linebreaks }}</p>
               </div>
             </div>
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4"> Profile info</legend>
                 {{ u_form|crispy }}
             </fieldset>
-            <div class="form-group" style="margin-top: 20px;">
-                <button class="btn btn-outline-info" type="submit">Update</button>
+
+            <div class="checkbox-row" style="margin-top: 20px;">
+                <input id="id_hide_email" type="checkbox" name="hide_email" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_email">Hide email</label>
+            </div>
+                <div class="checkbox-row" style="margin-top: 20px;">
+                <input id="id_hide_phone" type="checkbox" name="hide_phone" checked="''">
+                <label class="vCheckboxLabel" for="id_hide_phone">Hide phone</label>
+            </div>
+             <button class="btn btn-outline-info" style="margin-top: 20px" type="submit">Update</button>
+             </div>
             </div>
         </form>
+
     </div>
   </div>
 {% endblock %}
