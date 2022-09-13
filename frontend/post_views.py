@@ -43,7 +43,7 @@ def create_training_post(request):
     #TODO: add icons instead of labels for form fields
     return render(request, 'create_training_post.html', context)
 
-def view_social_post(request, post_id):
+def view_social_post(request, post_id=None):
     print("session")
     print(request.session)
     post_to_show = SocialPost.objects.get(id=post_id)
@@ -58,7 +58,7 @@ def view_social_post(request, post_id):
     }
     return render(request, 'view_social_post.html', context)
 
-def view_training_post(request, post_id):
+def view_training_post(request, post_id=None):
     post_to_show = TrainingPost.objects.get(id=post_id)
     
     editable = False
