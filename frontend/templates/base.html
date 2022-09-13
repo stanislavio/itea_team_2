@@ -20,7 +20,16 @@
     <script src=" {% static 'js/bootstrap_5.2.0.bundle.min.js' %}"></script>
 
     <!-- Moustashe.js templates -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script> -->
+    <script src=" {% static 'js/mustache_2.3.0.min.js' %}"></script>
+
+    <!-- Day.js :https://www.skypack.dev/view/dayjs -->
+    <script src=" {% static 'js/dayjs_1.11.5.min.js' %}"></script>
+    <!-- TODO: make this local -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/relativeTime.min.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
+    
+
 </head>
 
 <body>
@@ -95,6 +104,11 @@
             </div>
         </div>
     </div>
+
+    <script>
+        console.log(dayjs().format('{YYYY} MM-DDTHH:mm:ss SSS [Z] A') );
+
+    </script>
 
 </body>
 

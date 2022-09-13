@@ -12,7 +12,6 @@ from django.contrib.auth import authenticate, login, logout
 
 def index(request):
     context ={}
-    # print(request.user.short_bio)
     return render(request, 'home_page.html', context)
 
 def register_user(request):

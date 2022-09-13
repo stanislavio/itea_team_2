@@ -32,7 +32,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class SocialPostSerializer(serializers.ModelSerializer):
+    post_type = serializers.SerializerMethodField('post_type_func')
+
     author = UserSerializer()
+
+    def post_type_func(self, obj):
+        return "social"
 
     class Meta:
         model = SocialPost
@@ -42,12 +47,18 @@ class SocialPostSerializer(serializers.ModelSerializer):
             'author', 
             'post_title',
             'post_photo',
-            'post_text'
+            'post_text',
+            'post_type',
         ]
 
 
 class TrainingPostSerializer(serializers.ModelSerializer):
+    post_type = serializers.SerializerMethodField('post_type_func')
+
     author = UserSerializer()
+
+    def post_type_func(self, obj):
+        return "training"
 
     class Meta:
         model = TrainingPost
@@ -57,5 +68,6 @@ class TrainingPostSerializer(serializers.ModelSerializer):
             'author', 
             'post_title',
             'post_photo',
-            'post_text'
+            'post_text',
+            'post_type',
         ]
