@@ -34,6 +34,24 @@ function readCookie(name) {
 }
 
 
+//This requires date.js
+function formatDateForPostPreview(dta) {
+    date_created = dayjs(dta);
+    // console.log("Have date:")
+    console.log(date_created.format('DD-MMM-YYYY'))
+    diff_date = dayjs().subtract(date_created)
+    // console.log(diff_date.format('DD-MMM-YYYY'))
+    // console.log(date_created.fromNow(true))
+
+    return [
+        date_created.format('DD-MMM-YYYY'),
+        date_created.fromNow(true)
+    ]
+    // TODO: Move to joda.js for difference in datas
+                    // https://js-joda.github.io/js-joda/manual/formatting.html
+}//function formatDate(date) {
+
+
 //Utility functions for comments
 
 function addCommentHTML(parent_id, comment_text, 

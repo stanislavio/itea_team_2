@@ -93,13 +93,13 @@
 
 <div class="container">
   <div class="row text-start " style="margin:15px">
-    <div class="col-1"></div>
-    <div class="col-3">
+    <div class="col-3" style="text-align: center">
       Recent user posts
     </div>
   </div>
 </div>
 
+<!-- User posts -->
 <div class="container" id="posts_container">
 
 </div> <!-- id="posts_container" -->
@@ -109,6 +109,8 @@
 <script src=" {% static 'js/post_short_moustashe_template.js' %}"></script>
 
 <script>
+  
+
   function addUserPost(post) {
     img = post.post_photo;
     if (post.post_photo == null) {
@@ -122,10 +124,10 @@
 
     params = {
       imageURL: author_img,
-      date_created: post.date_created,
+      date_created: formatDateForPostPreview(post.date_created)[1]+' ago',
       userName: post.author.username,
-      post_title: post.post_title,
-      post_text: post.post_text
+      post_title: post.post_title.slice(0, 70),
+      post_text: post.post_text.slice(0, 300)
     }
 
     new_html = Mustache.render(short_post_html_template, params);
