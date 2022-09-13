@@ -44,8 +44,6 @@ def create_training_post(request):
     return render(request, 'create_training_post.html', context)
 
 def view_social_post(request, post_id=None):
-    print("session")
-    print(request.session)
     post_to_show = SocialPost.objects.get(id=post_id)
     editable = False
     if request.user.id == post_to_show.author.id:

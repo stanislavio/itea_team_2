@@ -147,7 +147,7 @@
 
 
   function initUserPosts() {
-    console.log("Retrieving User Posts");
+    // console.log("Retrieving User Posts");
     requestURL = '{% url 'userposts' %}';
     $.ajax({
       type: "GET",
@@ -157,8 +157,8 @@
       },
       datatype: 'json',
       success: function (data) {
-        console.log("Have user posts data")
-        console.log(data)
+        // console.log("Have user posts data")
+        // console.log(data)
 
         for (postIdx in data) {
           addUserPost(data[postIdx]);

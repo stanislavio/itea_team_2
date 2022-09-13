@@ -61,7 +61,6 @@
 
     function loadAndShowUsers() {
         requestURL = "{% url 'home_page_rnd_users' %}"
-        console.log("HomePageUserGeneration")
         $.ajax({
             type: "GET",
             url: requestURL,
@@ -80,7 +79,7 @@
     }//function loadAndShowUsers() {
 
     function addPostHTML(post, post_view_base_URL) {
-        console.log(post);
+        // console.log(post);
         old_html = $('#post_container').html();
 
         img = post.author.photo;
@@ -94,13 +93,20 @@
         
         //TODO: add absolute creation date as tooltip to the date https://getbootstrap.com/docs/4.0/components/tooltips/
         
+        post_view_URL = "{% url 'create_social_post' %}"+post.id
 
+        if(post.post_type == 'training') {
+            post_view_URL = "{% url 'create_training_post' %}"+post.id  
+        }
+
+        
         params = {
             imageURL : img,
             date_created : formatDateForPostPreview(post.date_created)[1]+' ago',
             userName : post.author.username,
             post_title : post.post_title.slice(0, 70),
-            post_text : post.post_text.slice(0, 300)
+            post_text : post.post_text.slice(0, 300),
+            post_viewURL : post_view_URL,
         };
 
         new_html = Mustache.render(short_post_html_template, params);
@@ -111,7 +117,7 @@
 
     function loadAndShowPosts() {
         requestURL = "{% url 'home_page_rnd_posts' %}"
-        console.log("HomePage Post Generation")
+        // console.log("HomePage Post Generation")
         $.ajax({
             type: "GET",
             url: requestURL,
