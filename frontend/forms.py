@@ -22,18 +22,30 @@ def parseISOFormatOrNone(ISOFormattedString):
         return None
 
 
+from allauth.account.forms import SignupForm
+from allauth.account.forms import SetPasswordField
+
 # registration forms
-class CreateUserForm(UserCreationForm):
+class CreateUserForm(SignupForm):
+    password1 = SetPasswordField(label= ("Password"))
+    password2 = SetPasswordField(label= ("Confirm Password"))
+
     def __init__(self, *args, **kwargs):
-            super(UserCreationForm, self).__init__(*args, **kwargs)
+            super(SignupForm, self).__init__(*args, **kwargs)
+            self.fields['username'].widget.attrs['class'] = 'form-control'
+
+            self.fields['email'].widget.attrs['class'] = 'form-control'
+            self.fields['email'].widget.attrs['placeholder'] = 'Email (required)'
+
             self.fields['password1'].widget.attrs['class'] = 'form-control'
             self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+            
             self.fields['password2'].widget.attrs['class'] = 'form-control'
             self.fields['password2'].widget.attrs['placeholder'] = 'Confirm password'
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'email', 'password', 'password2')
         widgets = {
             'username': TextInput(attrs=
                     {'class':'form-control',
@@ -42,10 +54,27 @@ class CreateUserForm(UserCreationForm):
             }),
             'email': TextInput(attrs=
                     {'class':'form-control',
+                      'aria-label' : 'Email (required)',
+                      'aria-describedby' : 'basic-addon1'
+            }),
+            'password1': TextInput(attrs=
+                    {'class':'form-control',
                       'aria-label' : 'Username',
                       'aria-describedby' : 'basic-addon1'
             }),
+            'password2': TextInput(attrs=
+                    {'class':'form-control',
+                      'aria-label' : 'Username',
+                      'aria-describedby' : 'basic-addon1'
+            }),
+
         }
+
+    # def signup(self, request, user):
+    #     # user.first_name = self.cleaned_data['first_name']
+    #     # user.last_name = self.cleaned_data['last_name']
+    #     user.save()
+    #     return user
 #END class CreateUserForm(UserCreationForm):
 
 

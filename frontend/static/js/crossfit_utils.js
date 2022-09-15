@@ -25,7 +25,7 @@ function readCookie(name) {
         while (c.charAt(0) == ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) == 0) {
             ret_str = c.substring(nameEQ.length, c.length);
-            console.log(ret_str);
+            // console.log(ret_str);
             return ret_str;
         }
             
@@ -34,18 +34,36 @@ function readCookie(name) {
 }
 
 
+//This requires date.js
+function formatDateForPostPreview(dta) {
+    date_created = dayjs(dta);
+    // console.log("Have date:")
+    // console.log(date_created.format('DD-MMM-YYYY'))
+    diff_date = dayjs().subtract(date_created)
+    // console.log(diff_date.format('DD-MMM-YYYY'))
+    // console.log(date_created.fromNow(true))
+
+    return [
+        date_created.format('DD-MMM-YYYY'),
+        date_created.fromNow(true)
+    ]
+    // TODO: Move to joda.js for difference in datas
+                    // https://js-joda.github.io/js-joda/manual/formatting.html
+}//function formatDate(date) {
+
+
 //Utility functions for comments
 
 function addCommentHTML(parent_id, comment_text, 
         usr_photo_url, comment_date) {
 
     template = "Hello {{ name }}";
-    console.log(Mustache.render(
-                    template, 
-                    {
-                        name: "Alex"
-                    }
-                ));
+    // console.log(Mustache.render(
+    //                 template, 
+    //                 {
+    //                     name: "Alex"
+    //                 }
+    //             ));
 
 
 
@@ -73,7 +91,7 @@ function registerPostCommentHandler(requestURL,
     $("#post_comment").click(
         
         function() {
-            console.log("CSRF token:"+csrf_tok);
+            // console.log("CSRF token:"+csrf_tok);
             $.ajax({
                 type: "POST",
                 url: requestURL,
@@ -99,10 +117,10 @@ function registerPostCommentHandler(requestURL,
                         ) //comment_date = 
                     );
                     $("#post_comment_text").val("")
-                    console.log(data)
+                    // console.log(data)
                 },//success : function(data) {
                 error : function(xhr,status,error) {
-                    console.log("AJAX error occurred");
+                    // console.log("AJAX error occurred");
                     let notifier = new AWN() 
                     notifier.alert('Comment post failed.<br>Please login to post comments.');
                 }
@@ -114,8 +132,7 @@ function registerPostCommentHandler(requestURL,
 }//function registerPostCommentHandler(requestURL) {
 
 function getComments(requestURL, post_type) {
-    console.log("Hello 34")
-    console.log("Have token:"+readCookie('csrftoken'))
+    // console.log("Have token:"+readCookie('csrftoken'))
     $.ajax({
         type: "GET",
         url: requestURL,
@@ -124,11 +141,11 @@ function getComments(requestURL, post_type) {
             csrfmiddlewaretoken : readCookie('csrftoken'),
         },
         success : function(data) {
-            console.log("Have comments:")
-            console.log(data)
+            // console.log("Have comments:")
+            // console.log(data)
             $("#old-comments-row").html("")
             for(comment in data) {
-                console.log(data[comment])
+                // console.log(data[comment])
 
                 img = "No photo"
                 if( data[comment].author) {

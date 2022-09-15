@@ -20,7 +20,16 @@
     <script src=" {% static 'js/bootstrap_5.2.0.bundle.min.js' %}"></script>
 
     <!-- Moustashe.js templates -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script> -->
+    <script src=" {% static 'js/mustache_2.3.0.min.js' %}"></script>
+
+    <!-- Day.js :https://www.skypack.dev/view/dayjs -->
+    <script src=" {% static 'js/dayjs_1.11.5.min.js' %}"></script>
+    <!-- TODO: make this local -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/relativeTime.min.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
+    
+
 </head>
 
 <body>
@@ -54,10 +63,13 @@
 
                 {% else %}
                 {% if not no_register_link %}
-                <a class="btn btn-warning" href="{% url 'register_user' %}">Join</a>
+                <!-- <a class="btn btn-warning" href="{% url 'register_user' %}">Join</a> -->
+                <a class="btn btn-warning" href="{% url 'account_signup' %}">Join</a>
                 {%endif%}
                 {% if not no_login_link %}
-                <a class="nav-link active" href="{% url 'login_user' %}">Login</a>
+                <!-- <a class="nav-link active" href="{% url 'login_user' %}">Login</a> -->
+                <a class="nav-link active" href="{% url 'account_login' %}">Login</a>
+                
                 {%endif%}
                 {%endif%}
             </div>
@@ -87,7 +99,7 @@
         <div class="row text-center " style="margin:5px">
             <div class="col-12 d-flex justify-content-center">
                 <div class="muted border rounded" style="margin=6px; padding-left:10px;padding-right:10px;">
-                    <small style="font-size:10px;">(C) 2022 ITEA Django course Aug 2022. | v.2-Sep-2022 </small>
+                    <small style="font-size:10px;">(C) 2022 ITEA Django course Aug 2022. | v.12-Sep-2022 </small>
                 </div>
             </div>
         </div>

@@ -72,9 +72,7 @@
 
               <div class="col-1 justify-content-center  text-center">
                 <p class="">About</p>
-              </div>
-
-            </div>
+              </div>            </div>
 
             <div class="row">
               <div class="col-12">
@@ -83,13 +81,7 @@
                 </div>
               </div>
             </div>
-
-
           </div>
-
-
-
-
         </div>
       </div>
     </div>
@@ -101,17 +93,14 @@
 
 <div class="container">
   <div class="row text-start " style="margin:15px">
-    <div class="col-1"></div>
-    <div class="col-3">
+    <div class="col-3" style="text-align: center">
       Recent user posts
     </div>
   </div>
 </div>
 
+<!-- User posts -->
 <div class="container" id="posts_container">
-
-
-
 
 </div> <!-- id="posts_container" -->
 
@@ -120,10 +109,14 @@
 <script src=" {% static 'js/post_short_moustashe_template.js' %}"></script>
 
 <script>
+  
+
   function addUserPost(post) {
-    img = post.post_photo;
+    
+    img = '{% static 'img / generic_user_pic.png' %}'
+    
     if (post.post_photo == null) {
-      img = '{% static 'img / generic_user_pic.png' %}';
+      img = post.post_photo;;
     }
 
     author_img = post.author.photo;
@@ -131,23 +124,30 @@
       author_img = '{% static 'img / generic_user_pic.png' %}';
     }
 
+    post_view_URL = "{% url 'create_social_post' %}"+post.id
+
+    if(post.post_type == 'training') {
+      post_view_URL = "{% url 'create_training_post' %}"+post.id  
+    }
+
     params = {
       imageURL: author_img,
-      date_created: post.date_created,
+      date_created: formatDateForPostPreview(post.date_created)[1]+' ago',
       userName: post.author.username,
-      post_title: post.post_title,
-      post_text: post.post_text
+      post_title: post.post_title.slice(0, 70),
+      post_text: post.post_text.slice(0, 300),
+      post_viewURL : post_view_URL,
     }
-    // var Mustache = require('mustache');
-
 
     new_html = Mustache.render(short_post_html_template, params);
     old_html = $('#posts_container').html();
     $('#posts_container').html(old_html + new_html);
   };//function addUserPost(post) {
 
+
+
   function initUserPosts() {
-    console.log("Retrieving User Posts");
+    // console.log("Retrieving User Posts");
     requestURL = '{% url 'userposts' %}';
     $.ajax({
       type: "GET",
@@ -157,12 +157,12 @@
       },
       datatype: 'json',
       success: function (data) {
+        // console.log("Have user posts data")
+        // console.log(data)
+
         for (postIdx in data) {
           addUserPost(data[postIdx]);
         }
-
-        console.log("Have user posts data")
-        console.log(data)
       },//success : function(data) {
       error: function (xhr, status, error) {
         console.log("AJAX error occurred");
@@ -174,8 +174,5 @@
 
   executeOnLoad(initUserPosts)
 </script>
-
-
-
 
 {% endblock %}

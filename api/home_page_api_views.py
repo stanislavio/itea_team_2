@@ -2,9 +2,16 @@ from .serializers import UserSerializer, SocialPostSerializer
 from rest_framework import serializers, generics, status, mixins
 from rest_framework.generics import GenericAPIView
 
-from db.models import Comment, User, SocialPost
+from db.models import Comment, User, SocialPost, TrainingPost
 
 import random
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer
+
+
 
 def getRandomObjects(modelManager, number_needed):
     #this relies that identity field is id, will not work with other keys
@@ -55,14 +62,42 @@ class ListRandomUsersView(mixins.ListModelMixin, GenericAPIView):
 
 
 
-class ListRandomPostsView(mixins.ListModelMixin, GenericAPIView):
-    #TODO add training posts to home page
-    serializer_class = SocialPostSerializer
-    NO_OF_POSTS_TO_RETURN = 6
+class ListRandomPostsView(APIView):
 
-    def get_queryset(self):
-        post_list = getRandomObjects(SocialPost.objects, self.NO_OF_POSTS_TO_RETURN)
-        return post_list
+    NO_OF_POSTS_TO_RETURN = 4
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get(self, request, format=None):
+
+        soc_post_queryset = getRandomObjects(
+                                SocialPost.objects.filter(post_is_private = False), 
+                                self.NO_OF_POSTS_TO_RETURN
+        )
+
+        train_post_queryset = getRandomObjects(
+                                TrainingPost.objects.filter(post_is_private = False), 
+                                self.NO_OF_POSTS_TO_RETURN
+        )
+
+
+        
+        social_posts_list = list(soc_post_queryset)
+                
+        training_posts_list = list(train_post_queryset)
+
+        combined_list = training_posts_list+social_posts_list
+
+        combined_list.sort(
+                    key=lambda elem: elem.date_created,
+                    reverse=True
+        )
+
+        combinedJSON = [#List comprehension with ternary operator 
+            SocialPostSerializer(post).data 
+                    if type(post) == SocialPost 
+                    else TrainingPostSerializer(post).data
+            for post in combined_list
+        ]
+
+        return Response(combinedJSON)
+
+

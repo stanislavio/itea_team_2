@@ -17,6 +17,26 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 
+# print(Path(__file__).resolve().parent)
+# Following settings are imported from .env:
+#     DB Settings:
+#         DJANGO_SECRET_KEY
+#         DJANGO_DB_USER_PASS
+#         DJANGO_DB_ENGINE
+#         DJANGO_DB_NAME
+#         DJANGO_DB_USER
+#         DJANGO_DB_HOST
+#         DJANGO_DB_PORT
+#     Email settings:
+#         EMAIL_HOST
+#         EMAIL_HOST_PASSWORD
+#         EMAIL_HOST_USER
+#         EMAIL_PORT
+#         EMAIL_USE_SSL
+#         DEFAULT_FROM_EMAIL
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,6 +52,15 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,12 +70,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #For allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    #Crossfit apps
     'rest_framework',
     'crispy_forms',
     'frontend',
     'api',
     'db',
 ]
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,10 +99,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'crossfit.urls'
 
+print(BASE_DIR)
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "frontend/templates/allauth" ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +113,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                 # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -153,3 +197,28 @@ SESSION_COOKIE_AGE = 60*10 #in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 
 CSRF_USE_SESSIONS = True
+
+
+#EMAIL settings
+# TODO: check gmail smtp: https://kinsta.com/blog/gmail-smtp-server/
+# TODO: check email works with settings in .env
+
+EMAIL_HOST= os.getenv("EMAIL_HOST")
+EMAIL_HOST_PASSWORD	= os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER	= os.getenv('EMAIL_HOST_USER')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+
+print(EMAIL_HOST)
+
+
+#Allauth settings
+ACCOUNT_FORMS = {
+    'signup' : 'frontend.forms.CreateUserForm',
+}
+
+LOGIN_REDIRECT_URL = 'index'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
