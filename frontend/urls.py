@@ -10,12 +10,10 @@ from . import homePage_views
 
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
-    path('<pk>', userPage_views.user_profile, name='user_profile_with_pk'),
-    path('change_friend_status/<operation>/<pk>', userPage_views.change_friend_status, name='change_friend_status'),
+    path('<user_id>', userPage_views.user_profile, name='user_profile'),
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
-    # path('send_friend_request/<int:user_id>/', userPage_views.send_friend_request, name='send_friend_request'),
-    # path('accept_friend_request/<int:request_id>/', userPage_views.accept_friend_request, name='accept_friend_request'),
+
 ]
 
 post_url_patterns = [
