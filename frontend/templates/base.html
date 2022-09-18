@@ -21,14 +21,19 @@
 
     <!-- Moustashe.js templates -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script> -->
-    <script src=" {% static 'js/mustache_2.3.0.min.js' %}"></script>
+    <script src="{% static 'js/mustache_2.3.0.min.js' %}"></script>
 
     <!-- Day.js :https://www.skypack.dev/view/dayjs -->
-    <script src=" {% static 'js/dayjs_1.11.5.min.js' %}"></script>
+    <script src="{% static 'js/dayjs_1.11.5.min.js' %}"></script>
     <!-- TODO: make this local -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/relativeTime.min.js"></script>
+    {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/relativeTime.min.js"></script> {% endcomment %}
+    <script src="{% static 'js/relativeTime-1.11.5.min.js' %}"></script>
     <script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
     
+
+    {% comment %} Bootstrap font {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons-1.9.1.css' %}">
 
 </head>
 
@@ -38,6 +43,7 @@
             <a class="navbar-brand" href="{% url 'index' %}">
                 <img src="{% static 'img/crossfit_home.png' %}" class="rounded" height="32px" />
                 <strong>Crossfit</strong>
+                <i class="bi-alarm"></i>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
