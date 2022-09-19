@@ -17,3 +17,5 @@ Pipfile.lock
 /media/*.*
 /media/media/*.jpg
 /media/media/*.webp
+/INFO/django_links.txt
+/INFO/vs_code_extensions.txt

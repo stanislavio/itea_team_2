@@ -25,14 +25,10 @@
 
     <!-- Day.js :https://www.skypack.dev/view/dayjs -->
     <script src="{% static 'js/dayjs_1.11.5.min.js' %}"></script>
-    <!-- TODO: make this local -->
-    {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/relativeTime.min.js"></script> {% endcomment %}
     <script src="{% static 'js/relativeTime-1.11.5.min.js' %}"></script>
     <script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
-    
 
     {% comment %} Bootstrap font {% endcomment %}
-    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/bootstrap-icons-1.9.1.css' %}">
 
 </head>
