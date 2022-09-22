@@ -43,7 +43,7 @@
             <!-- search form -->
         {%if request.user.is_authenticated %}
             <div class="container w-25" style="height: 40px">
-                <form class="d-flex" method=POST action="{% url 'search_user'  %}">
+                <form class="d-flex " method=POST action="{% url 'search_user'  %}">
                     {% csrf_token %}
                     <input class="form-control me-2" type="search" placeholder="Search user..." aria-label="Search" name="query">
                     <button class="btn btn-outline-dark" type="submit"> Search </button>

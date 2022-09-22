@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container py-5 h-100" style="margin-top: 30px">
     <div class="row d-flex justify-content-center h-100">
-          <div class="rounded text-white d-flex flex-row" style="background-color: #84BFCE;">>
+          <div class="rounded text-black d-flex flex-row" style="background-color: #84BFCE;">>
                 <div class="row1">
                     {% if query %}
                         <h2 class="text-bg-info rounded-3" style="margin-top: 25px">You searched for - " {{ query }} "</h2>
@@ -20,6 +20,13 @@
                             </div>
                              <a class="profile-link" style="margin-right: 120px; margin-top: 35px" href=" {% url 'user_profile' account.id %}">
                                  <h3>{{ account }}</h3>{{ account.email }} </a><br/>
+                            {% if account == request.user %}
+                                <div class="d-flex card-right  justify-content-end mx-2 h-25 w-100 border border-4 rounded-2" style="margin-top: 10px">
+                                <p class="m-auto">
+                                    Your profile
+                                </p>
+                                </div>
+                            {% endif %}
                             </div>
                         {% endfor %}
                     {% endif %}
