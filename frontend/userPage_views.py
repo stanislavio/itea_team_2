@@ -7,10 +7,6 @@ from db.models import User
 from django.middleware import csrf
 
 
-def friends_list(request):
-    return render(request, 'friends_list.html')
-
-
 def user_profile(request, user_id=None, *args, **kwargs):
     if request.user.is_authenticated:
         if request.user.id == user_id or user_id is None:
@@ -30,7 +26,7 @@ def user_profile(request, user_id=None, *args, **kwargs):
             return render(request, 'user_profile.html', context)
         if request.user.id != user_id:
             user = request.user.id
-            account = User.objects.get(pk=int(user_id))
+            account = User.objects.get(pk=user_id)
             context = {
                 'user': user,
                 'username': account.username,
@@ -44,6 +40,19 @@ def user_profile(request, user_id=None, *args, **kwargs):
             return render(request, 'user_profile.html', context)
     else:
         return HttpResponse('<h1> Please, Sign_in </h1>')
+
+
+def search_user(request):
+    if request.method == 'POST':
+        query = request.POST['query']
+        accounts = User.objects.filter(username__icontains=query, email__icontains=query)
+        context = {
+            'query': query,
+            'accounts': accounts
+        }
+        return render(request, 'search_user.html', context)
+    else:
+        return render(request, 'search_user.html')
 
 
 
