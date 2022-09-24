@@ -12,6 +12,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=13, null=True, blank=True, unique=True)
     hide_email = models.BooleanField(default=True)
     hide_phone = models.BooleanField(default=True)
+    friends = models.ManyToManyField('self', blank=True, null=True)
+    current_user = models.ForeignKey('self', related_name='owner', null=True, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save()
@@ -21,26 +23,19 @@ class User(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.photo.path)
 
-
-# FRIEND MODELS
-class Friend(models.Model):
-    users = models.ManyToManyField(User)
-    current_user = models.ForeignKey(User, related_name='owner', null=True, on_delete=models.CASCADE)
-
     @classmethod
     def add_friend(cls, current_user, new_friend):
         friend, created = cls.objects.get_or_create(
             current_user=current_user
         )
-        friend.users.add(new_friend)
+        friend.frineds.add(new_friend)
 
     @classmethod
     def remove_friend(cls, current_user, new_friend):
         friend, created = cls.objects.get_or_create(
             current_user=current_user
         )
-        friend.users.remove(new_friend)
-
+        friend.friends.remove(new_friend)
 
 
 class FriendRequest(models.Model):

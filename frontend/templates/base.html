@@ -41,6 +41,18 @@
                 <strong>Crossfit</strong>
                 <i class="bi-alarm"></i>
             </a>
+
+            <!-- search form -->
+        {%if request.user.is_authenticated %}
+            <div class="container w-25" style="height: 40px">
+                <form class="d-flex" method=POST action="{% url 'search_user'  %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search user..." aria-label="Search" name="query">
+                    <button class="btn btn-outline-dark" type="submit"> Search </button>
+                </form>
+           </div>
+        {% endif %}
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -51,7 +63,6 @@
             </div>
             <div class="navbar-nav text-right">
                 {%if request.user.is_authenticated%}
-
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- <img src="{% static 'img/user_pic1.png' %}" class="rounded-circle" style="margin-left:5px;" /> -->
@@ -78,9 +89,7 @@
             {%if request.user.is_authenticated %}
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-
-                    <img src="{{ user.photo.url }}" class="rounded-circle" style="margin-left:5px; width: 30px; height:30px" />
-
+                    <img src="{{ request.user.photo.url }}" class="rounded-circle" style="margin-left:5px; width: 30px; height:30px" />
                     {{ request.user.username}}
                 </a>
                 <ul class=" dropdown-menu">
@@ -106,7 +115,6 @@
             </div>
         </div>
     </div>
-
 </body>
-
 </html>
+

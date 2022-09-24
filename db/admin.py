@@ -1,15 +1,18 @@
 from django.contrib import admin
+<<<<<<< HEAD
+from .models import User, TrainingPost, SocialPost, Comment
+=======
 from .models import User, TrainingPost, SocialPost, Comment, Friend, RunTrainingPost, SwimTrainingPost, HikeTrainingPost
+>>>>>>> NewTrainingPostTypes
 
 admin.site.register(User)
 
 admin.site.register(TrainingPost)
 
-
-
 admin.site.register(SocialPost)
 
 admin.site.register(Comment)
+
 admin.site.register(Friend)
 
 
@@ -51,5 +54,4 @@ class RunTrainingPostAdmin(admin.ModelAdmin):
  
     # def _tags(self, obj):
     #     return obj.tags.all().count()
-
 
