@@ -1,9 +1,8 @@
 from django.contrib import admin
-<<<<<<< HEAD
+
 from .models import User, TrainingPost, SocialPost, Comment
-=======
-from .models import User, TrainingPost, SocialPost, Comment, Friend, RunTrainingPost, SwimTrainingPost, HikeTrainingPost
->>>>>>> NewTrainingPostTypes
+
+from .models import User, TrainingPost, SocialPost, Comment, RunTrainingPost, SwimTrainingPost, HikeTrainingPost
 
 admin.site.register(User)
 
@@ -13,7 +12,7 @@ admin.site.register(SocialPost)
 
 admin.site.register(Comment)
 
-admin.site.register(Friend)
+# admin.site.register(Friend)
 
 
 
