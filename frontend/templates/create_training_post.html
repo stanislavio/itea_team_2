@@ -16,19 +16,39 @@
             <form id="training_post_form" action="" method="POST">
                 {% csrf_token %}
                 {% for field in form %}
-                {% for error in field.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-                {% endfor %}
-                <div class="input-group mb-3">
-                    {% if field.name == 'post_is_private' %}
-                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}<i class="fas fa-user"></i><i class="bi-alarm"></i></span>
-                    {% endif %}
-                    {{ field }}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %} {% comment %} {% for error in field.errors %} {% endcomment %}
+                    
 
-                </div>
-                {% endfor %}
+                    {% if field.name == 'datetime_started' %}
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-6 align-items-center">
+                                <input type="text" name="datetime_started" class="form-control date-time-picker-needed" placeholder="Start of activity" required="" id="id_datetime_started">
+                            </div>
+                            <div class="col-6 align-items-center">
+                                <input type="text" name="datetime_finished" class="form-control date-time-picker-needed" placeholder="End of activity (optional)" id="id_datetime_finished">
+                            </div>
+                        </div>
+                        {% else %}
+                        {% if field.name == 'datetime_finished' %}
+                        {% else %}
+                            <div class="input-group mb-3">
+                                {% if field.name == 'post_is_private' %}
+                                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}</span>
+                                {% endif %}
+                                {{ field }}
+                            </div> 
+                        {% endif%}
+                    {% endif%} {% comment %} datetime_started {% endcomment %}
+                    
+                
+                {% endfor %} {% comment %} {% for field in form %} {% endcomment %}
+                
+                
+
                 <div style="padding-top:20px;">
                     <input id="submit_button" class="btn btn-primary" type="submit" name="Submit">
                 </div>

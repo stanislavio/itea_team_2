@@ -17,5 +17,6 @@ Pipfile.lock
 /media/*.*
 /media/media/*.jpg
 /media/media/*.webp
+
 /DBBackups/*.*
 /INFO/*.*

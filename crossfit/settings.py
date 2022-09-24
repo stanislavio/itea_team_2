@@ -99,9 +99,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'crossfit.urls'
 
-print(BASE_DIR)
-
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -209,9 +206,6 @@ EMAIL_HOST_USER	= os.getenv('EMAIL_HOST_USER')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
-
-print(EMAIL_HOST)
-
 
 #Allauth settings
 ACCOUNT_FORMS = {
