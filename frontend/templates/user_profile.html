@@ -7,77 +7,84 @@
 
 {% block content %}
 
-{% if messages %}
-{% for message in messages %}
-
-<div class="alert-success" role="alert">
-  {{ message }}
-</div>
-{% endfor %}
-{% endif %}
-
 <!-- User profile -->
 <section class="gradient-custom-2">
   <div class="container">
     <div class="row justify-content-center align-items-center" style="margin-top: 60px">
       <div class="col-9">
         <div class="card">
-          <!-- User picture and username -->
+
+          <!-- User picture and username + messages -->
           <div class="row text-white">
             <div class="col-12">
-              <div class="rounded-top" style="background-color: #84BFCE; padding:10px; height:180px">
-                <img class="float-start border border-4 account-img" src="{{ user.photo.url }}"
-                  alt="Generic placeholder image" style="width: 150px; height: 150px; margin: 10px">
-                <!-- <h1 class="account-heading">{{user.username}}</h1> -->
+                  {% if messages %}
+                  {% for message in messages %}
+                  <div class="alert-success" role="alert" style="color: #ffcd39; margin-left: 250px">
+                  <h2>{{ message }}</h2>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+              <div class="rounded-top border border-2" style="background-color: #84BFCE; padding:10px; height:175px">
+                <img class="float-start border border-3 rounded-2 account-img" src="{{ photo.url }}"
+                  alt="Generic placeholder image" style="width: 150px; height: 150px; margin: 5px">
                 <div class="ms-4">
-                  <h1 class="account-heading">{{user.username}}</h1>
-                  <p>Birth date: {{user.birthday}}</p>
+                  <h1 class="account-heading" style="margin-top: 113px;">{{username}}</h1>
                 </div>
               </div>
             </div>
           </div>
+
           <!-- User data and buttons -->
           <div class="card-body">
-            <div class="row " style="padding:10px">
+          <div class="col-auto ">
+            <div class="row rounded" style="background-color: #f8f9fa; padding: 15px">
               <div class="col-2 ">
-                <a class="btn btn-outline-dark" style=""
+                <a class="btn btn-outline-dark" style="margin-left: 5px"
                   data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
               </div>
-              <div class="col-2">
+              <div class="col-2" style="margin-left: 120px; margin-right: 10px">
                 <p class="mb-1 h5">email</p>
-                {% if is_self %}
-                <p class="text-muted mb-0">{{ user.email }}</p>
+                {% if self_page %}
+                    <p class="text-muted mb-0">{{ email }}</p>
                 {% else %}
                 {% if hide_email %}
-                <h5>***********</h5>
+                    <h5>***********</h5>
                 {% else %}
+                    <p class="text-muted mb-0">{{ email }}</p>
                 {% endif %}
-                <p class="text-muted mb-0">{{ user.email }}</p>
                 {% endif %}
               </div>
               <div class="col-3">
                 <p class="mb-1 h5">phone number</p>
-                <p class="text-muted mb-0">+38 {{user.phone}} </p>
+                {% if self_page %}
+                    <p class="text-muted mb-0">+38 {{phone}} </p>
+                {% else %}
+                {% if hide_phone %}
+                    <h5>***********</h5>
+                {% else %}
+                    <p class="text-muted mb-0">+38 {{phone}} </p>
+                {% endif %}
+                {% endif %}
               </div>
-              <div class="col-2">
-                <p class="mb-1 h5">20
-                <a class="btn btn-outline-dark" href="{% url 'friends_list'%}">Friends</a></p>
+              <div class="col-1" style="margin-right: 30px; margin-left: 50px">
+                <a class="btn btn-outline-dark" href="{% url 'friends_list'%}" style="margin-right: 20px">Friends</a>
+                  <p class="mb-1 h5" style="margin-left: 25px">20</p>
               </div>
-
-              <div class="col-2 justify-content-center ">
-                <p class="mb-1 h5">3
+              <div class="col-1" style="margin-right: 20px">
                   <a class="btn btn-outline-dark" href="#">Posts</a>
+                  <p class="mb-1 h5" style="margin-left: 25px">3
                 </p>
               </div>
+            </div>
+          </div>
 
-              <div class="col-1 justify-content-center  text-center">
-                <p class="">About</p>
-              </div>            </div>
-
+              <div class=" col-12 float-start justify-content-start  text-start" style="margin-top: 40px; margin-left: 5px">
+                <h5>Self information</h5>
+              </div>
             <div class="row">
               <div class="col-12">
-                <div class="p-4" style="background-color: #f8f9fa;">
-                  <p class="text-secondary ">{{ user.short_bio| linebreaks }}</p>
+                <div class="p-2" style="background-color: #f8f9fa; border-radius: 10px;">
+                  <p class="text-secondary ">{{ short_bio| linebreaks }}</p>
                 </div>
               </div>
             </div>
@@ -89,12 +96,10 @@
 </section>
 
 
-
-
 <div class="container">
-  <div class="row text-start " style="margin:15px">
-    <div class="col-3" style="text-align: center">
-      Recent user posts
+  <div class="row text-center " style="margin:30px;">
+    <div class="col-5" style="text-align: center">
+      <h5>Recent posts</h5>
     </div>
   </div>
 </div>

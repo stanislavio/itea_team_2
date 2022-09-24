@@ -1,21 +1,19 @@
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from . import(userPage_views, post_views, homePage_views)
 
-from . import userPage_views
-from . import post_views
-from . import homePage_views
 # from . import comments_views
 # from . import comments_views
 
 user_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
-    path('<pk>', userPage_views.user_profile, name='user_profile_with_pk'),
-    path('change_friend_status/<operation>/<pk>', userPage_views.change_friend_status, name='change_friend_status'),
+    path('<user_id>', userPage_views.user_profile, name='user_profile'),
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
-    # path('send_friend_request/<int:user_id>/', userPage_views.send_friend_request, name='send_friend_request'),
-    # path('accept_friend_request/<int:request_id>/', userPage_views.accept_friend_request, name='accept_friend_request'),
+    path('search_user/', userPage_views.search_user, name='search_user'),
+   # path('search', userPage_views.account_search, name='search'),
+
 ]
 
 post_url_patterns = [
