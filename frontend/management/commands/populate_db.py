@@ -167,6 +167,7 @@ class Command(BaseCommand):
 
             old_post.save()
 
+        #TODO: add running, hiking and swimming post generation
         #Social POST GENERATION
         for i in range(1):
             print("Generating post")

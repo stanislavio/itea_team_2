@@ -80,8 +80,11 @@ class RunTrainingPostSerializer(TrainingPostSerializer):
 
     class Meta:
         model = RunTrainingPost
-        fields = [
-            'total_km_ran'
+        # fields = [
+        #     'total_km_ran'
+        # ]
+        exclude = [
+            'comments'
         ]
 
 class HikeTrainingPostSerializer(TrainingPostSerializer):

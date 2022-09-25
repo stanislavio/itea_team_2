@@ -44,7 +44,7 @@ function formatDateForPostPreview(dta) {
     // console.log(date_created.fromNow(true))
 
     return [
-        date_created.format('DD-MMM-YYYY'),
+        date_created.format('DD-MMM-YYYY HH:MM (UTCZ)'),
         date_created.fromNow(true)
     ]
     // TODO: Move to joda.js for difference in datas

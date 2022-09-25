@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('userpostslist/', ListUserPostsView.as_view(), name="userposts"),
 
-    path("training_posts/create/", CreateTrainingPost.as_view(), name="create_training_post"),
+    path("training_posts/create/", CreateTrainingPost.as_view(), name="api_create_training_post"),
+    #TODO: change reference to this in submit of the page
 
 ]
