@@ -58,6 +58,7 @@ class TrainingPostSerializer(serializers.ModelSerializer):
     author = UserSerializer()
 
     def post_type_func(self, obj):
+        # return str(type(obj))
         return "training"
 
     class Meta:

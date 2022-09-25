@@ -108,7 +108,7 @@
             </div>
 
             <div style="padding-top:40px;">
-                <input id="submit_button" class="btn btn-primary" name="Submit">
+                <button id="submit_button" type="button" class="btn btn-primary" name="Submit">Submit</input>
             </div>
         </div>
     </div>
@@ -199,7 +199,20 @@
             };//if(post_type == "running") {
 
             if(post_type == "hiking") {
+                dta.total_km_walked = $("#id_total_km_walked").val(),
+                dta.hike_location = $("#id_hike_location").val(),
+                dta.max_elevation = $("#id_max_elevation").val()
             };//if(post_type == "hiking") {
+
+            if(post_type == "swimming") {
+                console.log('adding swimming data')
+                dta.total_km_swum = $("#id_total_km_swum").val(),
+                dta.swimming_location = $("#id_swimming_location").val()
+            }
+
+
+            console.log("pre ajax dta:", dta)
+
 
             $.ajax({
                 type: "POST",
