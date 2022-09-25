@@ -52,6 +52,8 @@ class Comment(models.Model):
     def __str__(self):
         return self.comment_text[:70]
 
+
+#TODO: check https://django-polymorphic.readthedocs.io/en/stable/quickstart.html#making-your-models-polymorphic
 class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

@@ -1,4 +1,4 @@
-from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer
+from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer, RunTrainingPostSerializer, HikeTrainingPostSerializer
 from rest_framework import serializers, generics, status, mixins
 from rest_framework.generics import GenericAPIView
 
@@ -86,9 +86,6 @@ class CreateTrainingPost(APIView):
         )
 
 
-
-
-
 class ListUserPostsView(APIView):
 
     def get(self, request, format=None):
@@ -98,7 +95,11 @@ class ListUserPostsView(APIView):
         training_posts = TrainingPost.objects.filter(author=self.request.user.id)
         training_posts_list = list(training_posts)
 
-        combined_list = training_posts_list+social_posts_list
+        hiking_posts = HikeTrainingPost.objects.filter(author=self.request.user.id)
+        hiking_posts_list = list(hiking_posts)
+        print("Have number of hiking lists:", len(hiking_posts_list))
+
+        combined_list = training_posts_list+social_posts_list+hiking_posts_list
 
         combined_list.sort(
                     key=lambda elem: elem.date_created,
@@ -111,7 +112,10 @@ class ListUserPostsView(APIView):
             if type(post) == SocialPost:
                 combinedJSON.append(SocialPostSerializer(post).data)
             else:
-                combinedJSON.append(TrainingPostSerializer(post).data)
+                if type(post) == HikeTrainingPost:
+                    combinedJSON.append(HikeTrainingPostSerializer(post).data)
+                else:
+                    combinedJSON.append(TrainingPostSerializer(post).data)
 
         return Response(combinedJSON)
 #END class ListUserPostsView(APIView):
