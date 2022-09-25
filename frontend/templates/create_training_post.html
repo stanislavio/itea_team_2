@@ -17,6 +17,8 @@
         <div class="row justify-content-center" style="padding-top:52px">
             <div class="col-10 text-center justify-content-center" style="padding:30">
                 <input type="hidden" name="csrfmiddlewaretoken" value="lSTWy0YMSZpnpxE0NpbQqtWzLbLSZJwNBYJNY7pFBMCJt98YLrgd5Vuu9CT3uZEY">
+                <input id="datetime_started_ISO" type="hidden" name="datetime_started_ISO" value="">
+                <input id="datetime_finished_ISO" type="hidden" name="datetime_finished_ISO" value="">
                 <div class="input-group mb-3">
                     <input type="text" name="post_title" maxlength="200" class="form-control" placeholder="Title" required="" id="id_post_title">
                 </div> 
@@ -41,64 +43,14 @@
                 </div> 
                      
                 <script>
-                    function change_date_time_fields_to_ISO() {
-                        $(".date-time-picker-needed").each(
-                            function() {
-                                var d = new Date($(this).val());
-                                $(this).val(d.toISOString())
-                            }
-                        ); //$(".date-time-picker-needed").each(
-                    }
-                
-                    $("#submit_button").click(
-                        change_date_time_fields_to_ISO
-                    ); //$("#submit_button").click(
-                
-                
-                    $(".date-time-picker-needed").each(
-                        function() {
-                            $(this).datetimepicker()
-                        }
-                    )
+                    
                 </script>
             </div>
         </div>
 
 
 
-    {% comment %} <div class="row justify-content-center" style="padding-top:52px">
-        <div class="col-10 text-center justify-content-center" style="padding:30">
-                {% csrf_token %}
-                {% for field in form %}
-                    {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                    
-                    {% if field.name == 'datetime_started' %}
-                        <div class="row" style="margin-bottom:20px">
-                            <div class="col-6 align-items-center">
-                                <input type="text" name="datetime_started" class="form-control date-time-picker-needed" placeholder="Start of activity" required="" id="id_datetime_started">
-                            </div>
-                            <div class="col-6 align-items-center">
-                                <input type="text" name="datetime_finished" class="form-control date-time-picker-needed" placeholder="End of activity (optional)" id="id_datetime_finished">
-                            </div>
-                        </div>
-                        {% else %}
-                        {% if field.name == 'datetime_finished' %}
-                        {% else %}
-                            <div class="input-group mb-3">
-                                {% if field.name == 'post_is_private' %}
-                                    <span class="input-group-text" style="width:200px; text-align: right" id="basic-addon1">{{ field.label}}</span>
-                                {% endif %}
-                                {{ field }}
-                            </div> 
-                        {% endif%}
-                    {% endif%}
-                {% endfor %}
-            {% include 'utils/date_time_picker_script.html' %}
-        </div>
-    </div> {% endcomment %}
+    
 
     <div class="row justify-content-center">
         <div class="col-10 text-center justify-content-center">
@@ -161,10 +113,40 @@
         </div>
     </div>
     </form>
-
+    {% csrf_token %}
 </div>
 
 <script>
+    function change_date_time_fields_to_ISO() {
+        d = new Date($("#id_datetime_started").val());
+        $('#datetime_started_ISO').val(d.toISOString())
+
+        if($("#id_datetime_finished").val() != "") {
+            d = new Date($("#id_datetime_finished").val());
+            $('#datetime_finished_ISO').val(d.toISOString())
+        }
+        
+
+        {% comment %} $(".date-time-picker-needed").each(
+            function() {
+                
+            }
+        ); //$(".date-time-picker-needed").each( {% endcomment %}
+    }
+
+    {% comment %} $("#submit_button").click(
+        change_date_time_fields_to_ISO
+    ); //$("#submit_button").click( {% endcomment %}
+
+
+    $(".date-time-picker-needed").each(
+        function() {
+            $(this).datetimepicker()
+        }
+    )
+
+
+
     function onTrainingTypeRadioClick(radio) {
         console.log("radiobutton clicked");
         console.log($(radio).val());
@@ -196,19 +178,33 @@
         function(evt) {
             console.log("clicked submit");
             change_date_time_fields_to_ISO();
-            console.log($("#id_datetime_started").val());
+            console.log($("#datetime_started_ISO").val());
+            
+            post_type = $("#training_post_form input[type='radio']:checked").val()
+            console.log("post_type:", post_type)
+
+            dta = {
+                post_type : post_type, 
+                post_title : $("#id_post_title").val(),
+                post_text : $("#id_post_text").val(),
+                datetime_started : $("#datetime_started_ISO").val(),
+                datetime_finished : $("#datetime_finished_ISO").val(),
+                post_is_private : $("#id_post_is_private").val(),
+                //csrfmiddlewaretoken: readCookie('csrftoken'),
+                csrfmiddlewaretoken: $('[name="csrfmiddlewaretoken"]').val(),
+            }
+
+            if(post_type == "running") {
+                dta.total_km_ran = $("#id_total_km_ran").val();
+            };//if(post_type == "running") {
+
+            if(post_type == "hiking") {
+            };//if(post_type == "hiking") {
+
             $.ajax({
                 type: "POST",
                 url: "{% url 'create_training_post' %}",
-                data : {
-                    comment_text : $("#id_total_km_ran").val(),
-                    post_type : "running", 
-                    post_title : $("#id_post_title").val(),
-                    post_text : $("#id_post_text").val(),
-                    datetime_started : $("#id_datetime_started").val(),
-                    post_is_private : $("#id_post_is_private").val(),
-                    csrfmiddlewaretoken: readCookie('csrftoken'),
-                },
+                data : dta,
                 datatype: 'json',
                 success : function(data) {
                     console.log("Training record call success", data)
@@ -219,9 +215,10 @@
                     notifier.alert('Comment post failed.<br>Please login to post comments.');
                 }
             });//$.ajax({
+            
 
         }
-    )
+    );//$("#submit_button").click(
 </script>
 
 

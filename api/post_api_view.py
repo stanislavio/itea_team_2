@@ -5,7 +5,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from db.models import SocialPost, TrainingPost, RunTrainingPost
+from db.models import SocialPost, TrainingPost, RunTrainingPost, HikeTrainingPost
 
 
 from rest_framework.views import APIView
@@ -18,19 +18,41 @@ class CreateTrainingPost(APIView):
     def post(self, request, *args, **kwargs):
         print("Create training topic called")
         print(request.POST)
+
+        dt_started = datetime.fromisoformat(request.POST["datetime_started"][:-1])
+        dt_finished = None
+        if len(request.POST["datetime_finished"])>0:
+            dt_finished = datetime.fromisoformat(request.POST["datetime_finished"][:-1])
+
         if request.POST["post_type"] == "running":
             print("Creating running post")
             print(request.POST["datetime_started"])
             new_post = RunTrainingPost(
                 post_title = request.POST["post_title"],
                 post_text = request.POST["post_text"], 
-                datetime_started = datetime.fromisoformat(request.POST["datetime_started"][:-1]),
+                datetime_started = dt_started,
+                datetime_finished = dt_finished,    
                 post_is_private = True if request.POST["post_is_private"] == "true" else False
             )
 
             new_post.save()
 
             print("Post is private", request.POST["post_is_private"])
+        #END if request.POST["post_type"] == "running":
+
+        if request.POST["post_type"] == "hiking":
+            print("Creating hiking post")
+            # print(request.POST["datetime_started"])
+            new_post = HikeTrainingPost(
+                post_title = request.POST["post_title"],
+                post_text = request.POST["post_text"], 
+                datetime_started = dt_started,
+                datetime_finished = dt_finished,    
+                post_is_private = True if request.POST["post_is_private"] == "true" else False
+            )
+            new_post.save()
+            # print("Post is private", request.POST["post_is_private"])
+        #END if request.POST["post_type"] == "hiking":
 
 
         return JsonResponse(
