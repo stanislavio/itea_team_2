@@ -5,16 +5,45 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from db.models import SocialPost, TrainingPost
+from db.models import SocialPost, TrainingPost, RunTrainingPost
 
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import JsonResponse
+
+from datetime import datetime
+
+class CreateTrainingPost(APIView):
+    def post(self, request, *args, **kwargs):
+        print("Create training topic called")
+        print(request.POST)
+        if request.POST["post_type"] == "running":
+            print("Creating running post")
+            print(request.POST["datetime_started"])
+            new_post = RunTrainingPost(
+                post_title = request.POST["post_title"],
+                post_text = request.POST["post_text"], 
+                datetime_started = datetime.fromisoformat(request.POST["datetime_started"][:-1]),
+                post_is_private = True if request.POST["post_is_private"] == "true" else False
+            )
+
+            new_post.save()
+
+            print("Post is private", request.POST["post_is_private"])
+
+
+        return JsonResponse(
+            { 'result': "OK" }
+        )
+
+
+
+
 
 class ListUserPostsView(APIView):
 
     def get(self, request, format=None):
-
         social_posts = SocialPost.objects.filter(author=self.request.user.id)
         social_posts_list = list(social_posts)
         
@@ -37,4 +66,5 @@ class ListUserPostsView(APIView):
                 combinedJSON.append(TrainingPostSerializer(post).data)
 
         return Response(combinedJSON)
+#END class ListUserPostsView(APIView):
 

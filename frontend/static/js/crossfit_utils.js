@@ -56,14 +56,8 @@ function formatDateForPostPreview(dta) {
 
 function addCommentHTML(parent_id, comment_text, 
         usr_photo_url, comment_date) {
-
     template = "Hello {{ name }}";
-    // console.log(Mustache.render(
-    //                 template, 
-    //                 {
-    //                     name: "Alex"
-    //                 }
-    //             ));
+
 
 
 
