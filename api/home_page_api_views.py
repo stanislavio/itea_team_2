@@ -17,6 +17,9 @@ def getRandomObjects(modelManager, number_needed):
     #this relies that identity field is id, will not work with other keys
     number_of_objects = modelManager.all().count()
     print('number_of_objects', number_of_objects)
+    if number_of_objects == 0:
+        return []
+
     objects_list = modelManager.all()
 
     rnd_object_no = random.randint(0, number_of_objects-1)
