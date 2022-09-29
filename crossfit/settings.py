@@ -215,4 +215,8 @@ ACCOUNT_FORMS = {
 LOGIN_REDIRECT_URL = 'index'
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
+#https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_EMAIL_VERIFICATION = "none"
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'

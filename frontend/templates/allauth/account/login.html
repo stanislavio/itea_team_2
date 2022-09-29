@@ -47,12 +47,28 @@
 
           <form class="login" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" style="width:100px; text-align: right" id="basic-addon1">Username</span>
+              <input type="text" name="login" class="form-control" aria-label="Username" id="id_login" aria-describedby="basic-addon1" placeholder="Username" maxlength="150" required="">
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" style="width:100px; text-align: right" id="basic-addon1">Password</span>
+                <input type="password" name="password" autocomplete="new-password" class="form-control" placeholder="Password" required="" id="id_password">
+            </div>
+            
+
+
+            {% comment %} {{ form.as_p }} {% endcomment %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
             <a class="button secondaryAction" href="{% url 'account_reset_password' %}">Forgot Password?</a>
-            <button class="primaryAction" type="submit">Sign In</button>
+            <div style="padding-top:20px;">
+              <input class="btn btn-primary" type="submit" name="Sign In">
+          </div>
+            {% comment %} <button class="primaryAction" type="submit"></button> {% endcomment %}
           </form>
 
             
@@ -62,7 +78,7 @@
     <div class="row text-center" style="padding-top:52px">
         <h6>
             Already registered?<br>
-            <a href="{% url 'login_user' %}">Login<i class="bi-alarm"></i></a>
+            <a href="{% url 'login_user' %}">Login</a>
         </h6>
     </div>
 </div>
