@@ -12,8 +12,8 @@ class User(AbstractUser):
     phone = models.CharField(max_length=13, null=True, blank=True, unique=True)
     hide_email = models.BooleanField(default=True)
     hide_phone = models.BooleanField(default=True)
-    friends = models.ManyToManyField('self', blank=True, null=True)
-    current_user = models.ForeignKey('self', related_name='owner', null=True, on_delete=models.CASCADE)
+    friends = models.ManyToManyField('self', blank=True, related_name='friends')
+
 
     def save(self, *args, **kwargs):
         super().save()
@@ -25,27 +25,27 @@ class User(AbstractUser):
             img.thumbnail(output_size)
             img.save(self.photo.path)
 
-    @classmethod
-    def add_friend(cls, current_user, new_friend):
-        friend, created = cls.objects.get_or_create(
-            current_user=current_user
-        )
-        friend.frineds.add(new_friend)
+    def get_friends(self):
+        return self.friends.all()
 
-    @classmethod
-    def remove_friend(cls, current_user, new_friend):
-        friend, created = cls.objects.get_or_create(
-            current_user=current_user
-        )
-        friend.friends.remove(new_friend)
+    def get_friends_number(self):
+        return self.friends.all().count()
+
+
+
+STATUS_CHOISES = (
+    ('send', 'send'),
+    ('accepted', 'accepted')
+)
 
 
 class FriendRequest(models.Model):
-    from_user = models.ForeignKey(User, related_name='from_user', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='to_user', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE, null=True)
+    receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE, null=True)
+    status = models.CharField(max_length=8, choices=STATUS_CHOISES, null=True)
 
-
-
+    def __str__(self):
+        return f"{self.sender}-{self.receiver}-{self.status}"
 # POST MODELS
 
 class Comment(models.Model):

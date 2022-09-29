@@ -3,7 +3,7 @@ from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from db.models import User
+from db.models import User, FriendRequest
 from django.middleware import csrf
 
 
@@ -21,39 +21,27 @@ def user_profile(request, user_id=None, *args, **kwargs):
                 'phone': user.phone,
                 'short_bio': user.short_bio,
                 'hide_email': user.hide_email,
-                'hide_phone': user.hide_phone
+                'hide_phone': user.hide_phone,
+                'get_friends_number': user.get_friends_number,
+                'get_friends': user.get_friends
             }
             return render(request, 'user_profile.html', context)
         if request.user.id != user_id:
             user = request.user.id
             account = User.objects.get(pk=user_id)
             context = {
-                'user': user,
+                'account': account,
                 'username': account.username,
                 'email': account.email,
                 'photo': account.photo,
                 'phone': account.phone,
                 'short_bio': account.short_bio,
                 'hide_email': account.hide_email,
-                'hide_phone': account.hide_phone
+                'get_friends_number': account.get_friends_number
             }
             return render(request, 'user_profile.html', context)
     else:
         return HttpResponse('<h1> Please, Sign_in </h1>')
-
-
-def search_user(request):
-    if request.method == 'POST':
-        query = request.POST['query']
-        accounts = User.objects.filter(username__icontains=query, email__icontains=query)
-        context = {
-            'query': query,
-            'accounts': accounts
-        }
-        return render(request, 'search_user.html', context)
-    else:
-        return render(request, 'search_user.html')
-
 
 
 @login_required
@@ -74,33 +62,24 @@ def edit(request, *args, **kwargs):
     return render(request, 'edit.html', context)
 
 
+def search_user(request):
+    if request.method == 'POST':
+        query = request.POST['query']
+        accounts = User.objects.filter(username__icontains=query) or User.objects.filter(email__icontains=query)
+        context = {
+            'query': query,
+            'accounts': accounts
+        }
+        return render(request, 'search_user.html', context)
+    else:
+        return render(request, 'search_user.html')
+
+
 def friends_list(request):
-    return render(request, 'friends_list.html')
+    if request.user.is_authenticated:
+        return render(request, 'friends_list.html')
 
 
-def change_friend_status(request, operation, pk):
-    friend = User.objects.get(pk=pk)
-    if operation == 'add':
-        User.add_friend(request.user, friend)
-    elif operation == 'remove':
-        User.remove_friend(request.user, friend)
-    return redirect('friends_list')
 
-# @login_required
-# def send_friend_request(request, user_id):
-#     from_user = request.user
-#     to_user = User.objects.get(id=user_id)
-#     friend_request, created = FriendRequest.objects.get_or_create(from_user=from_user, to_user=to_user)
-#     return render(request, 'friends_list.html')
-#
-#
-# @login_required
-# def accept_friend_request(request, request_id):
-#     friend_request = FriendRequest.objects.get(id=request_id)
-#     if friend_request.to_user == request.user:
-#         friend_request.to_user.friends.add(friend_request.from_user)
-#         friend_request.from_user.friends.add(friend_request.to_user)
-#         friend_request.delete()
-#         return HttpResponse('friend request accepted')
-#     else:
-#         return HttpResponse('friend request not accepted')
+
+

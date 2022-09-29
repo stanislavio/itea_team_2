@@ -12,8 +12,6 @@ user_url_patterns = [
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
     path('search_user/', userPage_views.search_user, name='search_user'),
-   # path('search', userPage_views.account_search, name='search'),
-
 ]
 
 post_url_patterns = [

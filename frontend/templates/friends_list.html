@@ -2,42 +2,27 @@
 {% load static %}
 
 <head>
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 
 {% block content %}
-
 <div class="container py-5 h-100" style="margin-top: 30px">
     <div class="row d-flex justify-content-center h-100">
-          <div class="rounded-top text-white d-flex flex-row" style="background-color: #84BFCE;">>
+          <div class="rounded text-black d-flex flex-row border border-4" style="background-color: skyblue;">
                 <div class="row1">
-                <h1 style="margin-top: 20px; margin-bottom: 40px">Friends</h1>
-                {% for friend in friends %}
-                    <a href='{% url 'user_profile' user_id %}'>
-                        <h3>{{ friend.username }}</h3>
-                        <img class="border border-4 account-img" width=100" src="{{ friend.photo.url }}">
-                    </a>
-                    <a href='{% url 'change_friend_status' operation='remove' pk=friend.pk %}'>
-                    <button type="button" class="btn btn-warning">Remove friend</button>
-                    </a>
-                {% endfor %}
-                {% for user in users %}
-                    {% if not user in friends %}
-                    <a href='{% url 'user_profile_with_pk' pk=user.pk %}'>
-                        <h3>{{ user.username }}</h3>
-                        <img class="border border-4 account-img" width=100" src="{{ user.photo.url }}">
-                    </a>
-                    <a href='{% url 'change_friend_status' operation='add' pk=user.pk %}'>
-                    <button type="button" class="btn btn-success">Add friend</button>
-                    </a>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-       </div>
-        </div>
-      </div>
+                <h1>Friends</h1>
+                    {% for friend in user.get_friends %}
+                        <div class="card flex-row flex-grow-1 mx-2 my-2  w-100 border border-4">
+                            <div class="card-img m-2">
+                                <img class="img-fluid profile-image py-1 rounded-circle border" style="width: 100px; height: 100px; padding: 5px" src="{{ friend.photo.url }}" alt="">
+                            </div>
+                             <a class="profile-link" style="margin-right: 120px; margin-top: 35px" href="{% url 'user_profile' friend.id %}">
+                                 <h3>{{ friend }}</h3>{{ friend.email }} </a><br/>
+                        </div>
+                    {% endfor %}
+                </div>
+          </div>
+    </div>
+</div>
 
-    <div>
-  </div>
 {% endblock %}
