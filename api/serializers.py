@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from db.models import User
 
-from db.models import Comment, User, SocialPost, TrainingPost, RunTrainingPost, HikeTrainingPost
+from db.models import Comment, User, SocialPost, TrainingPost, RunTrainingPost, HikeTrainingPost, SwimTrainingPost
 
 # profile_edit_forms
 class UserSerializer(serializers.ModelSerializer):
@@ -94,6 +94,21 @@ class HikeTrainingPostSerializer(TrainingPostSerializer):
 
     class Meta:
         model = HikeTrainingPost
+        # fields = [
+        #     'total_km_walked'
+        # ]
+        # fields = "__all__"
+        exclude = [
+            'comments'
+        ]
+
+class SwimTrainingPostSerializer(TrainingPostSerializer):
+    def post_type_func(self, obj):
+        # return str(type(obj))
+        return "swimming"
+
+    class Meta:
+        model = SwimTrainingPost
         # fields = [
         #     'total_km_walked'
         # ]

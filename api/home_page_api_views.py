@@ -2,14 +2,14 @@ from .serializers import UserSerializer, SocialPostSerializer
 from rest_framework import serializers, generics, status, mixins
 from rest_framework.generics import GenericAPIView
 
-from db.models import Comment, User, SocialPost, TrainingPost, RunTrainingPost, HikeTrainingPost
+from db.models import Comment, User, SocialPost, TrainingPost, RunTrainingPost, HikeTrainingPost, SwimTrainingPost
 
 import random
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer, RunTrainingPostSerializer, HikeTrainingPostSerializer
+from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer, RunTrainingPostSerializer, HikeTrainingPostSerializer, SwimTrainingPostSerializer
 
 
 
@@ -90,16 +90,25 @@ class ListRandomPostsView(APIView):
                                     HikeTrainingPost.objects.filter(post_is_private = False),
                                     self.NO_OF_POSTS_TO_RETURN
         )
+
+        swimming_posts_queryset = getRandomObjects(
+                                    SwimTrainingPost.objects.filter(post_is_private = False),
+                                    self.NO_OF_POSTS_TO_RETURN
+        )
         
         social_posts_list = list(soc_post_queryset)
                 
         # training_posts_list = list(train_post_queryset)
         running_posts_list = list(running_posts_queryset)
         hiking_posts_list = list(hiking_posts_queryset)
+        swimming_posts_list = list(swimming_posts_queryset)
 
 
         # combined_list = training_posts_list+social_posts_list
-        combined_list = social_posts_list+running_posts_list+hiking_posts_list
+        combined_list = social_posts_list+      \
+                            running_posts_list+ \
+                            hiking_posts_list+  \
+                            swimming_posts_list
 
         combined_list.sort(
                     key=lambda elem: elem.date_created,
@@ -115,6 +124,8 @@ class ListRandomPostsView(APIView):
                 combinedJSON.append(RunTrainingPostSerializer(post).data)
             if type(post) == HikeTrainingPost:
                 combinedJSON.append(HikeTrainingPostSerializer(post).data)
+            if type(post) == SwimTrainingPost:
+                combinedJSON.append(SwimTrainingPostSerializer(post).data)
 
 
         # combinedJSON = [#List comprehension with ternary operator 

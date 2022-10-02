@@ -54,7 +54,7 @@ var short_running_post_html_template = `
                 <!-- TODO: make image for running generation non textula - static URL -->
               </div>
               <div class="col-2">
-                <small>Distance:{{total_km_ran}}</small>
+                <small style="font-size:10px;" >Distance:{{total_km_ran}}</small>
               </div>
             </div>
             
@@ -70,10 +70,10 @@ var short_hiking_post_html_template = `
     <div class="row text-start " style="margin:15px">
           <! -- Image and user name -->
           <div class="col-1"></div>
-          <div class="col-1 border-bottom text-center me-1">
-            <img src="{{imageURL}}" class="rounded-circle " alt="..." width="80px" heigth="60px">
+          <div class="col-1 border-bottom text-center me-3">
+            <img src="{{imageURL}}" class="rounded-circle " alt="..." width="60px" heigth="60px">
             <p><a href="#" class="link-secondary">
-                {{userName}}
+              <small class="muted" style="font-size:10px;">{{userName}}</small>
               </a><br>
               <small class="muted" style="font-size:9px;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{date_created_tooltip}}">>
                 {{date_created}}
@@ -101,7 +101,7 @@ var short_hiking_post_html_template = `
             <!-- Location -->
             <div class="row">
               <div class="col-12">
-                Location: {{hike_location}}
+                <h6 style="font-size:11px;">Location: {{hike_location}}</h6>
               </div>
             </div>
 
@@ -113,6 +113,55 @@ var short_hiking_post_html_template = `
         </div>
     </div>
 `;//var short_running_post_html_template = `
+
+
+var short_swimming_post_html_template = `
+    <div class="row text-start " style="margin:15px">
+          <! -- Image and user name -->
+          <div class="col-1"></div>
+          <div class="col-1 border-bottom text-center me-3">
+            <img src="{{imageURL}}" class="rounded-circle " alt="..." width="60px" heigth="60px">
+            <p><a href="#" class="link-secondary">
+                <small class="muted" style="font-size:10px;">{{userName}}</small>
+              </a><br>
+              <small class="muted" style="font-size:9px;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{date_created_tooltip}}">>
+                {{date_created}}
+              </small>
+            </p>
+          </div>
+          <! -- Title and post text -->
+          <div class="col-9 border-bottom text-start">
+            <div class="row">
+              <div class="col-7">
+                <a href="{{post_viewURL}}" class="link-dark">
+                  {{post_title}}
+                </a>
+              </div>
+              <div class="col-2">
+                
+              </div>
+              <div class="col-1">
+              <img src="{{swim_img_url}}" width="32px" height="32px" />
+              </div>
+              <div class="col-2">
+                <small style="font-size:10px;" >Distance swum:{{total_km_swum}}</small>
+              </div>
+            </div>
+            <!-- Location -->
+            <div class="row">
+              <div class="col-12">
+                <h6 style="font-size:11px;">Location: {{swimming_location}}</h6>
+              </div>
+            </div>
+
+            <div class="row">
+              {{{ post_text }}}
+            </div>
+            
+          </div>
+        </div>
+    </div>
+`;//var short_swimming_post_html_template = `
 
 
 function renderPostPreview(post) {
@@ -127,7 +176,11 @@ function renderPostPreview(post) {
   
   post_view_URL = cross_fit_env.urls.createSocialPostURL+post.id
 
-  if(post.post_type == 'training' | post.post_type == 'running') {
+  if(post.post_type == 'training' | 
+      post.post_type == 'running' | 
+      post.post_type == 'swimming' |
+      post.post_type == 'hiking'
+      ) {
       post_view_URL = cross_fit_env.urls.createTrainingPostURL+post.id+"?id="+post.id+"&post_type="+post.post_type
   }
 
@@ -154,10 +207,20 @@ function renderPostPreview(post) {
     params.total_km_walked = post.total_km_walked+' km'
     params.hike_location = post.hike_location
     params.max_elevation = post.max_elevation+' m'
-    
     new_html = Mustache.render(short_hiking_post_html_template, params);
-
   };
+
+  if(post.post_type == "swimming") {
+    params.total_km_swum = post.total_km_swum+' km';
+    params.swimming_location = post.swimming_location;
+    params.swim_img_url = cross_fit_env.serviceImagesURLs.swimImage;
+    new_html = Mustache.render(short_swimming_post_html_template, params);
+  };
+
+  
+
+
+
   if(post.post_type == "social" | post.post_type == "training") {
       new_html = Mustache.render(short_post_html_template, params);
   };

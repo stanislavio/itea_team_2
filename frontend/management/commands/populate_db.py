@@ -1,12 +1,13 @@
 #https://docs.djangoproject.com/en/4.1/howto/custom-management-commands/
 from django.core.management.base import BaseCommand
-from db.models import User, SocialPost, RunTrainingPost
+from db.models import User, SocialPost, RunTrainingPost, SwimTrainingPost, HikeTrainingPost
 
 import pydenticon
 import hashlib
 import random
 import os
 import datetime
+import pytz
 
 GEN_USERS_MEDIA_FOLDER = r'C:\Users\Vasilyev\AGVDocs\Dev\2. Python\23. Django\4. ActualITEADjangoProject\media'
 
@@ -45,10 +46,14 @@ def generateDenticon(str2Hash, path2Save=""):
     return img_name
 
 def getRandomDateInThePast(days_at_least = 5000, days_at_most = 15000):
-    return datetime.datetime.now()+ \
+    now_time = datetime.datetime.now()+ \
                 datetime.timedelta(
-                    days = (-random.randint(days_at_least, days_at_most)) 
+                    days = (-random.randint(days_at_least, days_at_most)),
                 )
+    #Working with timezones: https://www.geeksforgeeks.org/working-with-datetime-objects-and-timezones-in-python/
+    tz = pytz.timezone('Europe/Kyiv')
+
+    return tz.localize(now_time)
 
 def generateUser(name_list, maximes_list):
     print("Creating user")
@@ -57,7 +62,7 @@ def generateUser(name_list, maximes_list):
     lName = lName.rstrip()
     
     #TODO add UUID part to generated user names
-    usr_name = f"{fName}_{lName}_{random.randint(1, 999)}_g"
+    usr_name = f"{fName[:4]}_{lName[:4]}_{random.randint(1, 99)}_g"
     print("UsrName:", usr_name)
 
     img_name = generateDenticon(usr_name, usr_name)
@@ -103,6 +108,16 @@ def updateOldUsers():
             usr.short_bio = random.choice(maximes_list).strip()
             print('Will add new bio:', usr.short_bio)
             usr.save()
+
+        if(len(usr.username)>15):
+            new_usr_name = usr.username[:15]
+            while len(
+                    User.objects.filter(username=new_usr_name)
+                )>0:
+                new_usr_name += "1"
+                
+            usr.username = new_usr_name
+            usr.save()
 #END def updateOldUsers():
 
 #TODO: this one is to clean old posts
@@ -146,7 +161,7 @@ class Command(BaseCommand):
 
 
         # updateOldPosts()
-        # updateOldUsers()
+        updateOldUsers()
 
         new_user_list = []
 
@@ -173,10 +188,10 @@ class Command(BaseCommand):
 
         #RUNNING POST GENERATION
 
-        RUNNING_POSTS_NEEDED = 5
+        RUNNING_POSTS_NEEDED = 1
 
         author_user = new_user_list[
-            random.randint(0, len(new_user_list))
+            random.randint(0, len(new_user_list)-1)
         ]
 
         for i in range(RUNNING_POSTS_NEEDED):
@@ -199,6 +214,76 @@ class Command(BaseCommand):
             curr_post.save()
 
         #END #RUNNING POST GENERATION
+
+        #SWIMMING POST GENERATION
+
+        SWIMMING_POSTS_NEEDED = 0
+
+
+        author_user = new_user_list[
+            random.randint(0, len(new_user_list)-1)
+        ]
+
+        for i in range(SWIMMING_POSTS_NEEDED):
+            print("Swimming post generation")
+            img_path =  os.sep+'gen_posts'+os.sep+\
+                        post_img_list[
+                            random.randint(0, len(post_img_list)-1)
+                        ]
+            print('img_path', img_path)
+            curr_post = SwimTrainingPost (
+                author = author_user,
+                post_title = getBigText(big_text_lines, 120),
+                post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN),
+                post_is_private = False,
+                post_photo = img_path,
+                total_km_swum = 2023.2023,
+                datetime_started = getRandomDateInThePast(),
+                swimming_location = "Dummy swimming location: Eddie Lee Taylor, Sr. Pool"
+            )
+
+            curr_post.save()
+
+        #END #SWIMMING POST GENERATION
+
+
+        #HIKING POST GENERATION
+
+        HIKING_POSTS_NEEDED = 1
+
+        author_user = new_user_list[
+            random.randint(0, len(new_user_list)-1)
+        ]
+
+        for i in range(HIKING_POSTS_NEEDED):
+            print()
+            print()
+            print("*"*20)
+            print("Hiking post generation")
+            
+            img_path =  os.sep+'gen_posts'+os.sep+\
+                        post_img_list[
+                            random.randint(0, len(post_img_list)-1)
+                        ]
+            # print('img_path', img_path)
+            curr_post = HikeTrainingPost (
+                author = author_user,
+                post_title = getBigText(big_text_lines, 120),
+                post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN),
+                post_is_private = False,
+                post_photo = img_path,
+                total_km_walked = 333.23,
+                datetime_started = getRandomDateInThePast(),
+                hike_location = "Dummy walking location: Foret d'Elysee",
+                max_elevation = 100.1
+            )
+
+            curr_post.save()
+
+            print("Post: ", curr_post.post_title)
+
+        #END #HIKING POST GENERATION
+
 
         # #TODO: add running, hiking and swimming post generation
         # #Social POST GENERATION
