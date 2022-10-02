@@ -58,9 +58,6 @@ function addCommentHTML(parent_id, comment_text,
         usr_photo_url, comment_date) {
     template = "Hello {{ name }}";
 
-
-
-
     old_html = $("#"+parent_id).html();
     // console.log(old_html)
     new_html = '<div class="col-1 align-self-end" style="text-align: center;">'+
@@ -132,7 +129,8 @@ function getComments(requestURL, post_type) {
         url: requestURL,
         data : {
             post_type : post_type, 
-            csrfmiddlewaretoken : readCookie('csrftoken'),
+            csrfmiddlewaretoken: cross_fit_env.csrftoken,
+            // csrfmiddlewaretoken : readCookie('csrftoken'),
         },
         success : function(data) {
             // console.log("Have comments:")

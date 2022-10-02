@@ -120,3 +120,35 @@ class ListUserPostsView(APIView):
         return Response(combinedJSON)
 #END class ListUserPostsView(APIView):
 
+
+class GetAllTypesOfTrainingPost(APIView):
+    def get(self, request, format=None):
+        print("Request GET:", request.GET)
+        print("ID in GET:", ("id" in request.GET))
+        if not ("id" in request.GET):
+            return Response({'error': "ID of the post requested is required"}, status=404)
+        print("Have ID requested:", request.GET["id"])
+        if "post_type" not in request.GET:
+            return Response({'error': "post_type of the post requested is required"}, status=404)
+        
+        print("Successfull parameters")
+
+        ret_data = ""
+        if request.GET['post_type'] == 'running':
+            post_obj = RunTrainingPost.objects.filter(id=request.GET['id'])
+            if len(post_obj) == 0:
+                return Response({'error': 
+                    f"Post type '{request.GET['post_type']}' with ID {request.GET['id']} have not been found."
+                    }, 
+                    status=404
+                )
+            print("Obj found")
+            ret_data = RunTrainingPostSerializer(post_obj[0]).data
+
+        return Response(ret_data)
+
+        
+        
+
+
+#END class GetAllTypesOfTrainingPost(APIView):

@@ -7,11 +7,11 @@
 <div class="container " style="padding-top:92px">
     <!-- justify-content-center -->
     <div class="row ">
-        <div class="col-1 text-center">
+        <div class="col-2 text-center">
             <img src="{{ post.author.photo.url }}" class="rounded-circle" alt="..." width="50px" heigth="40px">
             <p>
                 <a href="{% url 'user_profile' %}" class="link-secondary">
-                    {{ post.author.username}}
+                    <small class="muted" style="font-size:10px;">{{ post.author.username}}</small>
                 </a>
                 <br>
                 <small class="muted" style="font-size:9px;">
@@ -19,8 +19,8 @@
                 </small>
             </p>
         </div>
-        <div class="col-10 text-left align-self-end">
-            <h1 class="align-text-bottom">{{post.post_title}}</h1>
+        <div class="col-9 text-left align-self-end">
+            <h2 class="align-text-top">{{post.post_title}}</h2>
         </div>
         {% if editable %}
         <div class="col-1  align-self-end text-end">
@@ -29,40 +29,56 @@
         </div>
         {% endif %}
     </div>
-    <div class="row border" style="margin:20px; height:40px">
-        <div class="col-3 text-center">
-            Training started: {{ post.datetime_started }}
+    <div class="row border" style="margin:20px">
+        <div class="col-6 text-left">
+            Training started: <span id="datetime_started"></span>
+            Training finished: <span id="datetime_finished"></span><br>
+            Duration: <span id="training_duration"></span>
         </div>
-        <div class="col-6 text-center align-self-end">
-            Duration: {{ post.datetime_started|timesince:post.datetime_finished}}
-        </div>
-        <div class="col-3 text-center">
-            Training finished: {{ post.datetime_finished }}
+        <!-- Running post additional information -->
+        <div class="col-6 text-end">
+            <div id='running_additional_info' hidden >
+                <div class="col-6 text-center align-self-end">
+                    <img src="{% static 'img/template_types/running_post.png' %}" />
+                </div>
+                <div class="col-3 text-center">
+                    Total KM ran: <span id="total_km_ran"></span>
+                </div>
+            </div>
         </div>
     </div>
+
+    
+    
     <div class="row ">
         <div class="col-12" style="text-align: justify;">
-            {% if post.post_photo %}
-            <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px">
-            {%endif%}
-            {{post.post_text | linebreaks}}
+            {% comment %} <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px"> {% endcomment %}
+            <span id="post_text"></span>
         </div>
     </div>
-    {% if request.user.photo %}
+    
     <!-- Comments enter form -->
-    <div class="row">
-        <div class="col-1" style="text-align: justify;">
-            <img src="{{ request.user.photo.url }}" class="float-end rounded-circle" alt="..." width="50px" heigth="40px">
-        </div>
-        <div class="col-10" style="text-align: justify;">
-            <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text"></textarea>
-        </div>
-        <div class="col-1 align-self-end" style="text-align: justify;">
-            <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
-        </div>
+    <div class="row" style="padding-top:15px;">
+        {% if request.user.photo %}
+            <div class="col-1" style="text-align: justify; ">
+                <img src="{{ request.user.photo.url }}" class="float-end rounded-circle" alt="..." width="50px" heigth="40px">
+            </div>
+            <div class="col-10" style="text-align: justify;">
+                <textarea id="post_comment_text" name="post_text" cols="40" rows="3" class="form-control" placeholder="Comment" id="id_post_text"></textarea>
+            </div>
+            <div class="col-1 align-self-end" style="text-align: justify;">
+                <input id="post_comment" type="button"class="btn btn-primary" name="Post comment" value="Send">
+            </div>
+            <!-- Comments enter form END-->
+        {% else %}
+            <div class="col-12" style="text-align: justify;">
+                <h6>Comments are not allowed for unauthenticated users</h6>
+            </div>
+        
+        {% endif%}
     </div>
-    <!-- Comments enter form END-->
-    {% endif%}
+    
+    
     
     <!-- Old comments -->
     <div id="old-comments-row" class="row ">
@@ -83,6 +99,48 @@
                 csrf_token = "{{ csrf_token }}"
             )
         };//function initComments() {
+
+        function initPostView() {
+            queryString = window.location.search;
+            urlParams = new URLSearchParams(queryString);
+            console.log("id=", urlParams.get('id'))
+            post_id = urlParams.get('id');
+            post_type = urlParams.get('post_type');
+            console.log("token:", cross_fit_env.csrftoken)
+
+
+            $.ajax({
+                type: "GET",
+                url: cross_fit_env.urls.getTrainingPostAPIURL,
+                data : {
+                    id : post_id,
+                    post_type : post_type, 
+                    csrfmiddlewaretoken: cross_fit_env.csrftoken,
+                },
+                datatype: 'json',
+                success : function(data) {
+                    console.log(data);
+
+                    $("#datetime_started").html(data.datetime_started)
+                    $("#datetime_finished").html(data.datetime_finished)
+                    $("#post_text").html(data.post_text)
+
+                    if(post_type = 'running') {
+                        console.log("this is running post")
+                        $("#running_additional_info").removeAttr('hidden');
+                    }
+                    
+                },//success : function(data) {
+                error : function(xhr,status,error) {
+                    console.log("AJAX error occurred");
+                    let notifier = new AWN() 
+                    notifier.alert('Comment post failed.<br>Please login to post comments.');
+                }
+            });//$.ajax({ 
+
+        }//function initPostView() {
+        
+        executeOnLoad(initPostView);
         executeOnLoad(initComments);
     </script>
 </div>

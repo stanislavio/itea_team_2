@@ -30,10 +30,12 @@ var short_running_post_html_template = `
           <! -- Image and user name -->
           <div class="col-1"></div>
           <div class="col-1 border-bottom text-center me-3">
-            <img src="{{imageURL}}" class="rounded-circle " alt="..." width="80px" heigth="60px">
-            <p><a href="#" class="link-secondary">
-                {{userName}}
-              </a><br>
+            <img src="{{imageURL}}" class="rounded-circle " alt="..." width="60px" heigth="60px">
+            <p>
+              <a href="#" class="link-secondary">
+                <small class="muted" style="font-size:10px;">{{userName}}</small>
+              </a>
+              <br>
               <small class="muted" style="font-size:9px;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{date_created_tooltip}}">>
                 {{date_created}}
               </small>
@@ -126,7 +128,7 @@ function renderPostPreview(post) {
   post_view_URL = cross_fit_env.urls.createSocialPostURL+post.id
 
   if(post.post_type == 'training' | post.post_type == 'running') {
-      post_view_URL = cross_fit_env.urls.createTrainingPostURL+post.id  
+      post_view_URL = cross_fit_env.urls.createTrainingPostURL+post.id+"?id="+post.id+"&post_type="+post.post_type
   }
 
   formatted_created_dates = formatDateForPostPreview(post.date_created);

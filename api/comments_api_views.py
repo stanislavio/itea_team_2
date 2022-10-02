@@ -21,7 +21,7 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
     serializer_class = CommentSerializer
 
     authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         print(self.request.GET['post_type'])
@@ -40,8 +40,6 @@ class CreateListTrainingPostCommentsView(mixins.ListModelMixin, mixins.CreateMod
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-
-        print ("Hello")
         new_comment_ser = CommentSerializer(
             data = {
                 'comment_text' : request.POST["comment_text"],
