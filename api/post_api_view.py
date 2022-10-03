@@ -1,4 +1,4 @@
-from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer, RunTrainingPostSerializer, HikeTrainingPostSerializer
+from .serializers import UserSerializer, SocialPostSerializer, TrainingPostSerializer, RunTrainingPostSerializer, HikeTrainingPostSerializer, SwimTrainingPostSerializer
 from rest_framework import serializers, generics, status, mixins
 from rest_framework.generics import GenericAPIView
 
@@ -144,6 +144,28 @@ class GetAllTypesOfTrainingPost(APIView):
                 )
             print("Obj found")
             ret_data = RunTrainingPostSerializer(post_obj[0]).data
+
+        if request.GET['post_type'] == 'hiking':
+            post_obj = HikeTrainingPost.objects.filter(id=request.GET['id'])
+            if len(post_obj) == 0:
+                return Response({'error': 
+                    f"Post type '{request.GET['post_type']}' with ID {request.GET['id']} have not been found."
+                    }, 
+                    status=404
+                )
+            print("Obj found")
+            ret_data = HikeTrainingPostSerializer(post_obj[0]).data
+
+        if request.GET['post_type'] == 'swimming':
+            post_obj = SwimTrainingPost.objects.filter(id=request.GET['id'])
+            if len(post_obj) == 0:
+                return Response({'error': 
+                    f"Post type '{request.GET['post_type']}' with ID {request.GET['id']} have not been found."
+                    }, 
+                    status=404
+                )
+            print("Obj found")
+            ret_data = SwimTrainingPostSerializer(post_obj[0]).data
 
         return Response(ret_data)
 

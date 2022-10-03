@@ -35,8 +35,9 @@
             Training finished: <span id="datetime_finished"></span><br>
             Duration: <span id="training_duration"></span>
         </div>
-        <!-- Running post additional information -->
+        
         <div class="col-6 text-end">
+            <!-- Running post additional information -->
             <div id='running_additional_info' hidden >
                 <div class="col-6 text-center align-self-end">
                     <img src="{% static 'img/template_types/running_post.png' %}" />
@@ -45,15 +46,45 @@
                     Total KM ran: <span id="total_km_ran"></span>
                 </div>
             </div>
+
+            <!-- Hiking post additional information -->
+            <div class="row" id='hiking_additional_info' hidden >
+                <div class="col-3 text-left align-self-start">
+                    <img src="{% static 'img/template_types/hiking_post.png' %}" />
+                </div>
+                <div class="col-9 text-right">
+                    <p>Hike location: <span id="hike_location"></span></p>
+                    <p>Max elevation: <span id="max_elevation"></span></p>
+                    <p>Total KM walked: <span id="total_km_walked"></span></p>
+                </div>
+            </div>
+
+            <!-- Hiking post additional information -->
+            <div class="row" id='swimming_additional_info' hidden >
+                <div class="col-3 text-left align-self-start">
+                    <img src="{% static 'img/template_types/hiking_post.png' %}" />
+                </div>
+                <div class="col-9 text-right">
+                    <p>Swim location: <span id="swimming_location"></span></p>
+                    <p>Total KM swum: <span id="total_km_swum"></span></p>
+                </div>
+            </div>
+
+
+
+
         </div>
+
+        
+        
     </div>
 
     
-    
+    <!-- Post text -->
     <div class="row ">
         <div class="col-12" style="text-align: justify;">
-            {% comment %} <img src=" {{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px"> {% endcomment %}
-            <span id="post_text"></span>
+            <img src="{{post.post_photo.url}}" class="float-start" style="max-width:400px; padding: 10px">
+            <span id="post_text" style="white-space: pre;"></span>
         </div>
     </div>
     
@@ -107,6 +138,7 @@
             post_id = urlParams.get('id');
             post_type = urlParams.get('post_type');
             console.log("token:", cross_fit_env.csrftoken)
+            console.log("post_type:", post_type)
 
 
             $.ajax({
@@ -125,9 +157,24 @@
                     $("#datetime_finished").html(data.datetime_finished)
                     $("#post_text").html(data.post_text)
 
-                    if(post_type = 'running') {
+                    if(data.post_type == 'running') {
                         console.log("this is running post")
                         $("#running_additional_info").removeAttr('hidden');
+                    }
+
+                    if(data.post_type == 'hiking') {
+                        console.log("this is hiking post")
+                        $("#hiking_additional_info").removeAttr('hidden');
+                        $("#total_km_walked").html(data.total_km_walked);
+                        $("#hike_location").html(data.hike_location);
+                        $("#max_elevation").html(data.max_elevation);
+                    }
+
+                    if(data.post_type == 'swimming') {
+                        console.log("this is swimming post")
+                        $("#swimming_additional_info").removeAttr('hidden');
+                        $("#total_km_swum").html(data.total_km_swum);
+                        $("#swimming_location").html(data.swimming_location);
                     }
                     
                 },//success : function(data) {
