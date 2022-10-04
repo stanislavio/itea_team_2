@@ -11,21 +11,20 @@
           <div class="rounded text-black d-flex flex-row border border-4" style="background-color: #84BFCE;">
                 <div class="row1">
                     {% if query %}
-                        <h2 class="text-bg-info rounded-3" style="margin-top: 25px">You searched for - " {{ query }} "</h2>
+                        <h2 class="text-bg-info rounded-3 border border-4 text-center w-100" style="margin-top: 25px; margin-left: 10px;">You searched for - " {{ query }} "</h2>
                         <br/>
                         {% for account in accounts %}
-                            <div class="card flex-row flex-grow-1 mx-2 my-2  w-100 border border-4">
-                            <div class="card-img m-2">
-                                <img class="img-fluid profile-image py-1 rounded-circle border" style="width: 100px; height: 100px; padding: 5px" src="{{ account.photo.url }}" alt="">
+                            <div class="card flex-row flex-grow-1 mx-2 my-2  w-100 border border-4" style="background-color: #f8f9fa;">
+                             <div class="card-img m-2 border border-5 rounded-circle" style="width: 100px; height: 100px">
+                                <img class="img-fluid profile-image  rounded-circle"  src="{{ account.photo.url }}" alt="">
                             </div>
-                             <a class="profile-link" style="margin-right: 120px; margin-top: 35px" href=" {% url 'user_profile' account.id %}">
+                             <a class="profile-link" style="margin-right: 50px; margin-top: 35px; margin-left: 10px" href=" {% url 'user_profile' account.id %}">
                                  <h3>{{ account }}</h3>{{ account.email }} </a><br/>
                             {% if account == request.user %}
-                                <div class="d-flex card-right  justify-content-end mx-2 h-25 w-100 border border-4 rounded-2" style="margin-top: 10px">
-                                <p class="m-auto">
-                                    Your profile
-                                </p>
-                                </div>
+                                <p class="mb-auto text-bg-warning rounded-1 border border-dark text-center w-25 fw-bold">You</p>
+                            {% endif %}
+                            {% if account in user.get_friends %}
+                                <p class="mb-auto text-bg-warning rounded-1 border border-dark text-center w-25 fw-bold">Your friend</p>
                             {% endif %}
                             </div>
                         {% endfor %}
@@ -34,5 +33,4 @@
           </div>
     </div>
 </div>
-
 {% endblock %}

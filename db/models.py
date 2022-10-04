@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Q
 from PIL import Image
 
 
-# USER PAGE models !
 class User(AbstractUser):
     # Default model names: https://www.csestack.org/django-default-user-model-fields/
     short_bio = models.TextField(blank=True)
@@ -13,7 +13,6 @@ class User(AbstractUser):
     hide_email = models.BooleanField(default=True)
     hide_phone = models.BooleanField(default=True)
     friends = models.ManyToManyField('self', blank=True, related_name='friends')
-
 
     def save(self, *args, **kwargs):
         super().save()
@@ -32,20 +31,29 @@ class User(AbstractUser):
         return self.friends.all().count()
 
 
+# FRIENDS RELATION models
 
-STATUS_CHOISES = (
+STATUS_CHOICES = (
     ('send', 'send'),
     ('accepted', 'accepted')
 )
 
 
+class RelationsManager(models.Manager):
+    def invitation_received(self, receiver):
+        query = FriendRequest.objects.filter(receiver=receiver, status='send')
+        return query
+
 class FriendRequest(models.Model):
     sender = models.ForeignKey(User, related_name='sender', on_delete=models.CASCADE, null=True)
     receiver = models.ForeignKey(User, related_name='receiver', on_delete=models.CASCADE, null=True)
-    status = models.CharField(max_length=8, choices=STATUS_CHOISES, null=True)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, null=True)
+    objects = RelationsManager()
 
     def __str__(self):
         return f"{self.sender}-{self.receiver}-{self.status}"
+
+
 # POST MODELS
 
 class Comment(models.Model):

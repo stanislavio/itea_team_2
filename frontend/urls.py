@@ -6,12 +6,17 @@ from . import(userPage_views, post_views, homePage_views)
 # from . import comments_views
 # from . import comments_views
 
-user_url_patterns = [
+users_url_patterns = [
     path('', userPage_views.user_profile, name='user_profile'),
     path('<user_id>', userPage_views.user_profile, name='user_profile'),
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
+    path('/friends_list/<user_id>', userPage_views.friends_list, name="friends_list"),
     path('search_user/', userPage_views.search_user, name='search_user'),
+    path('accept_invite/', userPage_views.accept_invitation, name='accept_invite'),
+    path('decline_invite/', userPage_views.decline_invitation, name='decline_invite'),
+    path('send_invite/', userPage_views.send_invitation, name='send_invite'),
+    path('remove_friend/', userPage_views.remove_from_friends, name='remove_friend'),
 ]
 
 post_url_patterns = [
@@ -30,7 +35,7 @@ urlpatterns = [
     path('login_user/', homePage_views.login_user, name="login_user"),
     path('logout_user/', homePage_views.logout_user, name="logout_user"),
     #User urls
-    path('user/', include(user_url_patterns)),
+    path('user/', include(users_url_patterns)),
     #Post urls
     path('post/', include(post_url_patterns)),
 ]
