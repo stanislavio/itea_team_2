@@ -96,8 +96,8 @@
                 csrfmiddlewaretoken : cross_fit_env.csrftoken,
             },
             success : function(data) {
-                console.log("Have posts:")
-                console.log(data)
+                //console.log("Have posts:")
+                //console.log(data)
                 for(post_idx in data) {
                     addPostHTML(
                         data[post_idx],

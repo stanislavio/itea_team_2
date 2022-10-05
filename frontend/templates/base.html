@@ -42,14 +42,14 @@
             (e.g. csrftoken) which are needed for running the application.
          */
 
-        console.log()
-
         var cross_fit_env ={
             urls : {
+                homePageURL : "{% url 'index' %}",
                 postsForHomePageURL : "{% url 'home_page_rnd_posts' %}",
                 createTrainingPostURL : "{% url 'create_training_post' %}",
                 createSocialPostURL : "{% url 'create_social_post' %}",
                 getTrainingPostAPIURL: "{% url 'api_get_training_post' %}",
+
             },//urls : {
             serviceImagesURLs : {
                 genericUser : '{% static "img/generic_user_pic.png" %}',

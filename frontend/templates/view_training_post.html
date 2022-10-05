@@ -134,11 +134,8 @@
         function initPostView() {
             queryString = window.location.search;
             urlParams = new URLSearchParams(queryString);
-            console.log("id=", urlParams.get('id'))
             post_id = urlParams.get('id');
             post_type = urlParams.get('post_type');
-            console.log("token:", cross_fit_env.csrftoken)
-            console.log("post_type:", post_type)
 
 
             $.ajax({
@@ -151,19 +148,17 @@
                 },
                 datatype: 'json',
                 success : function(data) {
-                    console.log(data);
+                    //console.log(data);
 
                     $("#datetime_started").html(data.datetime_started)
                     $("#datetime_finished").html(data.datetime_finished)
                     $("#post_text").html(data.post_text)
 
                     if(data.post_type == 'running') {
-                        console.log("this is running post")
                         $("#running_additional_info").removeAttr('hidden');
                     }
 
                     if(data.post_type == 'hiking') {
-                        console.log("this is hiking post")
                         $("#hiking_additional_info").removeAttr('hidden');
                         $("#total_km_walked").html(data.total_km_walked);
                         $("#hike_location").html(data.hike_location);
@@ -171,7 +166,6 @@
                     }
 
                     if(data.post_type == 'swimming') {
-                        console.log("this is swimming post")
                         $("#swimming_additional_info").removeAttr('hidden');
                         $("#total_km_swum").html(data.total_km_swum);
                         $("#swimming_location").html(data.swimming_location);
@@ -179,7 +173,6 @@
                     
                 },//success : function(data) {
                 error : function(xhr,status,error) {
-                    console.log("AJAX error occurred");
                     let notifier = new AWN() 
                     notifier.alert('Comment post failed.<br>Please login to post comments.');
                 }

@@ -148,9 +148,6 @@
 
 
     function onTrainingTypeRadioClick(radio) {
-        console.log("radiobutton clicked");
-        console.log($(radio).val());
-
         $(".dummy_additional_info").each(
             function(idx, val) {
                 {% comment %} console.log("have element", val.id) {% endcomment %}
@@ -176,12 +173,13 @@
 
     $("#submit_button").click(
         function(evt) {
-            console.log("clicked submit");
+            //console.log("clicked submit");
+            evt.preventDefault();
             change_date_time_fields_to_ISO();
-            console.log($("#datetime_started_ISO").val());
+            //console.log($("#datetime_started_ISO").val());
             
             post_type = $("#training_post_form input[type='radio']:checked").val()
-            console.log("post_type:", post_type)
+
 
             dta = {
                 post_type : post_type, 
@@ -205,22 +203,22 @@
             };//if(post_type == "hiking") {
 
             if(post_type == "swimming") {
-                console.log('adding swimming data')
                 dta.total_km_swum = $("#id_total_km_swum").val(),
                 dta.swimming_location = $("#id_swimming_location").val()
             }
 
 
-            console.log("pre ajax dta:", dta)
+            //console.log("pre ajax dta:", dta)
 
 
             $.ajax({
                 type: "POST",
-                url: "{% url 'create_training_post' %}",
+                url: "{% url 'api_create_training_post' %}",
                 data : dta,
                 datatype: 'json',
                 success : function(data) {
-                    console.log("Training record call success", data)
+                    window.open(cross_fit_env.urls.homePageURL)
+
                 },//success : function(data) {
                 error : function(xhr,status,error) {
                     // console.log("AJAX error occurred");

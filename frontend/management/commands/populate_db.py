@@ -39,7 +39,7 @@ def generateDenticon(str2Hash, path2Save=""):
 
     img_name = 'gen_users'+os.sep+path2Save+'.png'
     img_path = GEN_USERS_MEDIA_FOLDER+os.sep+img_name
-    print("Image saved to path", img_path)
+    #print("Image saved to path", img_path)
     f = open(img_path, "wb")
     f.write(denticon)
     f.close()
