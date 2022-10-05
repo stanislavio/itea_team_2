@@ -5,9 +5,9 @@ from django.contrib import messages
 from django.http import HttpResponse
 from db.models import User, FriendRequest
 from django.db.models import Q
-from django.middleware import csrf
 
 
+#                                                                               USER_PROFILE
 def user_profile(request, user_id=None, *args, **kwargs):
     if request.user.is_authenticated:
         user = request.user
@@ -33,6 +33,7 @@ def user_profile(request, user_id=None, *args, **kwargs):
                 'friend_sender': friend_sender
             }
             return render(request, 'user_profile.html', context)
+
         if request.user.id != user_id:
             account = User.objects.get(pk=user_id)
             context = {
@@ -47,7 +48,8 @@ def user_profile(request, user_id=None, *args, **kwargs):
                 'hide_phone': account.hide_phone,
                 'get_friends_number': account.get_friends_number,
                 'friend_receiver': friend_receiver,
-                'friend_sender': friend_sender
+                'friend_sender': friend_sender,
+                'get_friends': account.get_friends
             }
             return render(request, 'user_profile.html', context)
     else:
@@ -67,40 +69,51 @@ def edit(request, *args, **kwargs):
 
     context = {
         'u_form': u_form,
-        #'csrf_token' : csrf.get_token(request),
     }
     return render(request, 'edit.html', context)
 
 
-def friends_list(request, user_id=None, **kwargs):
+#                                                                       FRIENDS_SYSTEM
+def friends_list(request, user_id=None):
     if request.user.is_authenticated:
         user = request.user
         query = FriendRequest.objects.filter(receiver=user, status='send')
         counter = user.get_friends()
-        result = list(map(lambda x: x.sender, query))
-        query_is_empty = False
+        query_result = list(map(lambda x: x.sender, query))
+        friend_query_is_empty = False
         no_friends = True
         if len(counter) != 0:
             no_friends = False
-        if len(result) == 0:
-            query_is_empty = True
-        context = {
-            'query': result,
-            'query_is_empty': query_is_empty,
-            'no_friends': no_friends
+        if len(query_result) == 0:
+            friend_query_is_empty = True
+        if request.user.id == user_id or user_id is None:
+            self_page = True
+            context = {
+                'query_result': query_result,
+                'self_page': self_page,
+                'friend_query_is_empty': friend_query_is_empty,
+                'no_friends': no_friends,
+                'get_friends': user.get_friends,
+                }
+            return render(request, 'friends_list.html', context)
+
+        if request.user.id != user_id:
+            account = User.objects.get(pk=user_id)
+            get_friends = account.get_friends()
+            context = {
+                'account': account,
+                'get_friends': get_friends,
             }
+            return render(request, 'friends_list.html', context,)
 
-        # if request.user.id != user_id:
-        #     account = User.objects.get(pk=user_id)
-        #     query = FriendRequest.objects.filter(receiver=account, status='send')
-        #     result = list(map(lambda x: x.sender, query))
-        #     context = {
-        #         'account': account,
-        #         'no_friends': no_friends
-        #     }
-        #     return render(request, 'friends_list.html', context)
 
-        return render(request, 'friends_list.html', context)
+def send_invitation(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        sender = request.user
+        receiver = User.objects.get(pk=user_id)
+        friend_relations = FriendRequest.objects.create(sender=sender, receiver=receiver, status='send')
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 def accept_invitation(request):
@@ -126,23 +139,11 @@ def decline_invitation(request):
     return redirect('friends_list')
 
 
-def send_invitation(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        sender = request.user
-        receiver = User.objects.get(pk=user_id)
-
-        friend_relations = FriendRequest.objects.create(sender=sender, receiver=receiver, status='send')
-
-        return redirect(request.META.get('HTTP_REFERER'))
-
-
 def remove_from_friends(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         sender = request.user
         receiver = User.objects.get(pk=user_id)
-
         friend_relations = FriendRequest.objects.get(
             (Q(sender=sender) & Q(receiver=receiver)) | (Q(sender=receiver) & Q(receiver=sender))
         )
@@ -154,7 +155,6 @@ def search_user(request):
     if request.method == 'POST':
         query = request.POST['query']
         accounts = User.objects.filter(username__icontains=query) or User.objects.filter(email__icontains=query)
-
         context = {
             'query': query,
             'accounts': accounts

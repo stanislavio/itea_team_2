@@ -11,12 +11,12 @@ users_url_patterns = [
     path('<user_id>', userPage_views.user_profile, name='user_profile'),
     path('edit/', userPage_views.edit, name="edit"),
     path('friends_list/', userPage_views.friends_list, name="friends_list"),
-    path('/friends_list/<user_id>', userPage_views.friends_list, name="friends_list"),
-    path('search_user/', userPage_views.search_user, name='search_user'),
+    path('<user_id>/friends_list/', userPage_views.friends_list, name="friends_list"),
     path('accept_invite/', userPage_views.accept_invitation, name='accept_invite'),
     path('decline_invite/', userPage_views.decline_invitation, name='decline_invite'),
     path('send_invite/', userPage_views.send_invitation, name='send_invite'),
     path('remove_friend/', userPage_views.remove_from_friends, name='remove_friend'),
+    path('search_user/', userPage_views.search_user, name='search_user'),
 ]
 
 post_url_patterns = [

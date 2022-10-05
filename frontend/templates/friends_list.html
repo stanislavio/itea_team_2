@@ -6,36 +6,43 @@
 </head>
 
 {% block content %}
-<div class="container py-5 h-100" style="margin-top: 20px">
-    <div class="row d-flex justify-content-center h-100">
-          <div class="rounded text-black d-flex flex-row border border-4" style="background-color: skyblue;">
-                <div class="row1">
-                <h1 class="text text-black-50" style="margin-left: 15px">Friends</h1>
-                    {% if no_friends %}
-                        <h2 class="text-white m-3"> You have no friends yet </h2>
-                    {% endif %}
-                    {% for friend in user.get_friends %}
-                        <div class="card flex-row flex-grow-1 mx-2 my-2  border border-4" style="background-color: #f8f9fa;">
-                            <div class="card-img m-2 border border-4 rounded-circle" style="width: 100px; height: 100px">
-                                <img class="img-fluid profile-image  rounded-circle"  src="{{ friend.photo.url }}" alt="">
-                            </div>
-                            <a class="profile-link " style=" margin-right: 10px; margin-top: 35px" href="{% url 'user_profile' friend.id %}">
-                            <h3>{{ friend }}</h3>{{ friend.email }} </a>
-                        </div>
-                    {% endfor %}
-                <h1 class="text text-black-50" style="margin-left: 15px">Friend requests</h1>
-                {% if query_is_empty %}
-                    <h2 class="text-white m-3"> No new requests </h2>
-                {% endif %}
 
-                {% for item in query %}
-                 <div class="card flex-lg-row flex-grow-1 mx-2 my-2  border border-4" style="background-color: #f8f9fa;">
-                      <div class="card-img m-2 border border-4 rounded-circle" style="width: 100px; height: 100px">
-                          <img class="img-fluid profile-image  rounded-circle"  src="{{ item.photo.url }}" alt="">
-                      </div>
-                     <a class="profile-link" style="margin-top: 35px; margin-right: 20px" href="{% url 'user_profile' item.id %}">
-                     <h3>{{ item }}</h3>{{ item.email }} </a>
-                     <div class="row2 " style="margin: 10px;">
+<div class="container py-5 h-100" style="margin-top: 20px">
+<div class="row d-flex justify-content-center h-100">
+<div class="rounded text-black d-flex flex-row border border-4" style="background-color: skyblue;">
+    <div class="row1">
+                                                                                <!-- SELF USER FRIENDS LIST -->
+    {% if self_page %}
+        <h1 class="text text-black-50" style="margin-left: 15px">Friends</h1>
+
+        {% if no_friends %}
+            <h2 class="text-white m-3"> You have no friends yet </h2>
+        {% endif %}
+
+        {% for friend in get_friends %}
+            <div class="card flex-row flex-grow-1 mx-2 my-2  border border-4" style="background-color: #f8f9fa;">
+                <div class="card-img m-2 border border-4 rounded-circle" style="width: 100px; height: 100px">
+                    <img class="img-fluid profile-image  rounded-circle"  src="{{ friend.photo.url }}" alt="">
+                </div>
+                    <a class="profile-link " style=" margin-right: 150px; margin-top: 35px" href="{% url 'user_profile' friend.id %}">
+                    <h3>{{ friend }}</h3>{{ friend.email }} </a>
+            </div>
+        {% endfor %}
+
+        <h1 class="text text-black-50" style="margin-left: 15px">Friend requests</h1>
+
+        {% if friend_query_is_empty %}
+            <h2 class="text-white m-3"> No new requests </h2>
+        {% endif %}
+
+        {% for item in query_result %}
+            <div class="card flex-lg-row flex-grow-1 mx-2 my-2  border border-4" style="background-color: #f8f9fa;">
+                <div class="card-img m-2 border border-4 rounded-circle" style="width: 100px; height: 100px">
+                    <img class="img-fluid profile-image  rounded-circle"  src="{{ item.photo.url }}" alt="">
+                </div>
+                    <a class="profile-link" style="margin-top: 35px; margin-right: 20px" href="{% url 'user_profile' item.id %}">
+                    <h3>{{ item }}</h3>{{ item.email }} </a>
+                <div class="row2 " style="margin: 10px;">
                      <form class="" style="margin-bottom: 10px; margin-top: 10px" action=" {% url 'accept_invite' %}" method="POST">
                          {% csrf_token %}
                          <input type="hidden" name="id" value={{ item.id }}>
@@ -46,12 +53,37 @@
                          <input type="hidden" name="id" value={{ item.id }}>
                          <button type="submit" class="btn btn-outline-danger fw-bold">Decline invite</button>
                      </form>
-                    </div>
-                 </div>
-                {% endfor %}
                 </div>
-          </div>
+            </div>
+        {% endfor %}
+                                                                                         <!-- OTHER USERS FRIENDS LIST -->
+    {% else %}
+        <h1 class="text text-black-50" style="margin-left: 15px">Friends</h1>
+
+        {% for friend in get_friends %}
+            {% if friend == request.user %}
+                <div class="card flex-row flex-grow-1 mx-2 my-2  border border-4" style="background-color: #f8f9fa;">
+                <div class="card-img m-2 border border-4 rounded-circle" style="width: 140px; height: 100px">
+                    <img class="img-fluid profile-image  rounded-circle"  src="{{ user.photo.url }}" alt="">
+                </div>
+                    <a class="profile-link " style=" margin-right: 150px; margin-top: 35px" href="{% url 'user_profile' %}">
+                    <h3>{{ user }}</h3>{{ user.email }} </a>
+                    <p class="mb-auto text-bg-warning rounded-1 border border-dark text-center w-25 fw-bold" >You</p>
+                </div>
+            {% else %}
+                <div class="card flex-row flex-grow-1 mx-2 my-2  border border-4" style="background-color: #f8f9fa;">
+                <div class="card-img m-2 border border-4 rounded-circle" style="width: 100px; height: 100px">
+                    <img class="img-fluid profile-image  rounded-circle"  src="{{ friend.photo.url }}" alt="">
+                </div>
+                    <a class="profile-link " style=" margin-right: 150px; margin-top: 35px" href="{% url 'user_profile' friend.id %}">
+                    <h3>{{ friend }}</h3>{{ friend.email }} </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
     </div>
 </div>
-
+</div>
+</div>
 {% endblock %}
