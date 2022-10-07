@@ -19,16 +19,53 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap_5.2.0.min.css' %}">
     <script src=" {% static 'js/bootstrap_5.2.0.bundle.min.js' %}"></script>
 
+    <!-- Popper.js - needed for tooltips of bootstrap -->
+    <script src=" {% static 'js/popper.min_2.9.2.js' %}"></script>
+
     <!-- Moustashe.js templates -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script> -->
-    <script src=" {% static 'js/mustache_2.3.0.min.js' %}"></script>
+    <script src="{% static 'js/mustache_2.3.0.min.js' %}"></script>
 
     <!-- Day.js :https://www.skypack.dev/view/dayjs -->
-    <script src=" {% static 'js/dayjs_1.11.5.min.js' %}"></script>
-    <!-- TODO: make this local -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.5/plugin/relativeTime.min.js"></script>
+    <script src="{% static 'js/dayjs_1.11.5.min.js' %}"></script>
+    <script src="{% static 'js/relativeTime-1.11.5.min.js' %}"></script>
     <script>dayjs.extend(window.dayjs_plugin_relativeTime)</script>
-    
+
+    {% comment %} Bootstrap font {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap-icons-1.9.1.css' %}">
+
+    {% csrf_token %}
+
+    <script>
+        /*   
+            This section will contain necessary URLs and parameters 
+            (e.g. csrftoken) which are needed for running the application.
+         */
+
+        var cross_fit_env ={
+            urls : {
+                homePageURL : "{% url 'index' %}",
+                postsForHomePageURL : "{% url 'home_page_rnd_posts' %}",
+                createTrainingPostURL : "{% url 'create_training_post' %}",
+                createSocialPostURL : "{% url 'create_social_post' %}",
+                getTrainingPostAPIURL: "{% url 'api_get_training_post' %}",
+
+            },//urls : {
+            serviceImagesURLs : {
+                genericUser : '{% static "img/generic_user_pic.png" %}',
+                swimImage : '{% static "img/template_types/swimming_post.png" %}',
+
+            },//serviceImagesURLs : {
+            csrftoken : $('[name="csrfmiddlewaretoken"]').val(),
+        };//var cross_fit_env ={
+
+        //Initialize all tooltips
+        //   https://getbootstrap.com/docs/5.0/components/tooltips/
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
 
 </head>
 
@@ -107,8 +144,8 @@
     <div class="container text-center">
         <div class="row text-center " style="margin:5px">
             <div class="col-12 d-flex justify-content-center">
-                <div class="muted border rounded" style="margin=6px; padding-left:10px;padding-right:10px;">
-                    <small style="font-size:10px;">(C) 2022 ITEA Django course Aug 2022. | v.12-Sep-2022 </small>
+                <div class="muted border rounded" style="margin=6px; padding-left:10px;padding-right:10px;" 
+                    <small style="font-size:10px;">(C) 2022 ITEA Django course Aug 2022. | v.24-Sep-2022 </small>
                 </div>
             </div>
         </div>

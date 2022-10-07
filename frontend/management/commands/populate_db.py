@@ -1,17 +1,19 @@
 #https://docs.djangoproject.com/en/4.1/howto/custom-management-commands/
 from django.core.management.base import BaseCommand
-from db.models import User, SocialPost
+from db.models import User, SocialPost, RunTrainingPost, SwimTrainingPost, HikeTrainingPost
 
 import pydenticon
 import hashlib
 import random
 import os
 import datetime
+import pytz
 
 GEN_USERS_MEDIA_FOLDER = r'C:\Users\Vasilyev\AGVDocs\Dev\2. Python\23. Django\4. ActualITEADjangoProject\media'
 
 USER_NAME_FOR_POSTS_AUTHORSHIP = 'vaal12'#TODO: if empty - random user to be selected when post is generated
 
+NEEDED_BIG_TEXT_LEN = 2000
 
 #https://github.com/azaghal/pydenticon/blob/master/docs/usage.rst
 def generateDenticon(str2Hash, path2Save=""):
@@ -37,17 +39,21 @@ def generateDenticon(str2Hash, path2Save=""):
 
     img_name = 'gen_users'+os.sep+path2Save+'.png'
     img_path = GEN_USERS_MEDIA_FOLDER+os.sep+img_name
-    print("Image saved to path", img_path)
+    #print("Image saved to path", img_path)
     f = open(img_path, "wb")
     f.write(denticon)
     f.close()
     return img_name
 
 def getRandomDateInThePast(days_at_least = 5000, days_at_most = 15000):
-    return datetime.datetime.now()+ \
+    now_time = datetime.datetime.now()+ \
                 datetime.timedelta(
-                    days = (-random.randint(days_at_least, days_at_most)) 
+                    days = (-random.randint(days_at_least, days_at_most)),
                 )
+    #Working with timezones: https://www.geeksforgeeks.org/working-with-datetime-objects-and-timezones-in-python/
+    tz = pytz.timezone('Europe/Kyiv')
+
+    return tz.localize(now_time)
 
 def generateUser(name_list, maximes_list):
     print("Creating user")
@@ -56,7 +62,7 @@ def generateUser(name_list, maximes_list):
     lName = lName.rstrip()
     
     #TODO add UUID part to generated user names
-    usr_name = f"{fName}_{lName}_{random.randint(1, 999)}_g"
+    usr_name = f"{fName[:4]}_{lName[:4]}_{random.randint(1, 99)}_g"
     print("UsrName:", usr_name)
 
     img_name = generateDenticon(usr_name, usr_name)
@@ -77,6 +83,8 @@ def generateUser(name_list, maximes_list):
 
     new_user.set_password('qwe1')
     new_user.save()
+
+    return new_user
 #END def generateUser(name_list, maximes_list):
 
 def getBigText(big_text_list, needed_length):
@@ -92,9 +100,45 @@ def getBigText(big_text_list, needed_length):
     return big_text
 #END def getBigTex(big_text_list, needed_length):
 
+def updateOldUsers():
+    for usr in User.objects.all():
+        # print("have user:", usr.username)
+        # print('Bio:', usr.short_bio)
+        if(len(usr.short_bio) == 0):
+            usr.short_bio = random.choice(maximes_list).strip()
+            print('Will add new bio:', usr.short_bio)
+            usr.save()
+
+        if(len(usr.username)>15):
+            new_usr_name = usr.username[:15]
+            while len(
+                    User.objects.filter(username=new_usr_name)
+                )>0:
+                new_usr_name += "1"
+                
+            usr.username = new_usr_name
+            usr.save()
+#END def updateOldUsers():
+
+#TODO: this one is to clean old posts
+def updateOldPosts():
+    #Update of old posts
+    for old_post in SocialPost.objects.all():
+        if len(old_post.post_text) < 200:
+            old_post.post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN)
+        
+        if old_post.author is None:
+            author_user = User.objects.filter(
+                username = 'vaal12'
+            ).first()
+            old_post.author = author_user
+
+        old_post.save()
+#END def updateOldPosts():
+
 class Command(BaseCommand):
-    args = '<foo bar ...>'
-    help = 'our help string comes here'
+    # args = '<foo bar ...>'
+    # help = 'our help string comes here'
 
 
     def handle(self, *args, **options):
@@ -102,9 +146,10 @@ class Command(BaseCommand):
         number_of_users = User.objects.all().count()
         print('There are users:', number_of_users)
 
-        NEEDED_USERS = 10
+        NEEDED_USERS = 3
 
         #Names list
+        # from here: https://www.randomlists.com/random-names?qty=300
         f = open('frontend\management\commands\human_names_03Sep2022.txt', 'r')
         name_list = f.readlines()
         f.close()
@@ -115,32 +160,21 @@ class Command(BaseCommand):
         f.close()
 
 
-        for usr in User.objects.all():
-            # print("have user:", usr.username)
-            # print('Bio:', usr.short_bio)
-            if(len(usr.short_bio) == 0):
-                usr.short_bio = random.choice(maximes_list).strip()
-                print('Will add new bio:', usr.short_bio)
-                usr.save()
+        # updateOldPosts()
+        updateOldUsers()
 
-
-
+        new_user_list = []
 
         # for i in range(NEEDED_USERS-number_of_users):
-        for i in range(1):
-            generateUser(name_list, maximes_list)
+        for i in range(NEEDED_USERS):
+            new_user_list.append(
+                generateUser(name_list, maximes_list)
+            )
 
+        #Images for post generation
         gen_post_image_dir = GEN_USERS_MEDIA_FOLDER+os.sep+'gen_posts'+os.sep
         post_img_list = os.listdir(gen_post_image_dir)
         # print(post_img_list)
-
-        # img_path = gen_post_image_dir+\
-        img_path =  os.sep+'gen_posts'+os.sep+\
-                        post_img_list[
-                            random.randint(0, len(post_img_list)-1)
-                        ]
-        
-        print('img_path', img_path)
 
 
         big_text_file = open(
@@ -150,36 +184,122 @@ class Command(BaseCommand):
 
         big_text_lines = big_text_file.readlines()
 
-        
+       
 
-        NEEDED_BIG_TEXT_LEN = 2000
+        #RUNNING POST GENERATION
 
-        #Update of old posts
-        for old_post in SocialPost.objects.all():
-            if len(old_post.post_text) < 200:
-                old_post.post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN)
-            
-            if old_post.author is None:
-                author_user = User.objects.filter(
-                    username = 'vaal12'
-                ).first()
-                old_post.author = author_user
+        RUNNING_POSTS_NEEDED = 1
 
-            old_post.save()
+        author_user = new_user_list[
+            random.randint(0, len(new_user_list)-1)
+        ]
 
-        #Social POST GENERATION
-        for i in range(1):
-            print("Generating post")
-            author_user = User.objects.filter(
-                username = 'vaal12'
-            ).first()
-            curr_post = SocialPost(
+        for i in range(RUNNING_POSTS_NEEDED):
+            print("Running post generation")
+            img_path =  os.sep+'gen_posts'+os.sep+\
+                        post_img_list[
+                            random.randint(0, len(post_img_list)-1)
+                        ]
+            print('img_path', img_path)
+            curr_post = RunTrainingPost (
                 author = author_user,
                 post_title = getBigText(big_text_lines, 120),
                 post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN),
                 post_is_private = False,
-                post_photo = img_path
+                post_photo = img_path,
+                total_km_ran = 1023.1023,
+                datetime_started = getRandomDateInThePast(),
             )
+
             curr_post.save()
 
-    #END
+        #END #RUNNING POST GENERATION
+
+        #SWIMMING POST GENERATION
+
+        SWIMMING_POSTS_NEEDED = 0
+
+
+        author_user = new_user_list[
+            random.randint(0, len(new_user_list)-1)
+        ]
+
+        for i in range(SWIMMING_POSTS_NEEDED):
+            print("Swimming post generation")
+            img_path =  os.sep+'gen_posts'+os.sep+\
+                        post_img_list[
+                            random.randint(0, len(post_img_list)-1)
+                        ]
+            print('img_path', img_path)
+            curr_post = SwimTrainingPost (
+                author = author_user,
+                post_title = getBigText(big_text_lines, 120),
+                post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN),
+                post_is_private = False,
+                post_photo = img_path,
+                total_km_swum = 2023.2023,
+                datetime_started = getRandomDateInThePast(),
+                swimming_location = "Dummy swimming location: Eddie Lee Taylor, Sr. Pool"
+            )
+
+            curr_post.save()
+
+        #END #SWIMMING POST GENERATION
+
+
+        #HIKING POST GENERATION
+
+        HIKING_POSTS_NEEDED = 1
+
+        author_user = new_user_list[
+            random.randint(0, len(new_user_list)-1)
+        ]
+
+        for i in range(HIKING_POSTS_NEEDED):
+            print()
+            print()
+            print("*"*20)
+            print("Hiking post generation")
+            
+            img_path =  os.sep+'gen_posts'+os.sep+\
+                        post_img_list[
+                            random.randint(0, len(post_img_list)-1)
+                        ]
+            # print('img_path', img_path)
+            curr_post = HikeTrainingPost (
+                author = author_user,
+                post_title = getBigText(big_text_lines, 120),
+                post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN),
+                post_is_private = False,
+                post_photo = img_path,
+                total_km_walked = 333.23,
+                datetime_started = getRandomDateInThePast(),
+                hike_location = "Dummy walking location: Foret d'Elysee",
+                max_elevation = 100.1
+            )
+
+            curr_post.save()
+
+            print("Post: ", curr_post.post_title)
+
+        #END #HIKING POST GENERATION
+
+
+        # #TODO: add running, hiking and swimming post generation
+        # #Social POST GENERATION
+        # for i in range(1):
+        #     print("Generating post")
+        #     author_user = User.objects.filter(
+        #         username = 'vaal12'
+        #     ).first()
+        #     curr_post = SocialPost(
+        #         author = author_user,
+        #         post_title = getBigText(big_text_lines, 120),
+        #         post_text = getBigText(big_text_lines, NEEDED_BIG_TEXT_LEN),
+        #         post_is_private = False,
+        #         post_photo = img_path
+        #     )
+        #     curr_post.save()
+
+    #END def handle(self, *args, **options):
+#END class Command(BaseCommand):

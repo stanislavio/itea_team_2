@@ -16,9 +16,7 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs):
         super().save()
-
         img = Image.open(self.photo.path)
-
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
@@ -55,15 +53,15 @@ class FriendRequest(models.Model):
 
 
 # POST MODELS
-
 class Comment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank = True)
     comment_text = models.TextField(blank=True)
     def __str__(self):
         return self.comment_text[:70]
 
 
+#TODO: check https://django-polymorphic.readthedocs.io/en/stable/quickstart.html#making-your-models-polymorphic
 class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -79,7 +77,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.post_title[:50]
-    
+#END class Post(models.Model):
+   
 
 class SocialPost(Post):
     pass
@@ -88,6 +87,18 @@ class SocialPost(Post):
 class TrainingPost(Post):
     datetime_started = models.DateTimeField()
     datetime_finished = models.DateTimeField(blank=True, null=True)
+
+class RunTrainingPost(TrainingPost):
+    total_km_ran = models.FloatField(blank=True, null = True)
+
+class SwimTrainingPost(TrainingPost):
+    total_km_swum = models.FloatField(blank=True, null = True)
+    swimming_location = models.CharField(max_length=200, blank=True, null = True)
+
+class HikeTrainingPost(TrainingPost):
+    total_km_walked = models.FloatField(blank=True, null = True)
+    hike_location = models.CharField(max_length=200, blank=True, null = True)
+    max_elevation = models.FloatField(blank=True, null = True)
 
 
 # Below are classes for future expansion of the functionality
