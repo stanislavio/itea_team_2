@@ -78,6 +78,7 @@ INSTALLED_APPS = [
 
     #Crossfit apps
     'rest_framework',
+    'rest_framework.authtoken',
     'crispy_forms',
     'frontend',
     'api',
@@ -193,7 +194,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 60*10 #in seconds
+SESSION_COOKIE_AGE = 60*30 #in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 
 CSRF_USE_SESSIONS = True

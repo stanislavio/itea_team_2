@@ -1,12 +1,13 @@
 from django.urls import path
-from .views import user_list
+from .views import UserListAPIView, RegistrationAPIView
 from .home_page_api_views import ListRandomUsersView, ListRandomPostsView
 from .comments_api_views import CreateListTrainingPostCommentsView
 
 from .post_api_view import ListUserPostsView
 
 urlpatterns = [
-    path('user/', user_list),
+    path('register', RegistrationAPIView.as_view(), name='register'),
+    path('user/', UserListAPIView.as_view(), name='user_list'),
 
     #Home page REST endpoints
     path('home_page_users/', ListRandomUsersView.as_view(), name = 'home_page_rnd_users'),
