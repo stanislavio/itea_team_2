@@ -99,9 +99,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'crossfit.urls'
 
-print(BASE_DIR)
-
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -193,7 +190,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 60*10 #in seconds
+SESSION_COOKIE_AGE = 60*100 #in seconds
 SESSION_SAVE_EVERY_REQUEST = True
 
 CSRF_USE_SESSIONS = True
@@ -210,9 +207,6 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
-print(EMAIL_HOST)
-
-
 #Allauth settings
 ACCOUNT_FORMS = {
     'signup' : 'frontend.forms.CreateUserForm',
@@ -221,4 +215,8 @@ ACCOUNT_FORMS = {
 LOGIN_REDIRECT_URL = 'index'
 
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
+#https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_EMAIL_VERIFICATION = "none"
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'

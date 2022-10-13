@@ -44,7 +44,7 @@ function formatDateForPostPreview(dta) {
     // console.log(date_created.fromNow(true))
 
     return [
-        date_created.format('DD-MMM-YYYY'),
+        date_created.format('DD-MMM-YYYY HH:MM (UTCZ)'),
         date_created.fromNow(true)
     ]
     // TODO: Move to joda.js for difference in datas
@@ -56,16 +56,7 @@ function formatDateForPostPreview(dta) {
 
 function addCommentHTML(parent_id, comment_text, 
         usr_photo_url, comment_date) {
-
     template = "Hello {{ name }}";
-    // console.log(Mustache.render(
-    //                 template, 
-    //                 {
-    //                     name: "Alex"
-    //                 }
-    //             ));
-
-
 
     old_html = $("#"+parent_id).html();
     // console.log(old_html)
@@ -138,7 +129,8 @@ function getComments(requestURL, post_type) {
         url: requestURL,
         data : {
             post_type : post_type, 
-            csrfmiddlewaretoken : readCookie('csrftoken'),
+            csrfmiddlewaretoken: cross_fit_env.csrftoken,
+            // csrfmiddlewaretoken : readCookie('csrftoken'),
         },
         success : function(data) {
             // console.log("Have comments:")

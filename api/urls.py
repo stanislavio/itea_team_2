@@ -3,7 +3,9 @@ from .views import user_list
 from .home_page_api_views import ListRandomUsersView, ListRandomPostsView
 from .comments_api_views import CreateListTrainingPostCommentsView
 
-from .post_api_view import ListUserPostsView
+from .post_api_view import ListUserPostsView, CreateTrainingPost, GetAllTypesOfTrainingPost
+
+ 
 
 urlpatterns = [
     path('user/', user_list),
@@ -15,6 +17,10 @@ urlpatterns = [
     #Comments endpoint
     path('comments_api/<int:post_id>/', CreateListTrainingPostCommentsView.as_view(), name = 'post_comments'),
 
-    path('userpostslist/', ListUserPostsView.as_view(), name="userposts")
+    path('userpostslist/', ListUserPostsView.as_view(), name="userposts"),
 
+    path("training_posts/create/", CreateTrainingPost.as_view(), name="api_create_training_post"),
+    #TODO: change reference to this in submit of the page
+
+    path("training_posts/", GetAllTypesOfTrainingPost.as_view(), name="api_get_training_post"),
 ]

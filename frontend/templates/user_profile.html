@@ -7,85 +7,132 @@
 
 {% block content %}
 
-<!-- User profile -->
+                                                                <!-- USER PROFILE -->
 <section class="gradient-custom-2">
-  <div class="container">
+<div class="container">
     <div class="row justify-content-center align-items-center" style="margin-top: 60px">
       <div class="col-9">
         <div class="card">
 
-          <!-- User picture and username + messages -->
+          <!-- User or other Users picture and username + messages -->
           <div class="row text-white">
             <div class="col-12">
                   {% if messages %}
-                  {% for message in messages %}
-                  <div class="alert-success" role="alert" style="color: #ffcd39; margin-left: 250px">
-                  <h2>{{ message }}</h2>
-                  </div>
-                  {% endfor %}
+                    {% for message in messages %}
+                        <div class="alert-success text-bg-success" role="alert">
+                            <h2 class="text-bg-success ju" style="margin-left: 250px; color: yellowgreen">{{ message }}</h2>
+                        </div>
+                    {% endfor %}
                   {% endif %}
               <div class="rounded-top border border-2" style="background-color: #84BFCE; padding:10px; height:175px">
                 <img class="float-start border border-3 rounded-2 account-img" src="{{ photo.url }}"
-                  alt="Generic placeholder image" style="width: 150px; height: 150px; margin: 5px">
-                <div class="ms-4">
-                  <h1 class="account-heading" style="margin-top: 113px;">{{username}}</h1>
+                alt="Generic placeholder image" style="width: 150px; height: 150px; margin: 5px">
+                <div class="text-start">
+                    <h1 class="account-heading" style="margin-top: 110px; margin-left: 170px">{{username}}</h1>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- User data and buttons -->
+          <!-- User or other Users data and buttons -->
           <div class="card-body">
-          <div class="col-auto ">
-            <div class="row rounded" style="background-color: #f8f9fa; padding: 15px">
-              <div class="col-2 ">
-                <a class="btn btn-outline-dark" style="margin-left: 5px"
-                  data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
-              </div>
-              <div class="col-2" style="margin-left: 120px; margin-right: 10px">
+            <div class="col-auto ">
+              <div class="row rounded" style="background-color: #f8f9fa; padding: 15px">
+                <div class="col-2 ">
+
+                    {% if self_page %}
+                        <a class="btn btn-outline-dark" style="margin-left: 5px"
+                        data-mdb-ripple-color="dark" href="{% url 'edit' %}">Edit Profile</a>
+                    {% endif %}
+
+                    {% if account in user.get_friends %}
+                        <a class="btn btn-warning fw-bold"> Your friend</a>
+                    {% endif %}
+
+                </div>
+              <div class="col-2" style="margin-left: 100px; margin-right: 30px">
                 <p class="mb-1 h5">email</p>
-                {% if self_page %}
-                    <p class="text-muted mb-0">{{ email }}</p>
-                {% else %}
-                {% if hide_email %}
-                    <h5>***********</h5>
-                {% else %}
-                    <p class="text-muted mb-0">{{ email }}</p>
-                {% endif %}
-                {% endif %}
+
+                    {% if self_page or account in user.get_friends %}
+                        <p class="text-muted mb-0 min-vw-100">{{ email }}</p>
+                    {% else %}
+                        {% if hide_email %}
+                            <h5 style="margin-top: 8px">***********</h5>
+                        {% else %}
+                            <p class="text-muted mb-0">{{ email }}</p>
+                        {% endif %}
+                    {% endif %}
+
               </div>
               <div class="col-3">
                 <p class="mb-1 h5">phone number</p>
-                {% if self_page %}
-                    <p class="text-muted mb-0">+38 {{phone}} </p>
-                {% else %}
-                {% if hide_phone %}
-                    <h5>***********</h5>
-                {% else %}
-                    <p class="text-muted mb-0">+38 {{phone}} </p>
-                {% endif %}
-                {% endif %}
+
+                    {% if self_page or account in user.get_friends %}
+                        <p class="text-muted mb-0">+38 {{phone}} </p>
+                    {% else %}
+                        {% if hide_phone %}
+                            <h5>***********</h5>
+                        {% else %}
+                            <p class="text-muted mb-0">+38 {{phone}} </p>
+                        {% endif %}
+                    {% endif %}
+
               </div>
-              <div class="col-1" style="margin-right: 30px; margin-left: 50px">
-                <a class="btn btn-outline-dark" href="{% url 'friends_list'%}" style="margin-right: 20px">Friends</a>
-                  <p class="mb-1 h5" style="margin-left: 25px">20</p>
-              </div>
-              <div class="col-1" style="margin-right: 20px">
-                  <a class="btn btn-outline-dark" href="#">Posts</a>
-                  <p class="mb-1 h5" style="margin-left: 25px">3
-                </p>
-              </div>
+
+              {% if self_page or account in user.get_friends %}
+                <div class="col-1" style="margin-right: 10px; margin-left: 40px">
+
+                  {% if self_page %}
+                    <a class="btn btn-outline-dark" href="{% url 'friends_list' %}" style="margin-right: 20px">Friends</a>
+                  {% elif account %}
+                    <a class="btn btn-outline-dark" href="{% url 'friends_list' account.id %}" style="margin-right: 20px">Friends</a>
+                  {% endif %}
+
+                    <p class="mb-1 h5" style="margin-left: 33px">{{ get_friends_number }}</p>
+                </div>
+                <div class="col-1" style="margin-left: 10px">
+                  <a class="btn btn-secondary text-black" style="background-color: lightgray; color">Posts</a>
+                  <p class="mb-1 h5" style="margin-left: 26px">3</p>
+                </div>
+              {% endif %}
+
             </div>
           </div>
 
-              <div class=" col-12 float-start justify-content-start  text-start" style="margin-top: 40px; margin-left: 5px">
-                <h5>Self information</h5>
-              </div>
+          <div class=" col-12 float-start justify-content-start  text-start" style="margin-top: 40px; margin-left: 5px">
+            <h5>Self information</h5>
+          </div>
             <div class="row">
               <div class="col-12">
                 <div class="p-2" style="background-color: #f8f9fa; border-radius: 10px;">
                   <p class="text-secondary ">{{ short_bio| linebreaks }}</p>
                 </div>
+                                                         <!-- FRIENDS REQUEST SYSTEM -->
+
+                {% if account not in friend_receiver and account not in friend_sender and not self_page %}
+                    <form action="{% url 'send_invite' %}"  method="POST">
+                        {% csrf_token %}
+                         <input type="hidden" name="user_id" value="{{ account.id }}">
+                         <button type="submit" class="btn btn-outline-success fw-bold" style="margin-top: 25px">Add {{ account.username }} to friends</button>
+                    </form>
+                {% endif %}
+
+                {% if account in friend_receiver and request.user not in account.friends.all %}
+                    <a class="btn btn-secondary fw-bold" style="margin-top: 25px; background-color: darkgray" href="">Waiting for {{ account.username }} approval</a>
+                {% endif %}
+
+                {% if account in friend_sender and request.user not in account.friends.all %}
+                    <a class="btn btn-outline-warning fw-bold" style="margin-top: 25px" href="{% url 'friends_list'%}"> {{ account.username }} want to be your friend</a>
+                {% endif %}
+
+                {% if request.user in account.friends.all %}
+                    <form  action="{% url 'remove_friend' %}"  method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ account.id }}">
+                        <button type="submit" class="btn btn-outline-danger fw-bold" style="margin-top: 25px">Remove {{ account.username }} from friends</button>
+                    </form>
+                {% endif %}
+
               </div>
             </div>
           </div>
@@ -95,7 +142,6 @@
   </div>
 </section>
 
-
 <div class="container">
   <div class="row text-center " style="margin:30px;">
     <div class="col-5" style="text-align: center">
@@ -104,12 +150,13 @@
   </div>
 </div>
 
-<!-- User posts -->
+                                                                            <!-- USER POSTS -->
 <div class="container" id="posts_container">
 
 </div> <!-- id="posts_container" -->
 
-
+<!-- TODO: training posts types should display properly in user profile with types -->
+<!-- TODO: Add pagination to user profile post list -->
 
 <script src=" {% static 'js/post_short_moustashe_template.js' %}"></script>
 
@@ -170,7 +217,6 @@
         }
       },//success : function(data) {
       error: function (xhr, status, error) {
-        console.log("AJAX error occurred");
         let notifier = new AWN()
         notifier.alert('Retrieving user posts failed.<br>Please login to post comments.');
       }//error : function(xhr,status,error) {
