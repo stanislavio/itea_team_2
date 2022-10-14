@@ -45,9 +45,9 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
             'email', 
             'phone', 
-            'short_bio'
+            'short_bio',
+            'get_friends_number',
         ]
-
 
 class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer(required=False)

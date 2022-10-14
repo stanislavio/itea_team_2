@@ -6,8 +6,9 @@ from .comments_api_views import CreateListTrainingPostCommentsView
 from .post_api_view import ListUserPostsView
 
 urlpatterns = [
-    path('register', RegistrationAPIView.as_view(), name='register'),
-    path('user/', UserListAPIView.as_view(), name='user_list'),
+    path('register/', RegistrationAPIView.as_view(), name='register'),
+    path('user/', UserListAPIView.as_view(), name='current_user'),
+    path('user/<user_id>', UserListAPIView.as_view(), name='account'),
 
     #Home page REST endpoints
     path('home_page_users/', ListRandomUsersView.as_view(), name = 'home_page_rnd_users'),
