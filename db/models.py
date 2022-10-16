@@ -77,13 +77,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.post_title[:50]
-<<<<<<< HEAD
+
 #END class Post(models.Model):
-   
-=======
-
-
->>>>>>> REST_API_USER
 
 class SocialPost(Post):
     pass

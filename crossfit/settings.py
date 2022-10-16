@@ -191,11 +191,10 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-<<<<<<< HEAD
-SESSION_COOKIE_AGE = 60*100 #in seconds
-=======
+
+
 SESSION_COOKIE_AGE = 60*30 #in seconds
->>>>>>> REST_API_USER
+
 SESSION_SAVE_EVERY_REQUEST = True
 
 CSRF_USE_SESSIONS = True

@@ -1,11 +1,7 @@
 from rest_framework import serializers
-<<<<<<< HEAD
-from db.models import User
 
 from db.models import Comment, User, SocialPost, TrainingPost, RunTrainingPost, HikeTrainingPost, SwimTrainingPost
-=======
-from db.models import Comment, User, SocialPost, TrainingPost
->>>>>>> REST_API_USER
+
 
 
 # profile_edit_forms
