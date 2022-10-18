@@ -3,7 +3,7 @@ from .forms import ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
-from db.models import User, FriendRequest
+from db.models import User, FriendRequest, Post
 from django.db.models import Q
 
 

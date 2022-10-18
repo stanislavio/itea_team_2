@@ -29,7 +29,7 @@ class User(AbstractUser):
         return self.friends.all().count()
 
 
-# FRIENDS RELATION models
+# FRIENDS RELATIONS models
 
 STATUS_CHOICES = (
     ('send', 'send'),
@@ -77,8 +77,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.post_title[:50]
+
 #END class Post(models.Model):
-   
 
 class SocialPost(Post):
     pass
